@@ -9,7 +9,7 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 public class factoryUsuarioImpl implements factoryUsuarioInt {
 
     @Override
-    public Usuario crearUsuario(String identificacionUsuario, String nombreUsuario,
+    public Usuario crearUsuario(int identificacionUsuario, String nombreUsuario,
                                 String apellidoUsuario,int identificacionRol,
                                 String tipoRol, String emailUsuario, String userNameLogin,
                                 String contraseñaLogin,boolean estado) {

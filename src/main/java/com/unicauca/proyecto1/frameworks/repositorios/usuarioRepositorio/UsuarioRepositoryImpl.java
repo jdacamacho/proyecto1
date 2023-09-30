@@ -62,5 +62,18 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         }
         return objUsuarioR;
     }
+
+    @Override
+    public boolean existeUsuario(int identificacionUsuario) {
+        System.out.println("Invocando a buscar si existe un usuario");
+        boolean bandera = false;
+        for (int i = 0; i < this.usuarios.size(); i++) {
+            if (this.usuarios.get(i).getIdentificacionUsuario() == identificacionUsuario) {
+                bandera = true;
+                break;
+            }
+        }
+        return bandera;
+    }
     
 }

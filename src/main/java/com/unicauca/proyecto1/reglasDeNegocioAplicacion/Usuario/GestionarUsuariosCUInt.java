@@ -7,6 +7,6 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.
 
 public interface GestionarUsuariosCUInt {
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion);
-    public UsuarioDTORespuesta moficicarUsuario(UsuarioDTOPeticion objDtoPeticion);
+    public UsuarioDTORespuesta moficicarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion);
     public List<UsuarioDTORespuesta> listarUsuarios();
 }

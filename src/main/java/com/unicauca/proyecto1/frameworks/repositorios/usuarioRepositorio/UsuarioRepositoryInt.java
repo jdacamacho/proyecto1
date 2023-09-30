@@ -10,4 +10,5 @@ public interface UsuarioRepositoryInt {
     public UsuarioEntity findById(Integer id);
     public UsuarioEntity save(UsuarioEntity objUsuario);
     public UsuarioEntity update(Integer id, UsuarioEntity objUsuario);
+    public boolean existeUsuario(int identificacionUsuario);
 }
