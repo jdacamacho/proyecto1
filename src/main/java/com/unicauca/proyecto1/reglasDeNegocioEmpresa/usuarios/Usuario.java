@@ -11,7 +11,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Usuario {
     /* Atributos del usuario */
-    private String identificacionUsuario;
+    private int identificacionUsuario;
     private String nombresUsuario;
     private String apellidosUsuario;
     private Rol rolUsuario;
