@@ -1,6 +1,7 @@
 package com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuarios;
 
 
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.roles.Rol;
 
 import lombok.AllArgsConstructor;
@@ -9,14 +10,18 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Usuario {
+    /* Atributos del usuario */
     private String identificacionUsuario;
     private String nombresUsuario;
     private String apellidosUsuario;
     private Rol rolUsuario;
+    private String emailUsuario;
+    private Login loginUsuario;
 
     public Usuario(){
 
     }
+
     /**verificamos que el usuario a crear tiene un rol existente en el sistema*/
     public boolean tipoDeRolEsValido(){
         System.out.println("determinando si el rol de usuario es valido");
@@ -27,6 +32,7 @@ public class Usuario {
         /* 4: Jefe de departamento , 5: Miembro del jefe de departamento*/
         /* 6: evaluadores , 7: Consejo de facultad , 8: jurados*/
         if(this.getRolUsuario().getIdentificacionRol() >= 2 && this.getRolUsuario().getIdentificacionRol() <=8){
+            /* La bandera cambiara a verdadera si cumplimos con el rango de roles */
             bandera = true;
         }
         return bandera;
