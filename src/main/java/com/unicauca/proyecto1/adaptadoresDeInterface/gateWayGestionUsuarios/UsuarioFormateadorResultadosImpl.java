@@ -47,5 +47,13 @@ public class UsuarioFormateadorResultadosImpl implements UsuarioFormateadorResul
     public UsuarioDTORespuesta prepararRespuestaFallida(String error) {
         throw new ResponseStatusException(HttpStatus.CONFLICT, error);
     }
+
+
+    @Override
+    public UsuarioDTORespuesta prepararRespuestaSatisfactoriaConsultarUsuario(Usuario objUsuarioConsultado) {
+        UsuarioDTORespuesta objUsuarioDTORespuesta = this.usuarioModelMapper.map(objUsuarioConsultado,
+        UsuarioDTORespuesta.class);
+        return objUsuarioDTORespuesta;
+    }
     
 }

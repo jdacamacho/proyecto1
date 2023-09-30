@@ -16,4 +16,8 @@ public class UsuarioDTOPeticion {
     private String emailUsuario;
     private Login loginUsuario;
     private boolean estadoUsuario;
+
+    public UsuarioDTOPeticion(){
+        
+    }
 }

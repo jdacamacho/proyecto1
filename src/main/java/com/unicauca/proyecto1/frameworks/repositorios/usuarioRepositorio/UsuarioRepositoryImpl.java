@@ -50,7 +50,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
 
     @Override
     public UsuarioEntity update(Integer id, UsuarioEntity objUsuario) {
-        System.out.println("Invocando a actualizar un producto");
+        System.out.println("Invocando a actualizar un usuario");
         UsuarioEntity objUsuarioR = null;
 
         for (int i = 0; i < this.usuarios.size(); i++) {

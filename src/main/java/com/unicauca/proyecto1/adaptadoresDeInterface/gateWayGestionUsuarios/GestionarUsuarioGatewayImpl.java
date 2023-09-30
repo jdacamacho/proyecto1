@@ -48,4 +48,11 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     public boolean existeUsuario(int identificacionUsuario) {
         return this.objUsuarioRepository.existeUsuario(identificacionUsuario);
     }
+
+    @Override
+    public Usuario consultarUsuario(int identificacionUsuario, Usuario objUsuario) {
+        UsuarioEntity objUsuarioEntity = this.objUsuarioRepository.findById(identificacionUsuario);
+		Usuario clienteDTO=this.usuarioModelMapper.map(objUsuarioEntity, Usuario.class);
+		return clienteDTO;
+    }
 }

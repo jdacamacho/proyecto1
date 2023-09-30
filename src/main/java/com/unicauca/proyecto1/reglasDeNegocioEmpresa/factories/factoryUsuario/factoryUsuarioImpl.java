@@ -21,7 +21,7 @@ public class factoryUsuarioImpl implements factoryUsuarioInt {
         Login login = factoryLogin.crearLogin(userNameLogin, contraseñaLogin);
         
         /* creo el nuevo usuario*/
-        return new Usuario(identificacionRol, userNameLogin,apellidoUsuario,rol,emailUsuario,login,estado);
+        return new Usuario(identificacionUsuario, nombreUsuario,apellidoUsuario,rol,emailUsuario,login,estado);
     }
     
 }

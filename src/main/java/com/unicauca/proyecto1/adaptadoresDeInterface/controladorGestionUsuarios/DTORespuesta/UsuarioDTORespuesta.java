@@ -17,4 +17,8 @@ public class UsuarioDTORespuesta {
     private String emailUsuario;
     private Login loginUsuario;
     private boolean estadoUsuario;
+
+    public UsuarioDTORespuesta(){
+        
+    }
 }

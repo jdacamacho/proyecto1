@@ -34,7 +34,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
-                    objDTOPeticion.getLoginUsuario().getContraseñalogin(),true);
+                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados
@@ -49,8 +49,8 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
     }
 
     @Override
-    public UsuarioDTORespuesta moficicarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion) {
-        if (this.objGestionarUsuarioGateway.existeUsuario(objDTOPeticion.getIdentificacionUsuario()) == false) {
+    public UsuarioDTORespuesta modificarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion) {
+        if (this.objGestionarUsuarioGateway.existeUsuario(identificacionUsuario) == false) {
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, no se encuentra en el sistema un usuario con la identificacion ingresada");
         } else {
@@ -58,13 +58,12 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
-                    objDTOPeticion.getLoginUsuario().getContraseñalogin(),true);
+                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados
                         .prepararRespuestaFallida("Error, el rol ingresado no es valido");
             } else {
-
                 Usuario objUsuarioCreado = this.objGestionarUsuarioGateway.modificar(identificacionUsuario, objUsuario);
                 return this.objUsuarioFormateadorResultados
                         .prepararRespuestaSatisfactoriaModificarUsuario(objUsuarioCreado);
@@ -76,6 +75,24 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
     public List<UsuarioDTORespuesta> listarUsuarios() {
         List<Usuario> listaObtenida = objGestionarUsuarioGateway.listar();
         return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
+    }
+
+
+    @Override
+    public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario, UsuarioDTOPeticion objDTOPeticion) {
+        if (this.objGestionarUsuarioGateway.existeUsuario(identificacionUsuario) == false) {
+            return this.objUsuarioFormateadorResultados
+                    .prepararRespuestaFallida("Error, no se encuentra en el sistema un usuario con la identificacion ingresada");
+        } else {
+            Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
+                    objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
+                    objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
+                    objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
+                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
+
+            Usuario objUsuarioCreado = this.objGestionarUsuarioGateway.consultarUsuario(identificacionUsuario, objUsuario);
+            return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaModificarUsuario(objUsuarioCreado);
+        }
     }
     
 }
