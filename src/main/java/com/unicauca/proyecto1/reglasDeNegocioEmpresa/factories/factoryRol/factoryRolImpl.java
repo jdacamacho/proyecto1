@@ -1,6 +1,6 @@
 package com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRol;
 
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.roles.Rol;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
 public class factoryRolImpl implements factoryRolInt {
 

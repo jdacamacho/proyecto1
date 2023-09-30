@@ -1,4 +1,4 @@
-package com.unicauca.proyecto1.reglasDeNegocioEmpresa.roles;
+package com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
-package com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuarios;
+package com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario;
 
 
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.roles.Rol;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,7 @@ public class Usuario {
     private Rol rolUsuario;
     private String emailUsuario;
     private Login loginUsuario;
+    private boolean estadoUsuario;
 
     public Usuario(){
 
