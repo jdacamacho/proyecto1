@@ -32,7 +32,7 @@ public class Usuario {
         /* 1: Administrador , 2:Director , 3:Miembro del comite del programa */
         /* 4: Jefe de departamento , 5: Miembro del jefe de departamento*/
         /* 6: evaluadores , 7: Consejo de facultad , 8: jurados*/
-        if(this.getRolUsuario().getIdentificacionRol() >= 2 && this.getRolUsuario().getIdentificacionRol() <=8){
+        if(this.getRolUsuario().getCodigoRol() >= 2 && this.getRolUsuario().getCodigoRol() <=8){
             /* La bandera cambiara a verdadera si cumplimos con el rango de roles */
             bandera = true;
         }

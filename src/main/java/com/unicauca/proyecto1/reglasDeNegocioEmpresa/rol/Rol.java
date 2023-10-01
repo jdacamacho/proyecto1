@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 
 public class Rol {
-    private int identificacionRol;
+    private int codigoRol;
     private String tipoRol;
 
     public Rol(){

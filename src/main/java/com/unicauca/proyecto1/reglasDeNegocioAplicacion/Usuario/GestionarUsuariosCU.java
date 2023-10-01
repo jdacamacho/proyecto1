@@ -32,7 +32,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
+                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
@@ -56,7 +56,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
+                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
@@ -86,7 +86,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getIdentificacionRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
+                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
