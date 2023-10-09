@@ -1,5 +1,6 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
@@ -20,6 +21,6 @@ public class UsuarioDTOPeticion {
     private boolean estadoUsuario;
 
     public UsuarioDTOPeticion(){
-        
+
     }
 }

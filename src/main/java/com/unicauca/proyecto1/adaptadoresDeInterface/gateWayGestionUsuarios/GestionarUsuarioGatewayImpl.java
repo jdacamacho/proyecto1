@@ -24,7 +24,9 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     public Usuario guardar(Usuario objUsuario) {
         UsuarioEntity objUsuarioEntity = this.usuarioModelMapper.map(objUsuario, UsuarioEntity.class);
         UsuarioEntity objUsuarioEntityRegistrado = this.objUsuarioRepository.save(objUsuarioEntity);
+        //el error esta en que no se esta copiando el usuario mapeado a tenitty en el objUsuarioEntityRegistrado
         Usuario objUsuarioRespuesta = this.usuarioModelMapper.map(objUsuarioEntityRegistrado, Usuario.class);
+        
         return objUsuarioRespuesta;
     }
 

@@ -33,6 +33,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
+            objUsuario.setRoles(objDTOPeticion.getRoles());
 
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados

@@ -1,6 +1,6 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
@@ -21,6 +21,6 @@ public class UsuarioDTORespuesta {
     private boolean estadoUsuario;
 
     public UsuarioDTORespuesta(){
-        
+ 
     }
 }

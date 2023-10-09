@@ -22,7 +22,7 @@ public class Usuario {
     private boolean estadoUsuario;
 
     public Usuario(){
-
+        
     }
 
     public boolean tipoDeRolEsValido(){

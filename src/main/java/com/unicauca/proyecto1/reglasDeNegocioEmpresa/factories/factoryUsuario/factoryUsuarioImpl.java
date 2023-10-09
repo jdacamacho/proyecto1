@@ -3,6 +3,7 @@ package com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryUsuario;
 import java.util.ArrayList;
 
 
+
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;

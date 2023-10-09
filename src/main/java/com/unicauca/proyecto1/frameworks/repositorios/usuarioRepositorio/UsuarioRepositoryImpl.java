@@ -38,9 +38,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
 
     @Override
     public UsuarioEntity save(UsuarioEntity objUsuario) {
+        //revisado y paso
         System.out.println("Invocando a guardar usuario");
         UsuarioEntity objUsuarioR = null;
-        objUsuario = this.repositorioUsuarios.save(objUsuario);
+        objUsuarioR = this.repositorioUsuarios.save(objUsuario);
         return objUsuarioR;
     }
 
