@@ -38,7 +38,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
 
     @Override
     public UsuarioEntity save(UsuarioEntity objUsuario) {
-        //revisado y paso
         System.out.println("Invocando a guardar usuario");
         UsuarioEntity objUsuarioR = null;
         objUsuarioR = this.repositorioUsuarios.save(objUsuario);
@@ -50,7 +49,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         System.out.println("Invocando a actualizar un usuario");
         UsuarioEntity objUsuarioR = null;
         if(this.repositorioUsuarios.findById(id) != null){
-            this.repositorioUsuarios.save(objUsuario);
+            objUsuarioR = this.repositorioUsuarios.save(objUsuario);
         }
         return objUsuarioR;
     }

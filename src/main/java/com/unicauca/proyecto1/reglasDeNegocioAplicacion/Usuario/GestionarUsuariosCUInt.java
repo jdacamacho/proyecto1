@@ -9,5 +9,5 @@ public interface GestionarUsuariosCUInt {
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion);
     public UsuarioDTORespuesta modificarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion);
     public List<UsuarioDTORespuesta> listarUsuarios();
-    public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion);
+    public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario);
 }

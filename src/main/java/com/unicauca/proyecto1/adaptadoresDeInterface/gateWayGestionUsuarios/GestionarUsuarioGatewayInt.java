@@ -9,5 +9,5 @@ public interface GestionarUsuarioGatewayInt {
     public Usuario modificar(int identificacionUsuario,Usuario objUsuario);
     public List<Usuario> listar();
     public boolean existeUsuario(int identificacionUsuario);
-    public Usuario consultarUsuario(int identificacionUsuario,Usuario objUsuario);
+    public Usuario consultarUsuario(int identificacionUsuario);
 }

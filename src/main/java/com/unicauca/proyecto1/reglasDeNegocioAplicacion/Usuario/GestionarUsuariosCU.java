@@ -57,7 +57,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
-
+            objUsuario.setRoles(objDTOPeticion.getRoles());
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados
                         .prepararRespuestaFallida("Error, el rol ingresado no es valido");
@@ -77,18 +77,13 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
 
 
     @Override
-    public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario, UsuarioDTOPeticion objDTOPeticion) {
+    public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario) {
         if (this.objGestionarUsuarioGateway.existeUsuario(identificacionUsuario) == false) {
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, no se encuentra en el sistema un usuario con la identificacion ingresada");
         } else {
-            Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
-                    objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
-                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
-
-            Usuario objUsuarioCreado = this.objGestionarUsuarioGateway.consultarUsuario(identificacionUsuario, objUsuario);
-            return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaModificarUsuario(objUsuarioCreado);
+            Usuario objUsuarioCreado = this.objGestionarUsuarioGateway.consultarUsuario(identificacionUsuario);
+            return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaConsultarUsuario(objUsuarioCreado);
         }
     }
     

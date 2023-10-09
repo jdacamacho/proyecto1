@@ -52,9 +52,9 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     }
 
     @Override
-    public Usuario consultarUsuario(int identificacionUsuario, Usuario objUsuario) {
+    public Usuario consultarUsuario(int identificacionUsuario) {
         UsuarioEntity objUsuarioEntity = this.objUsuarioRepository.findById(identificacionUsuario);
-		Usuario clienteDTO=this.usuarioModelMapper.map(objUsuarioEntity, Usuario.class);
-		return clienteDTO;
+		Usuario objUsuarioEntityEncontrado=this.usuarioModelMapper.map(objUsuarioEntity, Usuario.class);
+		return objUsuarioEntityEncontrado;
     }
 }
