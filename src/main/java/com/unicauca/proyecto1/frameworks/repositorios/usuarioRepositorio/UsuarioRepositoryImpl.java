@@ -3,6 +3,7 @@ package com.unicauca.proyecto1.frameworks.repositorios.usuarioRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
@@ -10,30 +11,28 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
     
-    private ArrayList<UsuarioEntity> usuarios;
+    @Autowired
+    UsuarioRepositoryJPA repositorioUsuarios;
 
     public UsuarioRepositoryImpl(){
-        this.usuarios = new ArrayList<UsuarioEntity>();
+
     }
 
     @Override
     public List<UsuarioEntity> findAll() {
         System.out.println("Invocando a listar usuarios");
-        return this.usuarios;
+        Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findAll();
+        
+        List<UsuarioEntity> lista = new ArrayList<>();
+        iterable.forEach(lista::add);
+        return lista;
     }
 
     @Override
     public UsuarioEntity findById(Integer id) {
         System.out.println("Invocando a consultar un usuario");
         UsuarioEntity objUsuarioR = null;
-
-        for (UsuarioEntity objUsuarioE : this.usuarios) {
-            if (objUsuarioE.getIdentificacionUsuario() == id) {
-                objUsuarioR = objUsuarioE;
-                break;
-            }
-        }
-
+        objUsuarioR = this.repositorioUsuarios.findById(id).get();
         return objUsuarioR;
     }
 
@@ -41,10 +40,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
     public UsuarioEntity save(UsuarioEntity objUsuario) {
         System.out.println("Invocando a guardar usuario");
         UsuarioEntity objUsuarioR = null;
-        if (this.usuarios.add(objUsuario)) {
-            objUsuarioR = objUsuario;
-        }
-
+        objUsuario = this.repositorioUsuarios.save(objUsuario);
         return objUsuarioR;
     }
 
@@ -52,28 +48,15 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
     public UsuarioEntity update(Integer id, UsuarioEntity objUsuario) {
         System.out.println("Invocando a actualizar un usuario");
         UsuarioEntity objUsuarioR = null;
-
-        for (int i = 0; i < this.usuarios.size(); i++) {
-            if (this.usuarios.get(i).getIdentificacionUsuario() == id) {
-                this.usuarios.set(i, objUsuario);
-                objUsuarioR = objUsuario;
-                break;
-            }
+        if(this.repositorioUsuarios.findById(id) != null){
+            this.repositorioUsuarios.save(objUsuario);
         }
         return objUsuarioR;
     }
 
-    @Override
     public boolean existeUsuario(int identificacionUsuario) {
         System.out.println("Invocando a buscar si existe un usuario");
-        boolean bandera = false;
-        for (int i = 0; i < this.usuarios.size(); i++) {
-            if (this.usuarios.get(i).getIdentificacionUsuario() == identificacionUsuario) {
-                bandera = true;
-                break;
-            }
-        }
-        return bandera;
+        return this.repositorioUsuarios.findById(identificacionUsuario).isPresent();
     }
     
 }

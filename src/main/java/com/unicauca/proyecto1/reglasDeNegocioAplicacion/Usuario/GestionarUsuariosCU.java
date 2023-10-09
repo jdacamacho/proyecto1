@@ -23,7 +23,6 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         this.objUsuarioFactory = objUsuarioFactory;
     }
 
-
     @Override
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion) {
         if (this.objGestionarUsuarioGateway.existeUsuario(objDTOPeticion.getIdentificacionUsuario())) {
@@ -32,7 +31,6 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
@@ -56,7 +54,6 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
@@ -86,7 +83,6 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         } else {
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
-                    objDTOPeticion.getRolUsuario().getCodigoRol(), objDTOPeticion.getRolUsuario().getTipoRol(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     objDTOPeticion.getLoginUsuario().getContraseñaLogin(),true);
 
