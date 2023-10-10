@@ -34,4 +34,29 @@ public class Usuario {
         //}
         return bandera;
     }
+
+    public boolean usuarioTieneRol(String tipoRol){
+        System.out.println("determinando si el usuario tiene el rol");
+        boolean bandera = false;
+        for(int i = 0 ; i<this.roles.size();i++){
+            if(this.roles.get(i).getTipoRol().equals(tipoRol)){
+                bandera = true;
+                break;
+            }
+        }
+        return bandera;
+    }
+
+    public boolean eliminarRol(String tipoRol){
+        System.out.println("determinando si el usuario tiene el rol a eliminar");
+        boolean bandera = false;
+        for(int i = 0 ; i<this.roles.size();i++){
+            if(this.roles.get(i).getTipoRol().equals(tipoRol)){
+                this.roles.remove(i);
+                bandera = true;
+                break;
+            }
+        }
+        return bandera;
+    }
 }

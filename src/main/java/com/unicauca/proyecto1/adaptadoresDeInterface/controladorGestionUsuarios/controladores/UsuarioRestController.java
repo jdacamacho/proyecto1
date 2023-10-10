@@ -2,6 +2,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCUInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
 @RestController
 @RequestMapping("/apiSuperUsuario")
@@ -44,7 +46,7 @@ public class UsuarioRestController {
 	}
 
     @GetMapping("/usuarios/{identificacion}")
-	public UsuarioDTORespuesta getUusario(@PathVariable Integer identificacion) {
+	public UsuarioDTORespuesta getUsario(@PathVariable Integer identificacion) {
 		UsuarioDTORespuesta objUsuarioR = null;
         objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
 		return objUsuarioR;
@@ -53,5 +55,19 @@ public class UsuarioRestController {
     @GetMapping("/usuarios")
     public List<UsuarioDTORespuesta> listar() {
         return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+    }
+
+    @PatchMapping("/usuarios/{identificacion}")
+    public UsuarioDTORespuesta addRol(@RequestBody Rol nuevoRol,@PathVariable Integer identificacion){
+        UsuarioDTORespuesta objUsuarioR = null;
+        objUsuarioR = objGestionarUsuariosCUInt.agregarRol(identificacion,nuevoRol);
+        return objUsuarioR;
+    }
+
+    @DeleteMapping("/usuarios/{identificacion}")
+    public UsuarioDTORespuesta deleteRol(@RequestBody Rol rolEliminar,@PathVariable Integer identificacion){
+        UsuarioDTORespuesta objUsuarioR = null;
+        objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
+        return objUsuarioR;
     }
 }
