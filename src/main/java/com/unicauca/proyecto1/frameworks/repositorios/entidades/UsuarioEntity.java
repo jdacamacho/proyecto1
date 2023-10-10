@@ -45,10 +45,10 @@ public class UsuarioEntity {
     private String emailUsuario;
 
     @Embedded
-    private LoginEntity loginusuario;
+    private LoginEntity loginUsuario;
 
     @Column(name = "estadousuario")
-    private boolean estadousuario;
+    private int estadoUsuario;
     
     public UsuarioEntity(){
         this.roles = new ArrayList<>();

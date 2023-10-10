@@ -17,7 +17,7 @@ public class UsuarioDTORespuesta {
     private List<Rol> roles;
     private String emailUsuario;
     private Login loginUsuario;
-    private boolean estadoUsuario;
+    private int estadoUsuario;
 
     public UsuarioDTORespuesta(){
  

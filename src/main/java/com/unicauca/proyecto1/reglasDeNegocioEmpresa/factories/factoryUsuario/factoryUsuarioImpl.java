@@ -14,7 +14,7 @@ public class factoryUsuarioImpl implements factoryUsuarioInt {
     public Usuario crearUsuario(int identificacionUsuario, String nombreUsuario,
                                 String apellidoUsuario,
                                 String emailUsuario, String userNameLogin,
-                                String contraseñaLogin,boolean estado) {
+                                String contraseñaLogin,int estado) {
 
         Login login = new Login(userNameLogin, contraseñaLogin);
         ArrayList<Rol> roles = new ArrayList<>();

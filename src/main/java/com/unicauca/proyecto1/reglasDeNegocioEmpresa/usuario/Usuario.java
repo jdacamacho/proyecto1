@@ -1,6 +1,7 @@
 package com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
@@ -19,7 +20,7 @@ public class Usuario {
     private List<Rol> roles;
     private String emailUsuario;
     private Login loginUsuario;
-    private boolean estadoUsuario;
+    private int estadoUsuario;
 
     public Usuario(){
         
@@ -27,36 +28,78 @@ public class Usuario {
 
     public boolean tipoDeRolEsValido(){
         System.out.println("determinando si el rol de usuario es valido");
-        boolean bandera = true;
-        /*if(this.getRolUsuario().getCodigoRol() >= 2 && this.getRolUsuario().getCodigoRol() <=8){
-            /* La bandera cambiara a verdadera si cumplimos con el rango de roles */
-            //bandera = true;
-        //}
+        boolean bandera = false;
+        List<Rol> rolesPermitidos = this.rolesPermitidos();
+        for(int i = 0 ; i < this.roles.size() ; i++){
+            for(int j = 0 ; j < rolesPermitidos.size() ; j++){
+                if(this.roles.get(i).getCodigoRol() == rolesPermitidos.get(j).getCodigoRol()){
+                    if(this.roles.get(i).getTipoRol().equals(rolesPermitidos.get(j).getTipoRol())){
+                        bandera = true;
+                    }
+                    break;
+                }
+            }
+        }
         return bandera;
     }
 
-    public boolean usuarioTieneRol(String tipoRol){
+    public boolean tipoDeRolEsValidoParametrizado(Rol rol){
+        System.out.println("determinando si el rol de usuario es valido");
+        boolean bandera = false;
+        List<Rol> rolesPermitidos = this.rolesPermitidos();
+        for(int i = 0 ; i < rolesPermitidos.size() ; i++){
+            if(rolesPermitidos.get(i).getCodigoRol() == rol.getCodigoRol()){
+                if(rolesPermitidos.get(i).getTipoRol().equals(rol.getTipoRol())){
+                    bandera = true;
+                }
+                break;
+            }
+        }
+        return bandera;
+    }
+
+    public boolean usuarioTieneRol(Rol rol){
         System.out.println("determinando si el usuario tiene el rol");
         boolean bandera = false;
         for(int i = 0 ; i<this.roles.size();i++){
-            if(this.roles.get(i).getTipoRol().equals(tipoRol)){
-                bandera = true;
+            if(this.roles.get(i).getCodigoRol() == rol.getCodigoRol()){
+                if(this.roles.get(i).getTipoRol().equals(rol.getTipoRol())){
+                    bandera = true;
+                }
                 break;
             }
         }
         return bandera;
     }
 
-    public boolean eliminarRol(String tipoRol){
+    public boolean eliminarRol(Rol rol){
         System.out.println("determinando si el usuario tiene el rol a eliminar");
         boolean bandera = false;
         for(int i = 0 ; i<this.roles.size();i++){
-            if(this.roles.get(i).getTipoRol().equals(tipoRol)){
-                this.roles.remove(i);
-                bandera = true;
+            if(this.roles.get(i).getCodigoRol() == rol.getCodigoRol()){
+                if(this.roles.get(i).getTipoRol().equals(rol.getTipoRol())){
+                    this.roles.remove(i);
+                    bandera = true;
+                }
                 break;
             }
         }
         return bandera;
+    }
+
+    public List<Rol> rolesPermitidos(){
+        List<Rol> rolesValidos = new ArrayList<>();
+        /*Roles */
+        Rol director = new Rol(2,"Director");
+        Rol comite = new Rol(3,"Comite del programa");
+        Rol jefeDepartamento = new Rol (4,"Jefe de departamento");
+        Rol asistenteJefeDepartamento = new Rol(5,"Asistente del jefe de departamento");
+        Rol estudiante = new Rol(6,"Estudiante");
+        rolesValidos.add(director);
+        rolesValidos.add(comite);
+        rolesValidos.add(jefeDepartamento);
+        rolesValidos.add(asistenteJefeDepartamento);
+        rolesValidos.add(estudiante);
+        return rolesValidos;
     }
 }
