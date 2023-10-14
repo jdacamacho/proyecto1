@@ -1,8 +1,8 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.controladores;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.internal.bytebuddy.asm.Advice.Return;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +18,9 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCUInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
+
+import jakarta.servlet.http.HttpSession;
+
 
 @RestController
 @RequestMapping("/apiSuperUsuario")
@@ -55,8 +58,12 @@ public class UsuarioRestController {
 	}
 
     @GetMapping("/usuarios")
-    public List<UsuarioDTORespuesta> listar() {
-        return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+    public List<UsuarioDTORespuesta> listar(HttpSession httpSession) {
+        List<UsuarioDTORespuesta> listaVacia = new ArrayList<>();
+        if(httpSession.getAttribute("user") != null){
+            return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+        }
+        return listaVacia;
     }
 
     @PatchMapping("/usuarios/{identificacion}")
@@ -73,10 +80,22 @@ public class UsuarioRestController {
         return objUsuarioR;
     }
 
-    @GetMapping("/usuariosLogin")
-    public UsuarioDTORespuesta consultarLogin(@RequestBody LoginDTPOPeticion login){
+    @PostMapping("/usuariosLogin")
+    public UsuarioDTORespuesta login(@RequestBody LoginDTPOPeticion login,HttpSession session){
         UsuarioDTORespuesta objUsuarioR = null;
         objUsuarioR = objGestionarUsuariosCUInt.buscarPorLogin(login);
+        if(objUsuarioR.getLoginUsuario().getContraseñaLogin().equals(login.getContraseñaLogin())){
+            session.setAttribute("user",login.getUserNameLogin());
+            session.setAttribute("roles",objUsuarioR.getRoles());
+        }else{
+            objUsuarioR = null;
+        }
         return objUsuarioR;
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+       session.invalidate();
+       return "Sesion terminada";
     }
 }
