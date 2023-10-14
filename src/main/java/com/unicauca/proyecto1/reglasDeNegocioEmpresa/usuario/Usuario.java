@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Usuario {
-    /* Atributos del usuario */
+    
     private int identificacionUsuario;
     private String nombresUsuario;
     private String apellidosUsuario;
@@ -95,11 +95,13 @@ public class Usuario {
         Rol jefeDepartamento = new Rol (4,"Jefe de departamento");
         Rol asistenteJefeDepartamento = new Rol(5,"Asistente del jefe de departamento");
         Rol estudiante = new Rol(6,"Estudiante");
+        Rol evaluador = new Rol(7,"Evaluador");
         rolesValidos.add(director);
         rolesValidos.add(comite);
         rolesValidos.add(jefeDepartamento);
         rolesValidos.add(asistenteJefeDepartamento);
         rolesValidos.add(estudiante);
+        rolesValidos.add(evaluador);
         return rolesValidos;
     }
 }

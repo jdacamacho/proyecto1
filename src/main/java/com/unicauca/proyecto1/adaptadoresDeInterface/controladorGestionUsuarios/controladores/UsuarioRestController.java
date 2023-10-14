@@ -2,6 +2,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios
 
 import java.util.List;
 
+import org.modelmapper.internal.bytebuddy.asm.Advice.Return;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.LoginDTPOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCUInt;
@@ -68,6 +70,13 @@ public class UsuarioRestController {
     public UsuarioDTORespuesta deleteRol(@RequestBody Rol rolEliminar,@PathVariable Integer identificacion){
         UsuarioDTORespuesta objUsuarioR = null;
         objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
+        return objUsuarioR;
+    }
+
+    @GetMapping("/usuariosLogin")
+    public UsuarioDTORespuesta consultarLogin(@RequestBody LoginDTPOPeticion login){
+        UsuarioDTORespuesta objUsuarioR = null;
+        objUsuarioR = objGestionarUsuariosCUInt.buscarPorLogin(login);
         return objUsuarioR;
     }
 }

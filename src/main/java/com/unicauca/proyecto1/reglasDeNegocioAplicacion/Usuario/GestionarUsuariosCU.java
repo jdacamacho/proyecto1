@@ -2,11 +2,13 @@ package com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario;
 
 import java.util.List;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.LoginDTPOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.UsuarioFormateadorResultadosInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryUsuario.factoryUsuarioInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
@@ -127,6 +129,19 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                 return this.objUsuarioFormateadorResultados
                         .prepararRespuestaSatisfactoriaModificarUsuario(objUsuarioCreado);
             }
+        }
+    }
+
+    @Override
+    public UsuarioDTORespuesta buscarPorLogin(LoginDTPOPeticion objDtpoPeticion) {
+        Login login = new Login(objDtpoPeticion.getUserNameLogin(), objDtpoPeticion.getContraseñaLogin());
+        Usuario usuario = this.objGestionarUsuarioGateway.buscarPorLogin(login);
+        if( usuario == null){
+            return this.objUsuarioFormateadorResultados.
+                    prepararRespuestaFallida("No existe el usuario con el login ingresado");
+        } else{
+            return this.objUsuarioFormateadorResultados.
+                    prepararRespuestaSatisfactorioConsultarLogin(usuario);
         }
     }
     

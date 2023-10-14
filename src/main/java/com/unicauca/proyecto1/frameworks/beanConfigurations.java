@@ -26,4 +26,5 @@ public class beanConfigurations {
                 objUsuarioFormateadorResultados, objUsuarioFactory);
         return objGestionarUsuarioCU;
     }
+
 }
