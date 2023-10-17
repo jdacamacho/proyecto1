@@ -17,6 +17,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCUInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.encriptacion.PasswordEncoder;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
 import jakarta.servlet.http.HttpSession;
@@ -111,8 +112,9 @@ public class UsuarioRestController {
     @PostMapping("/usuariosLogin")
     public UsuarioDTORespuesta login(@RequestBody LoginDTPOPeticion login,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
+        PasswordEncoder encriptador = new PasswordEncoder();
         objUsuarioR = objGestionarUsuariosCUInt.buscarPorLogin(login);
-        if(objUsuarioR.getLoginUsuario().getContraseñaLogin().equals(login.getContraseñaLogin())){
+        if(objUsuarioR.getLoginUsuario().getContraseñaLogin().equals(encriptador.encodePassword(login.getContraseñaLogin()))){
             httpSession.setAttribute("user",login.getUserNameLogin());
             almacenarRolSession(httpSession, objUsuarioR);
         }else{
