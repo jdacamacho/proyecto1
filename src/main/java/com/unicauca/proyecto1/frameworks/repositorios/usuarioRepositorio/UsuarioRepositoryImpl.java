@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.LoginEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
@@ -24,7 +23,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
     public List<UsuarioEntity> findAll() {
         System.out.println("Invocando a listar usuarios");
         Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findAll();
-        
         List<UsuarioEntity> lista = new ArrayList<>();
         iterable.forEach(lista::add);
         return lista;

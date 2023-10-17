@@ -3,6 +3,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.internal.util.securitymanager.SystemSecurityManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,60 +34,88 @@ public class UsuarioRestController {
     }
 
     @PostMapping("/usuarios")
-    public UsuarioDTORespuesta create(@RequestBody UsuarioDTOPeticion objUsuario) {
+    public UsuarioDTORespuesta create(@RequestBody UsuarioDTOPeticion objUsuario,HttpSession httpSession ) {
         UsuarioDTORespuesta objUsuarioR = null;
-        objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(objUsuario);
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        if(httpSession.getAttribute("user") != null){
+            if(rolObjUsuario.contains("Administrador")){
+                objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(objUsuario);
+            }   
+        }
         return objUsuarioR;
     }
 
     @PutMapping("/usuarios/{identificacion}")
-	public UsuarioDTORespuesta update(@RequestBody UsuarioDTOPeticion usuario, @PathVariable Integer identificacion) {
+	public UsuarioDTORespuesta update(@RequestBody UsuarioDTOPeticion usuario, @PathVariable Integer identificacion,HttpSession httpSession) {
 		UsuarioDTORespuesta objUsuarioR = null;
-        objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
-		if(objUsuarioR!=null)	
-		{
-			objUsuarioR =  objGestionarUsuariosCUInt.modificarUsuario(identificacion, usuario);
-		}
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        if(httpSession.getAttribute("user") != null){
+            if(rolObjUsuario.contains("Administrador")){
+                objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
+                if(objUsuarioR!=null){
+			        objUsuarioR =  objGestionarUsuariosCUInt.modificarUsuario(identificacion, usuario);
+		        }
+            }
+        }
 		return objUsuarioR;
 	}
 
     @GetMapping("/usuarios/{identificacion}")
-	public UsuarioDTORespuesta getUsario(@PathVariable Integer identificacion) {
+	public UsuarioDTORespuesta getUsario(@PathVariable Integer identificacion,HttpSession httpSession) {
 		UsuarioDTORespuesta objUsuarioR = null;
-        objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        if(httpSession.getAttribute("user") != null){
+            if(rolObjUsuario.contains("Administrador")){
+                objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
+            }   
+        }
 		return objUsuarioR;
 	}
 
     @GetMapping("/usuarios")
     public List<UsuarioDTORespuesta> listar(HttpSession httpSession) {
         List<UsuarioDTORespuesta> listaVacia = new ArrayList<>();
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
         if(httpSession.getAttribute("user") != null){
-            return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+            if(rolObjUsuario.contains("Administrador")){
+                return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+            }
         }
         return listaVacia;
     }
 
     @PatchMapping("/usuarios/{identificacion}")
-    public UsuarioDTORespuesta addRol(@RequestBody Rol nuevoRol,@PathVariable Integer identificacion){
+    public UsuarioDTORespuesta addRol(@RequestBody Rol nuevoRol,@PathVariable Integer identificacion,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
-        objUsuarioR = objGestionarUsuariosCUInt.agregarRol(identificacion,nuevoRol);
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        if(httpSession.getAttribute("user") != null){
+            if(rolObjUsuario.contains("Administrador")){
+                objUsuarioR = objGestionarUsuariosCUInt.agregarRol(identificacion,nuevoRol);
+            }
+        }
         return objUsuarioR;
     }
 
     @DeleteMapping("/usuarios/{identificacion}")
-    public UsuarioDTORespuesta deleteRol(@RequestBody Rol rolEliminar,@PathVariable Integer identificacion){
+    public UsuarioDTORespuesta deleteRol(@RequestBody Rol rolEliminar,@PathVariable Integer identificacion,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
-        objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
+        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        if(httpSession.getAttribute("user") != null){
+            if(rolObjUsuario.contains("Administrador")){
+                objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
+            }
+        }
+
         return objUsuarioR;
     }
 
     @PostMapping("/usuariosLogin")
-    public UsuarioDTORespuesta login(@RequestBody LoginDTPOPeticion login,HttpSession session){
+    public UsuarioDTORespuesta login(@RequestBody LoginDTPOPeticion login,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
         objUsuarioR = objGestionarUsuariosCUInt.buscarPorLogin(login);
         if(objUsuarioR.getLoginUsuario().getContraseñaLogin().equals(login.getContraseñaLogin())){
-            session.setAttribute("user",login.getUserNameLogin());
-            session.setAttribute("roles",objUsuarioR.getRoles());
+            httpSession.setAttribute("user",login.getUserNameLogin());
+            almacenarRolSession(httpSession, objUsuarioR);
         }else{
             objUsuarioR = null;
         }
@@ -97,5 +126,21 @@ public class UsuarioRestController {
     public String logout(HttpSession session) {
        session.invalidate();
        return "Sesion terminada";
+    }
+
+    private void almacenarRolSession(HttpSession httpSession, UsuarioDTORespuesta objUsuarioR) {
+        List<Rol> roles = objUsuarioR.getRoles();
+        List<String> tiposDeRol = new ArrayList<>();
+    
+        for (Rol rol : roles) {
+            tiposDeRol.add(rol.getTipoRol());
+        }
+    
+        httpSession.setAttribute("rol", tiposDeRol);
+    }
+
+    private List<String> obtenerRolSession(HttpSession httpSession){
+        List<String> rol = (List<String>) httpSession.getAttribute("rol");
+        return rol;
     }
 }
