@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.LoginEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 @Repository
@@ -22,7 +23,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
     public List<UsuarioEntity> findAll() {
         System.out.println("Invocando a listar usuarios");
         Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findAll();
-        
         List<UsuarioEntity> lista = new ArrayList<>();
         iterable.forEach(lista::add);
         return lista;
@@ -41,6 +41,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         System.out.println("Invocando a guardar usuario");
         UsuarioEntity objUsuarioR = null;
         objUsuarioR = this.repositorioUsuarios.save(objUsuario);
+
         return objUsuarioR;
     }
 
@@ -54,9 +55,18 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         return objUsuarioR;
     }
 
+    @Override
     public boolean existeUsuario(int identificacionUsuario) {
         System.out.println("Invocando a buscar si existe un usuario");
         return this.repositorioUsuarios.findById(identificacionUsuario).isPresent();
     }
-    
+
+    @Override
+    public UsuarioEntity buscarPorLogin(LoginEntity loginEntity) {
+        System.out.println("Invocando a buscar por login");
+        UsuarioEntity usuario = this.repositorioUsuarios.findByUserNameWithRoles(loginEntity.getUserNameLogin());
+        System.out.println("login:" + loginEntity.getUserNameLogin());
+        System.out.println(usuario.getNombresUsuario());
+        return usuario;
+    }
 }

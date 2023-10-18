@@ -6,25 +6,28 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.LoginEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.usuarioRepositorio.UsuarioRepositoryInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 @Service
 public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     private final UsuarioRepositoryInt objUsuarioRepository;
     private final ModelMapper usuarioModelMapper;
+    private final ModelMapper loginMapper;
 
-    public GestionarUsuarioGatewayImpl(UsuarioRepositoryInt objUsuarioRepository, ModelMapper usuarioModelMapper) {
+    public GestionarUsuarioGatewayImpl(UsuarioRepositoryInt objUsuarioRepository, ModelMapper usuarioModelMapper,ModelMapper loginMapper) {
         this.objUsuarioRepository = objUsuarioRepository;
         this.usuarioModelMapper = usuarioModelMapper;
+        this.loginMapper = loginMapper;
     }
 
     @Override
     public Usuario guardar(Usuario objUsuario) {
         UsuarioEntity objUsuarioEntity = this.usuarioModelMapper.map(objUsuario, UsuarioEntity.class);
         UsuarioEntity objUsuarioEntityRegistrado = this.objUsuarioRepository.save(objUsuarioEntity);
-        //el error esta en que no se esta copiando el usuario mapeado a tenitty en el objUsuarioEntityRegistrado
         Usuario objUsuarioRespuesta = this.usuarioModelMapper.map(objUsuarioEntityRegistrado, Usuario.class);
         
         return objUsuarioRespuesta;
@@ -57,4 +60,14 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
 		Usuario objUsuarioEntityEncontrado=this.usuarioModelMapper.map(objUsuarioEntity, Usuario.class);
 		return objUsuarioEntityEncontrado;
     }
+
+    @Override
+    public Usuario buscarPorLogin(Login login) {
+        LoginEntity loginEntity = this.loginMapper.map(login,LoginEntity.class);
+        UsuarioEntity objUsuarioEntity = this.objUsuarioRepository.buscarPorLogin(loginEntity);
+        Usuario objUsuario = this.usuarioModelMapper.map(objUsuarioEntity,Usuario.class);
+        return objUsuario;
+    }
+
+    
 }

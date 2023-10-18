@@ -55,5 +55,13 @@ public class UsuarioFormateadorResultadosImpl implements UsuarioFormateadorResul
         UsuarioDTORespuesta.class);
         return objUsuarioDTORespuesta;
     }
+
+
+    @Override
+    public UsuarioDTORespuesta prepararRespuestaSatisfactorioConsultarLogin(Usuario objUsuarioConsultado) {
+        UsuarioDTORespuesta objUsuarioDTORespuesta = this.usuarioModelMapper.map(objUsuarioConsultado,
+        UsuarioDTORespuesta.class);
+        return objUsuarioDTORespuesta;
+    }
     
 }

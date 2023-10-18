@@ -11,4 +11,5 @@ public interface UsuarioFormateadorResultadosInt {
     public List<UsuarioDTORespuesta> prepararRespuestaSatisfactoriaListarUsuarios(List<Usuario> objUsuarios);
     public UsuarioDTORespuesta prepararRespuestaFallida(String error);
     public UsuarioDTORespuesta prepararRespuestaSatisfactoriaConsultarUsuario(Usuario objUsuarioConsultado);
+    public UsuarioDTORespuesta prepararRespuestaSatisfactorioConsultarLogin(Usuario usuario);
 }

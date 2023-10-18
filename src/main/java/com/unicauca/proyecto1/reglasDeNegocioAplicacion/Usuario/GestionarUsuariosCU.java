@@ -2,11 +2,14 @@ package com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario;
 
 import java.util.List;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.LoginDTPOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.UsuarioFormateadorResultadosInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.encriptacion.PasswordEncoder;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryUsuario.factoryUsuarioInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
@@ -30,10 +33,12 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, se encuentra en el sistema un usuario con la identificacion ingresada");
         } else {
+            PasswordEncoder encriptador = new PasswordEncoder();
+            String contraseñaEncriptada = encriptador.obtenerContraseñaEncriptada(objDTOPeticion.getLoginUsuario().getContraseñaLogin());
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
-                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),1);
+                    contraseñaEncriptada,1);
             objUsuario.setRoles(objDTOPeticion.getRoles());
 
             if (!objUsuario.tipoDeRolEsValido() ) {
@@ -127,6 +132,21 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                 return this.objUsuarioFormateadorResultados
                         .prepararRespuestaSatisfactoriaModificarUsuario(objUsuarioCreado);
             }
+        }
+    }
+
+    @Override
+    public UsuarioDTORespuesta buscarPorLogin(LoginDTPOPeticion objDtpoPeticion) {
+        PasswordEncoder encriptador = new PasswordEncoder();
+        String contraseñaEncriptada = encriptador.obtenerContraseñaEncriptada(objDtpoPeticion.getContraseñaLogin());
+        Login login = new Login(objDtpoPeticion.getUserNameLogin(), contraseñaEncriptada);
+        Usuario usuario = this.objGestionarUsuarioGateway.buscarPorLogin(login);
+        if( usuario == null){
+            return this.objUsuarioFormateadorResultados.
+                    prepararRespuestaFallida("No existe el usuario con el login ingresado");
+        } else{
+            return this.objUsuarioFormateadorResultados.
+                    prepararRespuestaSatisfactorioConsultarLogin(usuario);
         }
     }
     
