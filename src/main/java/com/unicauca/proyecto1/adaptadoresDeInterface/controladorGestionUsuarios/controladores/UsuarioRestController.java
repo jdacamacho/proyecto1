@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 @RestController
-@RequestMapping("/api/superUsuario")
+@RequestMapping("/apiSuperUsuario")
 public class UsuarioRestController {
     
     private final GestionarUsuariosCUInt objGestionarUsuariosCUInt;

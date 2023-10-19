@@ -4,6 +4,7 @@ package com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
@@ -21,10 +22,22 @@ public class Usuario {
     private String emailUsuario;
     private Login loginUsuario;
     private int estadoUsuario;
+    //private List<PropuestaTrabajoGradoTI_A> propuestasTrabajoGradoTI_A;
 
     public Usuario(){
         
     }
+
+    /*public Usuario(int identificacionUsuario,String nombresUsuario,String apellidosUsuario,
+                    List<Rol> roles,String emailUsuario,Login login,int estadoUsuario ){
+        this.identificacionUsuario = identificacionUsuario;
+        this.nombresUsuario = nombresUsuario;
+        this.apellidosUsuario = apellidosUsuario;
+        this.roles = roles;
+        this.emailUsuario = emailUsuario;
+        this.loginUsuario = login;
+        this.estadoUsuario = estadoUsuario;
+    }*/
 
     public boolean tipoDeRolEsValido(){
         System.out.println("determinando si el rol de usuario es valido");
