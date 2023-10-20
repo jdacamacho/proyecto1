@@ -13,7 +13,7 @@ import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Rol.GestionarRolCUInt;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/apiSuperUsuarioRoles")
+@RequestMapping("/api/SuperUsuarioRoles")
 public class RolRestController {
     
     private final GestionarRolCUInt objGestionarRolCUInt;
@@ -26,12 +26,13 @@ public class RolRestController {
     public List<RolDTORespuesta> listar(HttpSession httpSession) {
         List<RolDTORespuesta> listaVacia = new ArrayList<>();
         List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                listaVacia = this.objGestionarRolCUInt.listarRoles() ;
-                return listaVacia;
-            }
-        }
+        // if(httpSession.getAttribute("user") != null){
+        //     if(rolObjUsuario.contains("Administrador")){
+        //         listaVacia = this.objGestionarRolCUInt.listarRoles() ;
+        //         return listaVacia;
+        //     }
+        // }
+        listaVacia = this.objGestionarRolCUInt.listarRoles() ;
         return listaVacia;
     }
 

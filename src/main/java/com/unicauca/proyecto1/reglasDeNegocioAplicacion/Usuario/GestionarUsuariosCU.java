@@ -29,6 +29,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
 
     @Override
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion) {
+
         if (this.objGestionarUsuarioGateway.existeUsuario(objDTOPeticion.getIdentificacionUsuario())) {
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, se encuentra en el sistema un usuario con la identificacion ingresada");
@@ -40,6 +41,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     contraseñaEncriptada,1);
             objUsuario.setRoles(objDTOPeticion.getRoles());
+
 
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados

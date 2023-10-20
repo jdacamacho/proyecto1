@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.ExternalUserDTOP;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.LoginDTPOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
@@ -35,26 +36,43 @@ public class UsuarioRestController {
     }
 
     @PostMapping("/usuarios")
-    public UsuarioDTORespuesta create(@RequestBody UsuarioDTOPeticion objUsuario,HttpSession httpSession ) {
+    public UsuarioDTORespuesta create(@RequestBody ExternalUserDTOP objUsuario,HttpSession httpSession ) {
+        ExternalUserDTOP objExterno = objUsuario;
+        UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println(adapter);
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        
         UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(objUsuario);
-            }   
-        }
+        // List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        // if(httpSession.getAttribute("user") != null){
+        //     if(rolObjUsuario.contains("Administrador")){
+        //         objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(adapter);
+        //     }   
+        // }
+        objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(adapter);
+        //objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(adapter);
         return objUsuarioR;
     }
 
     @PutMapping("/usuarios/{identificacion}")
-	public UsuarioDTORespuesta update(@RequestBody UsuarioDTOPeticion usuario, @PathVariable Integer identificacion,HttpSession httpSession) {
+	public UsuarioDTORespuesta update(@RequestBody ExternalUserDTOP usuario, @PathVariable Integer identificacion,HttpSession httpSession) {
+        ExternalUserDTOP objExterno = usuario;
+        UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 		UsuarioDTORespuesta objUsuarioR = null;
         List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        System.out.println(usuario);
         if(httpSession.getAttribute("user") != null){
             if(rolObjUsuario.contains("Administrador")){
                 objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
                 if(objUsuarioR!=null){
-			        objUsuarioR =  objGestionarUsuariosCUInt.modificarUsuario(identificacion, usuario);
+			        objUsuarioR =  objGestionarUsuariosCUInt.modificarUsuario(identificacion, adapter);
 		        }
             }
         }
@@ -64,12 +82,14 @@ public class UsuarioRestController {
     @GetMapping("/usuarios/{identificacion}")
 	public UsuarioDTORespuesta getUsario(@PathVariable Integer identificacion,HttpSession httpSession) {
 		UsuarioDTORespuesta objUsuarioR = null;
+        System.out.println("peticion a get usuarios");
         List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
-            }   
-        }
+        // if(httpSession.getAttribute("user") != null){
+        //     if(rolObjUsuario.contains("Administrador")){
+        //         objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
+        //     }   
+        // }
+        objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
 		return objUsuarioR;
 	}
 
@@ -77,12 +97,13 @@ public class UsuarioRestController {
     public List<UsuarioDTORespuesta> listar(HttpSession httpSession) {
         List<UsuarioDTORespuesta> listaVacia = new ArrayList<>();
         List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                return this.objGestionarUsuariosCUInt.listarUsuarios() ;
-            }
-        }
-        return listaVacia;
+        // if(httpSession.getAttribute("user") != null){
+        //     if(rolObjUsuario.contains("Administrador")){
+        //         return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+        //     }
+        // }
+        return this.objGestionarUsuariosCUInt.listarUsuarios() ;
+        //return listaVacia;
     }
 
     @PatchMapping("/usuarios/{identificacion}")
