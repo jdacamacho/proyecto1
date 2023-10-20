@@ -6,4 +6,6 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajo
 
 public interface FormatoTI_ARepositoryInt {
     public List<PropuestaTrabajoGradoTI_AEntity> findAll();
+    public PropuestaTrabajoGradoTI_AEntity findById(Integer id);
+    public PropuestaTrabajoGradoTI_AEntity save(PropuestaTrabajoGradoTI_AEntity propuestaTI_A);
 }

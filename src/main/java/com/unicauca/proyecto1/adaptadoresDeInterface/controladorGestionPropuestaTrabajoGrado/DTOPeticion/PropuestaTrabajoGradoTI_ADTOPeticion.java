@@ -10,16 +10,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PropuestaTrabajoGradoTI_ADTOPeticion {
-    private int idPropuestaTrabajoGrado;
-    private Usuario identificacionDirectorTIA;
-    private Usuario identificacionEstudiante1TIA;
-    private Usuario identificacionCodirectorTIA;
-    private Usuario identificacionEstudiante2TIA;
+    //private int idPropuestaTrabajoGrado;
+    private int identificacionDirectorTIA;
+    private int identificacionEstudiante1TIA;
+    private int identificacionCodirectorTIA;
+    private int identificacionEstudiante2TIA;
     private String tituloPropuestaTrabajoGrado;
-    private Date fechaSubidoPropuestaTrabajoGrado;
-    private Date fechaRespuestaPropuestaTrabajoGrado;
-    private String estadoPropuestaTrabajoGrado;
-    private String rutaPropuestaTrabajoGrado;
+    private String rutaPropuestaTrabajoGradoOrigen;
     
     public PropuestaTrabajoGradoTI_ADTOPeticion(){
 

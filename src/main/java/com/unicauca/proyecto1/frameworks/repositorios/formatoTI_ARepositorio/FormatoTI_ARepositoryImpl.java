@@ -22,5 +22,21 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
         iterable.forEach(lista::add);
         return lista;
     }
+
+    @Override
+    public PropuestaTrabajoGradoTI_AEntity findById(Integer id) {
+        System.out.println("Invocando a consultar una propuesta TI_A");
+        PropuestaTrabajoGradoTI_AEntity objPropuestaR = null;
+        objPropuestaR = this.repositorioFormatoTI_A.findById(id).get();
+        return objPropuestaR;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_AEntity save(PropuestaTrabajoGradoTI_AEntity propuestaTI_A) {
+        System.out.println("Invocando a guardar propuesta TI_A");
+        PropuestaTrabajoGradoTI_AEntity objPropuestaR = null;
+        objPropuestaR = this.repositorioFormatoTI_A.save(propuestaTI_A);
+        return objPropuestaR;
+    }
     
 }

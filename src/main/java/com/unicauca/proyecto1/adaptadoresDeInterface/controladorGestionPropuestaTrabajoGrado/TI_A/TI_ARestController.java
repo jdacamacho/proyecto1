@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACUInt;
 
 @RestController
-@RequestMapping("/apiPropuestas")
+@RequestMapping("/apiPropuestasTI_A")
 public class TI_ARestController {
     
     GestionarTI_ACUInt gestionarPropuestaTI_ACU;
@@ -24,4 +28,16 @@ public class TI_ARestController {
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listar(){
         return this.gestionarPropuestaTI_ACU.listarPropuestas();
     }
+
+    @GetMapping("/propuestas/{id}")
+    public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(@RequestBody PropuestaTrabajoGradoTI_ADTOPeticion propuesta,@PathVariable int id ){
+        return this.gestionarPropuestaTI_ACU.consultarPropuesta(id);
+    }
+
+    @PostMapping("/propuestas")
+    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(@RequestBody PropuestaTrabajoGradoTI_ADTOPeticion objPeticion){
+        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion);
+    }
+
+
 }

@@ -13,6 +13,8 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.Usua
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Rol.GestionarRolCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCU;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryUsuario.factoryUsuarioImpl;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryUsuario.factoryUsuarioInt;
 
@@ -23,6 +25,12 @@ public class beanConfigurations {
     public factoryUsuarioImpl crearUsuarioFactory() {
         factoryUsuarioImpl objUsuarioFactoryImpl = new factoryUsuarioImpl();
         return objUsuarioFactoryImpl;
+    }
+    
+    @Bean
+    public factoryTI_AImpl crearPropuestaFactory(){
+        factoryTI_AImpl objFactoryTI_AImpl = new factoryTI_AImpl();
+        return objFactoryTI_AImpl;
     }
 
     @Bean
@@ -44,8 +52,10 @@ public class beanConfigurations {
     
     @Bean
     public GestionarTI_ACU crearGestionarTI_ACUInt(GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
-                                                PropuestaTrabajoGradoTI_AFormateadorResultadosInt objPropuestaFormateador){
-        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway);
+                                                PropuestaTrabajoGradoTI_AFormateadorResultadosInt objPropuestaFormateador,
+                                                factoryTI_AInt objFactoryPropuesta,
+                                                GestionarUsuarioGatewayInt objUsuarioGateway){
+        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway);
         return objTI_ACU;
     }
 

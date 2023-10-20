@@ -7,8 +7,10 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.formatoTI_ARepositorio.FormatoTI_ARepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 @Service
 public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarPropuestaTrabajoGradoTI_AGatewayInt {
@@ -29,4 +31,18 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
         return listaObtenida;
     }
 
+    @Override
+    public PropuestaTrabajoGradoTI_A consultarPropuesta(int idPropuesta) {
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntity = this.objTI_ARepositorio.findById(idPropuesta);
+		PropuestaTrabajoGradoTI_A objPropuestaEntityEncontrado=this.propuestaModelMapper.map(objPropuestaEntity, PropuestaTrabajoGradoTI_A.class);
+		return objPropuestaEntityEncontrado;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_A guardar(PropuestaTrabajoGradoTI_A objPropuesta) {
+        PropuestaTrabajoGradoTI_AEntity PropuestaTrabajoGradoTI_AEntity = this.propuestaModelMapper.map(objPropuesta, PropuestaTrabajoGradoTI_AEntity.class);
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntityRegistrado = this.objTI_ARepositorio.save(PropuestaTrabajoGradoTI_AEntity);
+        PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
+        return objPropuestaRespuesta;
+    }
 }

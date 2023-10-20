@@ -8,4 +8,7 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.Propu
 
 public interface PropuestaTrabajoGradoTI_AFormateadorResultadosInt {
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> prepararRespuestaSatisfactoriaListarPropuestas(List<PropuestaTrabajoGradoTI_A> objPropuestas);
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaCrearPropuesta(PropuestaTrabajoGradoTI_A objPropuesta);
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaConsultarPropuesta(PropuestaTrabajoGradoTI_A objPropuesta);
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaFallida(String error);
 }

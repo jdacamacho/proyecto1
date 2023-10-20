@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
@@ -25,6 +27,27 @@ public class PropuestaTrabajoGradoTI_AFormateadorResultadosImpl implements Propu
                 new TypeToken<List<PropuestaTrabajoGradoTI_ADTORespuesta>>() {
                 }.getType());
         return listaObtenida;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaCrearPropuesta(
+            PropuestaTrabajoGradoTI_A objPropuesta) {
+        PropuestaTrabajoGradoTI_ADTORespuesta objPropuestaDTORespuesta = this.propuestaModelMapper.map(objPropuesta,
+        PropuestaTrabajoGradoTI_ADTORespuesta.class);
+        return objPropuestaDTORespuesta;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaConsultarPropuesta(
+            PropuestaTrabajoGradoTI_A objPropuesta) {
+        PropuestaTrabajoGradoTI_ADTORespuesta objPropuestaDTORespuesta = this.propuestaModelMapper.map(objPropuesta,
+        PropuestaTrabajoGradoTI_ADTORespuesta.class);
+        return objPropuestaDTORespuesta;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaFallida(String error) {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, error);
     }
     
 }

@@ -18,7 +18,6 @@ public class factoryUsuarioImpl implements factoryUsuarioInt {
 
         Login login = new Login(userNameLogin, contraseñaLogin);
         ArrayList<Rol> roles = new ArrayList<>();
-        /* creo el nuevo usuario*/
         return new Usuario(identificacionUsuario, nombreUsuario,apellidoUsuario,roles,emailUsuario,login,estado);
     }
     

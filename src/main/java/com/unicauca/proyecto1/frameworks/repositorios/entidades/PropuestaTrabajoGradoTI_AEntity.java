@@ -42,19 +42,19 @@ public class PropuestaTrabajoGradoTI_AEntity {
     private UsuarioEntity identificacionEstudiante2TIA;
 
     @Column(name = "titulopropuestatrabajogradotia")
-    private String tituloPropuestaTrabajoGradoTIA;
+    private String tituloPropuestaTrabajoGrado;
 
     @Column(name = "fechasubidopropuestatrabajogradotia")
-    private Date fechaSubidoPropuestaTrabajoGradoTIA;
+    private Date fechaSubidoPropuestaTrabajoGrado;
 
     @Column(name = "fecharespuestapropuestatrabajogradotia")
-    private Date fechaRespuestaPropuestaTrabajoGradoTIA;
+    private Date fechaRespuestaPropuestaTrabajoGrado;
 
     @Column(name = "estadopropuestatrabajogradotia")
-    private String estadoPropuestaTrabajoGradoTIA;
+    private String estadoPropuestaTrabajoGrado;
 
     @Column(name = "rutapropuestatrabajogradotia")
-    private String rutaPropuestaTrabajoGradoTIA;
+    private String rutaPropuestaTrabajoGrado;
 
     public PropuestaTrabajoGradoTI_AEntity(){
 

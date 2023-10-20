@@ -24,5 +24,21 @@ public class PropuestaTrabajoGradoTI_A {
     public PropuestaTrabajoGradoTI_A(){
 
     }
+
+    public PropuestaTrabajoGradoTI_A(Usuario identificacionDirectorTIA, Usuario identificacionEstudiante1TIA,
+            Usuario identificacionCodirectorTIA, Usuario identificacionEstudiante2TIA,
+            String tituloPropuestaTrabajoGrado, Date fechaSubidoPropuestaTrabajoGrado,
+            Date fechaRespuestaPropuestaTrabajoGrado, String estadoPropuestaTrabajoGrado,
+            String rutaPropuestaTrabajoGrado) {
+        this.identificacionDirectorTIA = identificacionDirectorTIA;
+        this.identificacionEstudiante1TIA = identificacionEstudiante1TIA;
+        this.identificacionCodirectorTIA = identificacionCodirectorTIA;
+        this.identificacionEstudiante2TIA = identificacionEstudiante2TIA;
+        this.tituloPropuestaTrabajoGrado = tituloPropuestaTrabajoGrado;
+        this.fechaSubidoPropuestaTrabajoGrado = fechaSubidoPropuestaTrabajoGrado;
+        this.fechaRespuestaPropuestaTrabajoGrado = fechaRespuestaPropuestaTrabajoGrado;
+        this.estadoPropuestaTrabajoGrado = estadoPropuestaTrabajoGrado;
+        this.rutaPropuestaTrabajoGrado = rutaPropuestaTrabajoGrado;
+    }
     
 }
