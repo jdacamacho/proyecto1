@@ -1,5 +1,6 @@
 package com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,26 +42,54 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion) {
-        Usuario director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
-        Usuario estudiante1 =this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
-        Usuario codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
-        Usuario estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
-        if( director == null &&  estudiante1 == null){
+        if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionDirectorTIA()) == false &&  this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante1TIA()) == false){
             return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario");
         }
         else{
-            if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
-                .crearTI_A(director, estudiante1, codirector, estudiante2,
-                objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                this.objPropuestaGateway.guardar(objPropuetaCreada);
-                return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-            }else{
-                return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
+            Usuario estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
+            Usuario director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
+            if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorTIA()) == true && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante2TIA()) == false){
+                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
+                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
+                    .crearTI_A(director, estudiante1, this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA()), null,
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
+                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
+                    this.objPropuestaGateway.guardar(objPropuetaCreada);
+                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
+                }else{
+                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
+                } 
             }
-            
-            
-           
+            else if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorTIA()) == false && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante2TIA()) == true){
+                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
+                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
+                    .crearTI_A(director, estudiante1,null,this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA()),
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
+                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
+                    this.objPropuestaGateway.guardar(objPropuetaCreada);
+                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
+                }else{
+                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
+                } 
+            }
+            else{
+                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
+                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
+                    .crearTI_A(director, estudiante1,null,null,
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
+                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
+                    this.objPropuestaGateway.guardar(objPropuetaCreada);
+                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
+                }else{
+                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
+                } 
+            }
         }
     }
 
@@ -72,12 +101,44 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }else{
             PropuestaTrabajoGradoTI_A objPropuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
             return this.objFormateadorResultados
-                        .prepararRespuestaSatisfactoriaConsultarPropuesta(objPropuesta);        }
+                        .prepararRespuestaSatisfactoriaConsultarPropuesta(objPropuesta);       
+        }
     }
 
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
-        System.out.println("AQUIII" + path.getFileName().toString());
         return Files.exists(path) && !Files.isDirectory(path);
     }
+
+    private String cargarArchivo(String filePath, String nombreEstudiantes) {
+        try {
+            Path sourcePath = Paths.get(filePath);
+            String baseFileName = nombreEstudiantes;
+            int counter = 1;
+            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A", baseFileName + ".docx");
+    
+            while (Files.exists(destinoPath)) {
+                baseFileName = nombreEstudiantes + "(" + counter + ")";
+                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A", baseFileName + ".docx");
+                counter++;
+            }
+    
+            Files.copy(sourcePath, destinoPath);
+            return destinoPath.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /*private boolean cargarArchivo(String filePath, String nombreEstudiantes) {
+        try {
+            Path sourcePath = Paths.get(filePath);
+            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A",nombreEstudiantes + ".docx");
+            Files.copy(sourcePath, destinoPath);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }*/
 }
