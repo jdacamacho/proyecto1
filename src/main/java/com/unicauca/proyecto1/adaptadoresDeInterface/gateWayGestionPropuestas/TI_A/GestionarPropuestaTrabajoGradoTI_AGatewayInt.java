@@ -8,4 +8,5 @@ public interface GestionarPropuestaTrabajoGradoTI_AGatewayInt {
     public List<PropuestaTrabajoGradoTI_A> listar();
     public PropuestaTrabajoGradoTI_A consultarPropuesta(int idPropuesta);
     public PropuestaTrabajoGradoTI_A guardar(PropuestaTrabajoGradoTI_A objPropuesta);
+    public PropuestaTrabajoGradoTI_A modificar(int id,PropuestaTrabajoGradoTI_A objPropuesta);
 }

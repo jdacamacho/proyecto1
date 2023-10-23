@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
 
 @Service
@@ -48,6 +49,14 @@ public class PropuestaTrabajoGradoTI_AFormateadorResultadosImpl implements Propu
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaFallida(String error) {
         throw new ResponseStatusException(HttpStatus.CONFLICT, error);
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaModificarPropuesta(
+            PropuestaTrabajoGradoTI_A objPropuestaModificado) {
+            PropuestaTrabajoGradoTI_ADTORespuesta objDTORespuesta = this.propuestaModelMapper.map(objPropuestaModificado,
+            PropuestaTrabajoGradoTI_ADTORespuesta.class);
+            return objDTORespuesta;
     }
     
 }

@@ -9,12 +9,18 @@ import java.util.Date;
 import java.util.List;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.GestionarRevisionComiteGatewayInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.RevisionComiteFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRevisionComite.factoryRevisionComiteInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 public class GestionarTI_ACU implements GestionarTI_ACUInt{
@@ -23,15 +29,24 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     private final GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway;
     private final factoryTI_AInt objFactoryPropuesta;
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
+    private final GestionarRevisionComiteGatewayInt objRevisionComiteGateway;
+    private final factoryRevisionComiteInt objFactoryRevsionComite;
+    private final RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision;
 
     public GestionarTI_ACU(PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
                         factoryTI_AInt objFactoryTI_A,
-                        GestionarUsuarioGatewayInt objUsuarioGateway){
+                        GestionarUsuarioGatewayInt objUsuarioGateway,
+                        GestionarRevisionComiteGatewayInt objRevisionComiteGateway,
+                        factoryRevisionComiteInt objFactoryRevisionComite,
+                        RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision ){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
         this.objUsuarioGateway = objUsuarioGateway;
+        this.objRevisionComiteGateway = objRevisionComiteGateway;
+        this.objFactoryRevsionComite = objFactoryRevisionComite;
+        this.objFormateadorResultadosRevision = objFormateadorResultadosRevision;
     }
 
     @Override
@@ -52,7 +67,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
                     PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
                     .crearTI_A(director, estudiante1, this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA()), null,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
                     String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
@@ -66,7 +81,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
                     PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
                     .crearTI_A(director, estudiante1,null,this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA()),
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
                     String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
@@ -80,7 +95,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
                     PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
                     .crearTI_A(director, estudiante1,null,null,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), null, "revision", objPeticion.getRutaPropuestaTrabajoGradoOrigen());
+                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
                     String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
@@ -102,6 +117,21 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             PropuestaTrabajoGradoTI_A objPropuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
             return this.objFormateadorResultados
                         .prepararRespuestaSatisfactoriaConsultarPropuesta(objPropuesta);       
+        }
+    }
+
+    @Override
+    public RevisionComiteDTORespuesta realizarRevision(RevisionComiteDTOPeticion objPeticion) {
+        if(this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGradoTIA()) == null && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionComitePrograma())){
+            return this.objFormateadorResultadosRevision.prepararRespuestaFallida("error, no existe la propuesta solicitada o el usuario");
+        }else{
+            PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGradoTIA());
+            Usuario comite = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionComitePrograma());
+            RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comite, propuesta, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date(), objPeticion.getRutaRespuestaPropuestaTrabajoGrado());
+            propuesta.getRevisionesComite().add(revisionCreada);
+            this.objRevisionComiteGateway.guardar(revisionCreada);
+            this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGradoTIA(), propuesta);
+            return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
         }
     }
 
@@ -130,15 +160,4 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return null;
         }
     }
-    /*private boolean cargarArchivo(String filePath, String nombreEstudiantes) {
-        try {
-            Path sourcePath = Paths.get(filePath);
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A",nombreEstudiantes + ".docx");
-            Files.copy(sourcePath, destinoPath);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
 }

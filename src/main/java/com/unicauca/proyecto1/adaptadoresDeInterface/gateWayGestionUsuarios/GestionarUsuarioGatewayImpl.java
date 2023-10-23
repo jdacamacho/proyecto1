@@ -29,7 +29,6 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
         UsuarioEntity objUsuarioEntity = this.usuarioModelMapper.map(objUsuario, UsuarioEntity.class);
         UsuarioEntity objUsuarioEntityRegistrado = this.objUsuarioRepository.save(objUsuarioEntity);
         Usuario objUsuarioRespuesta = this.usuarioModelMapper.map(objUsuarioEntityRegistrado, Usuario.class);
-        
         return objUsuarioRespuesta;
     }
 

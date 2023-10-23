@@ -1,6 +1,5 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.TI_A;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACUInt;
 
 @RestController
@@ -37,6 +38,11 @@ public class TI_ARestController {
     @PostMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(@RequestBody PropuestaTrabajoGradoTI_ADTOPeticion objPeticion){
         return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion);
+    }
+    
+    @PostMapping("/propuestasRevisionComite")
+    public RevisionComiteDTORespuesta realizarRevision(@RequestBody RevisionComiteDTOPeticion objPeticion){
+        return this.gestionarPropuestaTI_ACU.realizarRevision(objPeticion);
     }
 
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 @Repository
 public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
@@ -36,6 +37,16 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
         System.out.println("Invocando a guardar propuesta TI_A");
         PropuestaTrabajoGradoTI_AEntity objPropuestaR = null;
         objPropuestaR = this.repositorioFormatoTI_A.save(propuestaTI_A);
+        return objPropuestaR;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_AEntity update(Integer id, PropuestaTrabajoGradoTI_AEntity propuestaTI_A) {
+        System.out.println("Invocando a actualizar propuesta");
+        PropuestaTrabajoGradoTI_AEntity objPropuestaR = null;
+        if(this.repositorioFormatoTI_A.findById(id) != null){
+            objPropuestaR = this.repositorioFormatoTI_A.save(propuestaTI_A);
+        }
         return objPropuestaR;
     }
     

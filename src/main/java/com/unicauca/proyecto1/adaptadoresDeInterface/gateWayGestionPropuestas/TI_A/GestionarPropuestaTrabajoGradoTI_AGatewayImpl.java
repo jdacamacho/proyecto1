@@ -45,4 +45,12 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
         PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
         return objPropuestaRespuesta;
     }
+
+    @Override
+    public PropuestaTrabajoGradoTI_A modificar(int id, PropuestaTrabajoGradoTI_A objPropuesta) {
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntity = this.propuestaModelMapper.map(objPropuesta, PropuestaTrabajoGradoTI_AEntity.class);
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntityRegistrado = this.objTI_ARepositorio.update(id,objPropuestaEntity);
+        PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
+        return objPropuestaRespuesta;
+    }
 }

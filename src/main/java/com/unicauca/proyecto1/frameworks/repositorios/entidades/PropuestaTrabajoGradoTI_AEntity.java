@@ -1,14 +1,17 @@
 package com.unicauca.proyecto1.frameworks.repositorios.entidades;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,14 +50,11 @@ public class PropuestaTrabajoGradoTI_AEntity {
     @Column(name = "fechasubidopropuestatrabajogradotia")
     private Date fechaSubidoPropuestaTrabajoGrado;
 
-    @Column(name = "fecharespuestapropuestatrabajogradotia")
-    private Date fechaRespuestaPropuestaTrabajoGrado;
-
-    @Column(name = "estadopropuestatrabajogradotia")
-    private String estadoPropuestaTrabajoGrado;
-
     @Column(name = "rutapropuestatrabajogradotia")
     private String rutaPropuestaTrabajoGrado;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idPropuestaTrabajoGradoTIA")
+    private List<RevisionComiteEntity> revisionesComite;
 
     public PropuestaTrabajoGradoTI_AEntity(){
 
