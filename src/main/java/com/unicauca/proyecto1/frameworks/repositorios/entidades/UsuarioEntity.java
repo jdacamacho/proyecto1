@@ -49,7 +49,6 @@ public class UsuarioEntity {
 
     @Column(name = "estadousuario")
     private int estadoUsuario;
-    
 
     public UsuarioEntity(){
         this.roles = new ArrayList<>();

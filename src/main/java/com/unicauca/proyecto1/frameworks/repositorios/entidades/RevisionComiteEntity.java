@@ -2,6 +2,7 @@ package com.unicauca.proyecto1.frameworks.repositorios.entidades;
 
 import java.util.Date;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +45,7 @@ public class RevisionComiteEntity {
 
     @Column(name = "rutarespuestapropuestatrabajogrado")
     private String rutaRespuestaPropuestaTrabajoGrado;
+
 
     public RevisionComiteEntity(){
 

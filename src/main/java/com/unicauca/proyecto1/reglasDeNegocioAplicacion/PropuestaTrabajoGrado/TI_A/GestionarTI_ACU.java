@@ -110,13 +110,13 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(int idPropuesta) {
-        if(this.objPropuestaGateway.consultarPropuesta(idPropuesta) == null){
-            return this.objFormateadorResultados
-            .prepararRespuestaFallida("Error, no se encontro la propuesta TI_A buscada");
-        }else{
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
             PropuestaTrabajoGradoTI_A objPropuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
             return this.objFormateadorResultados
-                        .prepararRespuestaSatisfactoriaConsultarPropuesta(objPropuesta);       
+                        .prepararRespuestaSatisfactoriaConsultarPropuesta(objPropuesta); 
+        }else{
+            return this.objFormateadorResultados
+            .prepararRespuestaFallida("Error, no se encontro la propuesta TI_A buscada");
         }
     }
 
@@ -128,9 +128,13 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGradoTIA());
             Usuario comite = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionComitePrograma());
             RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comite, propuesta, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date(), objPeticion.getRutaRespuestaPropuestaTrabajoGrado());
-            propuesta.getRevisionesComite().add(revisionCreada);
+            System.out.println("revision:" + revisionCreada.getIdentificacionComitePrograma().getNombresUsuario());
+            System.out.println("reviison:" + revisionCreada.getIdPropuestaTrabajoGradoTIA().getTituloPropuestaTrabajoGrado());
+            propuesta.getRevisioncomiteti_a().add(revisionCreada);
+            System.out.println("revisiones:" + propuesta.getRevisioncomiteti_a() .get(0).getComentariosRevisionComite());
             this.objRevisionComiteGateway.guardar(revisionCreada);
             this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGradoTIA(), propuesta);
+            
             return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
         }
     }

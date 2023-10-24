@@ -13,8 +13,8 @@ public class factoryTI_AImpl implements factoryTI_AInt{
     @Override
     public PropuestaTrabajoGradoTI_A crearTI_A(Usuario director, Usuario estudiante1, Usuario codirector,
             Usuario estudiante2, String titulo, Date subido, String rutaPropuesta) {
-        List<RevisionComite> revisionesComite = new ArrayList<>();
-        PropuestaTrabajoGradoTI_A propuesta = new PropuestaTrabajoGradoTI_A(director, estudiante1,codirector, estudiante2, titulo, subido,rutaPropuesta,revisionesComite);
+        ArrayList<RevisionComite> revisioncomiteti_a = new ArrayList<>();
+        PropuestaTrabajoGradoTI_A propuesta = new PropuestaTrabajoGradoTI_A(director, estudiante1,codirector, estudiante2, titulo, subido,rutaPropuesta,revisioncomiteti_a);
         return propuesta;
     }
     

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 @Repository
 public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
@@ -15,6 +14,10 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
     @Autowired
     FormatoTI_ARepositoryJPA repositorioFormatoTI_A;
 
+    public FormatoTI_ARepositoryImpl(){
+
+    }
+    
     @Override
     public List<PropuestaTrabajoGradoTI_AEntity> findAll() {
         System.out.println("Invocando a listar propuestas ");
@@ -48,6 +51,12 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
             objPropuestaR = this.repositorioFormatoTI_A.save(propuestaTI_A);
         }
         return objPropuestaR;
+    }
+
+    @Override
+    public boolean existePropuesta(int idPropuesta) {
+        System.out.println("Invocando a buscar si existe un propusta");
+        return this.repositorioFormatoTI_A.findById(idPropuesta).isPresent();
     }
     
 }

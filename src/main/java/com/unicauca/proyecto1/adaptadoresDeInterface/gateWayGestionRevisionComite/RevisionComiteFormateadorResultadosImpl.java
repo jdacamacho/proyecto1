@@ -21,6 +21,7 @@ public class RevisionComiteFormateadorResultadosImpl implements RevisionComiteFo
     public RevisionComiteDTORespuesta prepararRespuestaSatisfactoriaCrearRevision(RevisionComite objRevisionCreado) {
         RevisionComiteDTORespuesta objRevisionDTORespuesta = this.revisionComiteMapeador.map(objRevisionCreado,
         RevisionComiteDTORespuesta.class);
+        System.out.println(objRevisionDTORespuesta.getIdentificacionComitePrograma().getRoles().get(0));
         return objRevisionDTORespuesta;
     }
 

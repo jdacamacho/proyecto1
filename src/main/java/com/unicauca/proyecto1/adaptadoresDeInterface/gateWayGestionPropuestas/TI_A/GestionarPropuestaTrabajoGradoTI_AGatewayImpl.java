@@ -7,10 +7,9 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.formatoTI_ARepositorio.FormatoTI_ARepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
+
 
 @Service
 public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarPropuestaTrabajoGradoTI_AGatewayInt {
@@ -52,5 +51,10 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
         PropuestaTrabajoGradoTI_AEntity objPropuestaEntityRegistrado = this.objTI_ARepositorio.update(id,objPropuestaEntity);
         PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
         return objPropuestaRespuesta;
+    }
+
+    @Override
+    public boolean existePropuesta(int idPropuesta) {
+        return this.objTI_ARepositorio.existePropuesta(idPropuesta);
     }
 }

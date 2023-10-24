@@ -1,5 +1,6 @@
 package com.unicauca.proyecto1.frameworks.repositorios.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,10 +54,10 @@ public class PropuestaTrabajoGradoTI_AEntity {
     @Column(name = "rutapropuestatrabajogradotia")
     private String rutaPropuestaTrabajoGrado;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idPropuestaTrabajoGradoTIA")
-    private List<RevisionComiteEntity> revisionesComite;
+    @OneToMany(fetch = FetchType.EAGER , mappedBy = "idPropuestaTrabajoGradoTIA")
+    private List<RevisionComiteEntity> revisioncomiteti_a;
 
     public PropuestaTrabajoGradoTI_AEntity(){
-
+        this.revisioncomiteti_a = new ArrayList<RevisionComiteEntity>();
     }
 }
