@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,17 +62,17 @@ public class TI_ARestController {
         return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(objPeticion);
     }
 
-    /*@GetMapping("/propuestasSubidas/{idPropuesta}")
-    public ResponseEntity<Resource> descargarPlantilla(@PathVariable int idPropuesta) throws IOException {       
+    @GetMapping("/propuestasSubidas/{idPropuesta}")
+    public ResponseEntity<Resource> descargarPropuesta(@PathVariable int idPropuesta) throws IOException {       
         if(this.gestionarPropuestaTI_ACU.existePropuesta(idPropuesta)){
-            
-            String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI-A.docx"; 
+            PropuestaTrabajoGradoTI_ADTORespuesta propuesta =  this.gestionarPropuestaTI_ACU.consultarPropuesta(idPropuesta);
+            String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
 
             Path path = Paths.get(rutaCompleta);
             Resource resource = new UrlResource(path.toUri());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI-A.docx"); 
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI-A_Subido.docx"); 
 
             MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
@@ -79,7 +81,52 @@ public class TI_ARestController {
                 .contentLength(resource.contentLength())
                 .contentType(mediaType)
                 .body(resource);
-            }
+        }else{
+            byte[] emptyContent = new byte[0];
+            Resource emptyResource = new ByteArrayResource(emptyContent);
             
-    }*/
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=empty.docx");
+
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .headers(headers)
+                .body(emptyResource);
+        }
+    }
+
+    @GetMapping("/propuestasAprobadas/{idPropuesta}")
+    public ResponseEntity<Resource> descargarPropuestaAprobada(@PathVariable int idPropuesta) throws IOException {       
+        if(this.gestionarPropuestaTI_ACU.existePropuesta(idPropuesta)){
+            PropuestaTrabajoGradoTI_ADTORespuesta propuesta =  this.gestionarPropuestaTI_ACU.consultarPropuesta(idPropuesta);
+            String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
+
+            Path path = Paths.get(rutaCompleta);
+            Resource resource = new UrlResource(path.toUri());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI-A_Aprobado.docx"); 
+
+            MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+            return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .contentType(mediaType)
+                .body(resource);
+        }else{
+            byte[] emptyContent = new byte[0];
+            Resource emptyResource = new ByteArrayResource(emptyContent);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=empty.docx");
+
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .headers(headers)
+                .body(emptyResource);
+        }
+    }
+
+
 }   
