@@ -1,14 +1,16 @@
 package com.unicauca.proyecto1.frameworks.repositorios.entidades;
 
 import java.util.Date;
-
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,10 +32,6 @@ public class RevisionComiteEntity {
     @JoinColumn(name = "identificacioncomiteprograma")
     private UsuarioEntity identificacionComitePrograma;
 
-    @ManyToOne
-    @JoinColumn(name = "idpropuestatrabajogradotia",nullable = false)
-    private PropuestaTrabajoGradoTI_AEntity idPropuestaTrabajoGradoTIA;
-
     @Column(name = "comentariosrevisioncomite")
     private String comentariosRevisionComite;
 
@@ -43,9 +41,8 @@ public class RevisionComiteEntity {
     @Column(name = "fecharespuesta")
     private Date fechaRespuesta;
 
-    @Column(name = "rutarespuestapropuestatrabajogrado")
-    private String rutaRespuestaPropuestaTrabajoGrado;
-
+    //@ManyToMany(mappedBy = "revisiones", fetch = FetchType.LAZY)
+    //private List<PropuestaTrabajoGradoTI_AEntity> propuestas;
 
     public RevisionComiteEntity(){
 

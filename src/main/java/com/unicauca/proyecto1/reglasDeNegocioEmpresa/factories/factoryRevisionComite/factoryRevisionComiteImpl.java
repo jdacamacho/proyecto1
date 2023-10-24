@@ -10,8 +10,8 @@ public class factoryRevisionComiteImpl implements factoryRevisionComiteInt{
 
     @Override
     public RevisionComite crearRevisionComite(Usuario identificacionComitePrograma,
-            PropuestaTrabajoGradoTI_A idPropuestaTrabajoGradoTI_A, String comentariosRevisionComite,
-            int estadoAvalRevisionComite,Date fechaRespuesta,String rutaRespuestaPropuestaTrabajoGrado) {
-       return new RevisionComite(identificacionComitePrograma, idPropuestaTrabajoGradoTI_A, comentariosRevisionComite, estadoAvalRevisionComite,fechaRespuesta,rutaRespuestaPropuestaTrabajoGrado);
+            String comentariosRevisionComite,
+            int estadoAvalRevisionComite,Date fechaRespuesta) {
+       return new RevisionComite(identificacionComitePrograma, comentariosRevisionComite, estadoAvalRevisionComite,fechaRespuesta);
     }   
 }

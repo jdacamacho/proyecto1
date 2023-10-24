@@ -7,10 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class RevisionComiteDTOPeticion {
     private int identificacionComitePrograma;
-    private int idPropuestaTrabajoGradoTIA;
+    private int idPropuestaTrabajoGrado;
     private String comentariosRevisionComite;
-    private int estadoAvalRevisionComite;
-    private String rutaRespuestaPropuestaTrabajoGrado;
+    private int estadoAvalRevisionComite;    
 
     public RevisionComiteDTOPeticion(){
         

@@ -122,19 +122,14 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
     @Override
     public RevisionComiteDTORespuesta realizarRevision(RevisionComiteDTOPeticion objPeticion) {
-        if(this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGradoTIA()) == null && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionComitePrograma())){
-            return this.objFormateadorResultadosRevision.prepararRespuestaFallida("error, no existe la propuesta solicitada o el usuario");
+        if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionComitePrograma()) == false && this.objPropuestaGateway.existePropuesta(objPeticion.getIdPropuestaTrabajoGrado()) == false){
+            return this.objFormateadorResultadosRevision.prepararRespuestaFallida("no existe el usuario o la propuesta");
         }else{
-            PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGradoTIA());
-            Usuario comite = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionComitePrograma());
-            RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comite, propuesta, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date(), objPeticion.getRutaRespuestaPropuestaTrabajoGrado());
-            System.out.println("revision:" + revisionCreada.getIdentificacionComitePrograma().getNombresUsuario());
-            System.out.println("reviison:" + revisionCreada.getIdPropuestaTrabajoGradoTIA().getTituloPropuestaTrabajoGrado());
-            propuesta.getRevisioncomiteti_a().add(revisionCreada);
-            System.out.println("revisiones:" + propuesta.getRevisioncomiteti_a() .get(0).getComentariosRevisionComite());
-            this.objRevisionComiteGateway.guardar(revisionCreada);
-            this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGradoTIA(), propuesta);
-            
+            Usuario comitePrograma = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionComitePrograma());
+            PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGrado());
+            RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comitePrograma, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date());
+            propuesta.getRevisiones().add(revisionCreada);
+            this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGrado(), propuesta);
             return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
         }
     }
