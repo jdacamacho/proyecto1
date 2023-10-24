@@ -180,6 +180,14 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }
     }
 
+    @Override
+    public boolean existePropuesta(int idPropuesta) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+            return true;
+        }
+        return false;
+    }
+
     private String cargarArchivoAprobado(String filePath, String nombreEstudiantes) {
         try {
             Path sourcePath = Paths.get(filePath);
@@ -200,4 +208,5 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return null;
         }
     }
+
 }
