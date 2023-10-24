@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.RevisionComiteEntity;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 

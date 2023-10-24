@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
@@ -69,7 +70,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                     .crearTI_A(director, estudiante1, this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA()), null,
                     objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
                     this.objPropuestaGateway.guardar(objPropuetaCreada);
                     return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
@@ -83,7 +84,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                     .crearTI_A(director, estudiante1,null,this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA()),
                     objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
                     this.objPropuestaGateway.guardar(objPropuetaCreada);
                     return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
@@ -97,7 +98,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                     .crearTI_A(director, estudiante1,null,null,
                     objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
                     String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivo(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
+                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
                     objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
                     this.objPropuestaGateway.guardar(objPropuetaCreada);
                     return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
@@ -134,21 +135,61 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }
     }
 
+    @Override
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(RutaAprobadaADTOPeticion rutaAprobado) {
+        if(this.objPropuestaGateway.existePropuesta(rutaAprobado.getIdPropuestaTrabajoGrado())){
+            if(fileExists(rutaAprobado.getRutaRespuesta())){
+                PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(rutaAprobado.getIdPropuestaTrabajoGrado());
+                String rutaDestino = cargarArchivoAprobado(rutaAprobado.getRutaRespuesta(),propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin());
+                propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
+                this.objPropuestaGateway.modificar(rutaAprobado.getIdPropuestaTrabajoGrado(), propuesta);
+                return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
+            }else{
+                return this.objFormateadorResultados.
+                prepararRespuestaFallida("no existe el archivo");
+            }
+        }else{
+            return this.objFormateadorResultados.
+                prepararRespuestaFallida("no existe la propuesta buscada");
+        }
+    }
+
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
         return Files.exists(path) && !Files.isDirectory(path);
     }
 
-    private String cargarArchivo(String filePath, String nombreEstudiantes) {
+    private String cargarArchivoRecibidos(String filePath, String nombreEstudiantes) {
         try {
             Path sourcePath = Paths.get(filePath);
             String baseFileName = nombreEstudiantes;
             int counter = 1;
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A", baseFileName + ".docx");
+            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos", baseFileName + ".docx");
     
             while (Files.exists(destinoPath)) {
                 baseFileName = nombreEstudiantes + "(" + counter + ")";
-                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A", baseFileName + ".docx");
+                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos", baseFileName + ".docx");
+                counter++;
+            }
+    
+            Files.copy(sourcePath, destinoPath);
+            return destinoPath.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String cargarArchivoAprobado(String filePath, String nombreEstudiantes) {
+        try {
+            Path sourcePath = Paths.get(filePath);
+            String baseFileName = nombreEstudiantes + "aprobado";
+            int counter = 1;
+            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados", baseFileName + ".docx");
+    
+            while (Files.exists(destinoPath)) {
+                baseFileName = nombreEstudiantes + "(" + counter + ")";
+                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados", baseFileName + ".docx");
                 counter++;
             }
     

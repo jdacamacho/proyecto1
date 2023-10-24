@@ -1,10 +1,7 @@
 package com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 import lombok.AllArgsConstructor;
@@ -30,5 +27,6 @@ public class RevisionComite {
         this.comentariosRevisionComite = comentariosRevisionComite;
         this.estadoAvalRevisionComite = estadoAvalRevisionComite;
         this.fechaRespuesta = fechaRespuesta;
+
     }
 }
