@@ -11,6 +11,8 @@ public interface GestionarUsuariosCUInt {
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion);
     public UsuarioDTORespuesta modificarUsuario(int identificacionUsuario,UsuarioDTOPeticion objDTOPeticion);
     public List<UsuarioDTORespuesta> listarUsuarios();
+    public List<UsuarioDTORespuesta> listarUsuarios(int id, String nombreUsuario, String loginUsuario, int state);
+    public List<UsuarioDTORespuesta> listarUsuariosPorRol(String rol);
     public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario);
     public UsuarioDTORespuesta agregarRol(int identificacionUsuario,Rol rol);
     public UsuarioDTORespuesta eliminarRol(int identificacionUsuario,Rol rol);

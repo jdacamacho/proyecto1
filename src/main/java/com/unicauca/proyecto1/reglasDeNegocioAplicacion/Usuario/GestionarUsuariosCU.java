@@ -83,6 +83,18 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
         return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
     }
 
+    @Override
+    public List<UsuarioDTORespuesta> listarUsuariosPorRol(String rol) {
+        List<Usuario> listaObtenida = objGestionarUsuarioGateway.listarPorRol(rol);
+        return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
+    }
+
+    @Override
+    public List<UsuarioDTORespuesta> listarUsuarios(int id, String nombreUsuario, String loginUsuario, int state) {
+        List<Usuario> listaObtenida = objGestionarUsuarioGateway.listar(id, nombreUsuario, loginUsuario, state);
+        return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
+    }
+
 
     @Override
     public UsuarioDTORespuesta consultarUsuario(int identificacionUsuario) {

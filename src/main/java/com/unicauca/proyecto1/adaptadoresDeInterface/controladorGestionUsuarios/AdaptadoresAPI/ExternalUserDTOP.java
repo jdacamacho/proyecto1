@@ -1,8 +1,9 @@
-package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion;
+package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.AdaptadoresAPI;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
@@ -27,15 +28,14 @@ public class ExternalUserDTOP {
     }
 
     public UsuarioDTOPeticion adaptUserEntries(){
+        
+
         UsuarioDTOPeticion user = new UsuarioDTOPeticion();
 
         Login login = new Login();
         login.setUserNameLogin(this.username);
         login.setContraseñaLogin(this.password);
-        System.out.println("******************************************************");
-        System.out.println("******************************************************");
-        System.out.println("******************************************************");
-        System.out.println(this.roles);
+        
         List<Rol> roles = new ArrayList<Rol>();
         for (ExternalRoleDTOP role : this.roles) {
             Rol rol = new Rol();

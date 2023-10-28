@@ -8,6 +8,8 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 public interface UsuarioRepositoryInt {
 
     public List<UsuarioEntity> findAll();
+    public List<UsuarioEntity> findByRole(String rol);
+    public List<UsuarioEntity> buscarUsuariosPorFiltros(int id, String nombreUsuario, String loginUsuario, Integer userState);
     public UsuarioEntity findById(Integer id);
     public UsuarioEntity save(UsuarioEntity objUsuario);
     public UsuarioEntity update(Integer id, UsuarioEntity objUsuario);
