@@ -49,6 +49,21 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     }
 
     @Override
+    public List<Usuario> listarPorRol(String rol) {
+        List<UsuarioEntity> lista = this.objUsuarioRepository.findByRole(rol);
+        List<Usuario> listaObtenida = this.usuarioModelMapper.map(lista, new TypeToken<List<Usuario>>() {
+        }.getType());
+        return listaObtenida;
+    }
+
+    @Override
+    public List<Usuario> listar(int id, String nombreUsuario, String loginUsuario, int state) {
+        List<UsuarioEntity> lista = this.objUsuarioRepository.buscarUsuariosPorFiltros(id, nombreUsuario, loginUsuario, state);
+        List<Usuario> listaObtenida = this.usuarioModelMapper.map(lista, new TypeToken<List<Usuario>>() {}.getType());
+        return listaObtenida;
+    }
+
+    @Override
     public boolean existeUsuario(int identificacionUsuario) {
         return this.objUsuarioRepository.existeUsuario(identificacionUsuario);
     }

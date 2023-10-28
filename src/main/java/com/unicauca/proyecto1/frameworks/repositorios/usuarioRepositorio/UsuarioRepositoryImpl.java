@@ -68,4 +68,30 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         System.out.println(usuario.getNombresUsuario());
         return usuario;
     }
+
+    @Override
+    public List<UsuarioEntity> buscarUsuariosPorFiltros(int id, String nombreUsuario, String loginUsuario,
+            Integer userState) {
+        System.out.println("Invocando a filtrar usuarios");
+        System.out.println("id:" + id);
+        System.out.println("nombreUsuario:" + nombreUsuario);
+        System.out.println("loginUsuario:" + loginUsuario);
+        System.out.println("userState:" + userState);
+
+        Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findByFilters(userState, loginUsuario, loginUsuario);
+        List<UsuarioEntity> lista = new ArrayList<>();
+        iterable.forEach(lista::add);
+        return lista;
+    }
+
+    @Override
+    public List<UsuarioEntity> findByRole(String rol) {
+        System.out.println("Invocando a filtrar usuarios POR ROL");
+        System.out.println("ROL:" + rol);
+
+        Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findByUserRoles(rol);
+        List<UsuarioEntity> lista = new ArrayList<>();
+        iterable.forEach(lista::add);
+        return lista;
+    }
 }

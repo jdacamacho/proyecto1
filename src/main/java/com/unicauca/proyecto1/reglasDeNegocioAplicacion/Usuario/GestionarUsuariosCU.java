@@ -29,6 +29,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
 
     @Override
     public UsuarioDTORespuesta crearUsuario(UsuarioDTOPeticion objDTOPeticion) {
+
         if (this.objGestionarUsuarioGateway.existeUsuario(objDTOPeticion.getIdentificacionUsuario())) {
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, se encuentra en el sistema un usuario con la identificacion ingresada");
@@ -40,6 +41,7 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
                     contraseñaEncriptada,1);
             objUsuario.setRoles(objDTOPeticion.getRoles());
+
 
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados
@@ -78,6 +80,18 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
     @Override
     public List<UsuarioDTORespuesta> listarUsuarios() {
         List<Usuario> listaObtenida = objGestionarUsuarioGateway.listar();
+        return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
+    }
+
+    @Override
+    public List<UsuarioDTORespuesta> listarUsuariosPorRol(String rol) {
+        List<Usuario> listaObtenida = objGestionarUsuarioGateway.listarPorRol(rol);
+        return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
+    }
+
+    @Override
+    public List<UsuarioDTORespuesta> listarUsuarios(int id, String nombreUsuario, String loginUsuario, int state) {
+        List<Usuario> listaObtenida = objGestionarUsuarioGateway.listar(id, nombreUsuario, loginUsuario, state);
         return this.objUsuarioFormateadorResultados.prepararRespuestaSatisfactoriaListarUsuarios(listaObtenida);
     }
 

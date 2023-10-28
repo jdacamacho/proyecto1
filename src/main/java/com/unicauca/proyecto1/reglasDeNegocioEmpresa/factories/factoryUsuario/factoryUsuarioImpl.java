@@ -14,11 +14,14 @@ public class factoryUsuarioImpl implements factoryUsuarioInt {
     public Usuario crearUsuario(int identificacionUsuario, String nombreUsuario,
                                 String apellidoUsuario,
                                 String emailUsuario, String userNameLogin,
-                                String contraseñaLogin,int estado) {
+                                String contraseñaLogin,int estados) {
 
         Login login = new Login(userNameLogin, contraseñaLogin);
         ArrayList<Rol> roles = new ArrayList<>();
-        return new Usuario(identificacionUsuario, nombreUsuario,apellidoUsuario,roles,emailUsuario,login,estado);
+
+        /* creo el nuevo usuario*/
+        Usuario nuevosuario = new Usuario(identificacionUsuario, nombreUsuario,apellidoUsuario,roles,emailUsuario,login,estados);
+        return nuevosuario;
     }
     
 }
