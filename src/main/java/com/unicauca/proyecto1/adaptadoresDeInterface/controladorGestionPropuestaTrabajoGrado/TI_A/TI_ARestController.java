@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
@@ -40,6 +41,11 @@ public class TI_ARestController {
     @GetMapping("/propuestas")
     public Iterable<PropuestaTrabajoGradoTI_ADTORespuesta> listar(){
         return this.gestionarPropuestaTI_ACU.listarPropuestas();
+    }
+
+    @GetMapping("/propuestasDirector")
+    public Iterable<PropuestaTrabajoGradoTI_ADTORespuesta> listarDirector(@RequestParam(name = "idDirector",required = false) Integer idDirector){
+        return this.gestionarPropuestaTI_ACU.listarPropuestasDirector(idDirector);
     }
 
     @GetMapping("/propuestas/{id}")

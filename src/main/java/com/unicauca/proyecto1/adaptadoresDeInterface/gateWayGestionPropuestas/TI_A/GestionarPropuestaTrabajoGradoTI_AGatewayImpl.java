@@ -7,8 +7,10 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.formatoTI_ARepositorio.FormatoTI_ARepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 
 @Service
@@ -56,5 +58,14 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
     @Override
     public boolean existePropuesta(int idPropuesta) {
         return this.objTI_ARepositorio.existePropuesta(idPropuesta);
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoTI_A> listarPorDirector(Usuario idDirector) {
+        UsuarioEntity objUsuarioEntity = this.propuestaModelMapper.map(idDirector, UsuarioEntity.class);
+        List<PropuestaTrabajoGradoTI_AEntity> lista = this.objTI_ARepositorio.findByIdDirector(objUsuarioEntity);
+        List<PropuestaTrabajoGradoTI_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoTI_A>>() {
+        }.getType());
+        return listaObtenida;
     }
 }

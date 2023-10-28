@@ -154,6 +154,16 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }
     }
 
+    @Override
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector) {
+        if(this.objUsuarioGateway.existeUsuario(idDirector)){
+            Usuario director = this.objUsuarioGateway.consultarUsuario(idDirector);
+            List<PropuestaTrabajoGradoTI_A> listaObtenida = objPropuestaGateway.listarPorDirector(director);
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaListarPropuestas(listaObtenida);
+        }
+        return null;
+    }
+
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
         return Files.exists(path) && !Files.isDirectory(path);
@@ -208,5 +218,4 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return null;
         }
     }
-
 }

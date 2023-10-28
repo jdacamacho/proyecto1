@@ -11,5 +11,4 @@ public interface PropuestaTrabajoGradoTI_AFormateadorResultadosInt {
     public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaConsultarPropuesta(PropuestaTrabajoGradoTI_A objPropuesta);
     public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaFallida(String error);
     public PropuestaTrabajoGradoTI_ADTORespuesta prepararRespuestaSatisfactoriaModificarPropuesta(PropuestaTrabajoGradoTI_A objPropuestaModificado);
-            
 }

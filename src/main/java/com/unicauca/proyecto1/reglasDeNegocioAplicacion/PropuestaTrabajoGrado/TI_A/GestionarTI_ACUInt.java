@@ -15,4 +15,5 @@ public interface GestionarTI_ACUInt {
     public RevisionComiteDTORespuesta realizarRevision (RevisionComiteDTOPeticion objPeticion);
     public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(RutaAprobadaADTOPeticion rutaAprobado);
     public boolean existePropuesta(int idPropuesta);
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector);
 }   
