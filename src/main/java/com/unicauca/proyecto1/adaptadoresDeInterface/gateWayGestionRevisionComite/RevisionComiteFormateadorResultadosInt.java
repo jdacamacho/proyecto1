@@ -1,0 +1,9 @@
+package com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite;
+
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
+
+public interface RevisionComiteFormateadorResultadosInt {
+    public RevisionComiteDTORespuesta prepararRespuestaSatisfactoriaCrearRevision(RevisionComite objRevisionCreado);
+    public RevisionComiteDTORespuesta prepararRespuestaFallida(String error);
+}

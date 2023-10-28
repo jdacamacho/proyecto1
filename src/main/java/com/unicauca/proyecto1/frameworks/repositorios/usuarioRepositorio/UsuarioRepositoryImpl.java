@@ -41,8 +41,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         System.out.println("Invocando a guardar usuario");
         UsuarioEntity objUsuarioR = null;
         objUsuarioR = this.repositorioUsuarios.save(objUsuario);
-
-
         return objUsuarioR;
     }
 

@@ -6,9 +6,12 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.PropuestaTrabajoGradoTI_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.formatoTI_ARepositorio.FormatoTI_ARepositoryInt;
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
+
 
 @Service
 public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarPropuestaTrabajoGradoTI_AGatewayInt {
@@ -42,5 +45,27 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
         PropuestaTrabajoGradoTI_AEntity objPropuestaEntityRegistrado = this.objTI_ARepositorio.save(PropuestaTrabajoGradoTI_AEntity);
         PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
         return objPropuestaRespuesta;
+    }
+
+    @Override
+    public PropuestaTrabajoGradoTI_A modificar(int id, PropuestaTrabajoGradoTI_A objPropuesta) {
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntity = this.propuestaModelMapper.map(objPropuesta, PropuestaTrabajoGradoTI_AEntity.class);
+        PropuestaTrabajoGradoTI_AEntity objPropuestaEntityRegistrado = this.objTI_ARepositorio.update(id,objPropuestaEntity);
+        PropuestaTrabajoGradoTI_A objPropuestaRespuesta = this.propuestaModelMapper.map(objPropuestaEntityRegistrado, PropuestaTrabajoGradoTI_A.class);
+        return objPropuestaRespuesta;
+    }
+
+    @Override
+    public boolean existePropuesta(int idPropuesta) {
+        return this.objTI_ARepositorio.existePropuesta(idPropuesta);
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoTI_A> listarPorDirector(Usuario idDirector) {
+        UsuarioEntity objUsuarioEntity = this.propuestaModelMapper.map(idDirector, UsuarioEntity.class);
+        List<PropuestaTrabajoGradoTI_AEntity> lista = this.objTI_ARepositorio.findByIdDirector(objUsuarioEntity);
+        List<PropuestaTrabajoGradoTI_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoTI_A>>() {
+        }.getType());
+        return listaObtenida;
     }
 }
