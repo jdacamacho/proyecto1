@@ -2,7 +2,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.T
 
 import java.util.List;
 
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 public interface GestionarPropuestaTrabajoGradoTI_AGatewayInt {

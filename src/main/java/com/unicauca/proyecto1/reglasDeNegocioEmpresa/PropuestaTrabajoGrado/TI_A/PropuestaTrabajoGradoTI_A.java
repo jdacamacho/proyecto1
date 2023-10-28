@@ -1,4 +1,4 @@
-package com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado;
+package com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A;
 
 import java.util.Date;
 import java.util.List;

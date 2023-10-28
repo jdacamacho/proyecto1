@@ -1,8 +1,10 @@
-package com.unicauca.proyecto1.frameworks.repositorios.entidades;
+package com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -64,7 +66,7 @@ public class PropuestaTrabajoGradoTI_AEntity {
         name="historialti_a",joinColumns = @JoinColumn(name="idpropuestatrabajogradotia", referencedColumnName="idpropuestatrabajogradotia"),
         inverseJoinColumns = @JoinColumn(name="idrevisioncomite", referencedColumnName="idrevisioncomite")
     )
-    private List<RevisionComiteEntity> revisiones;
+    private List<RevisionComiteTI_AEntity> revisiones;
 
     public PropuestaTrabajoGradoTI_AEntity(){
         this.revisiones = new ArrayList<>();

@@ -3,7 +3,7 @@ package com.unicauca.proyecto1.frameworks.repositorios.respuestaComiteRepositori
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.RevisionComiteEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.RevisionComiteTI_AEntity;
 
 @Repository
 public class RespuestaComiteRepositoryImpl implements RespuestaComiteRepositoryInt{
@@ -16,9 +16,9 @@ public class RespuestaComiteRepositoryImpl implements RespuestaComiteRepositoryI
     }
 
     @Override
-    public RevisionComiteEntity save(RevisionComiteEntity objRevision) {
+    public RevisionComiteTI_AEntity save(RevisionComiteTI_AEntity objRevision) {
         System.out.println("invocando a guardar revision comite");
-        RevisionComiteEntity objRevisionR = null;
+        RevisionComiteTI_AEntity objRevisionR = null;
         objRevisionR = respuestaComiteRepositorio.save(objRevision);
         return objRevisionR;
     }

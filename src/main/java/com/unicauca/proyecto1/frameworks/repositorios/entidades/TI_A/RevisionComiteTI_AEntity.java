@@ -1,6 +1,8 @@
-package com.unicauca.proyecto1.frameworks.repositorios.entidades;
+package com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A;
 
 import java.util.Date;
+
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "revisioncomiteti_a")
-public class RevisionComiteEntity {
+public class RevisionComiteTI_AEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idrevisioncomite")
@@ -38,10 +40,7 @@ public class RevisionComiteEntity {
     @Column(name = "fecharespuesta")
     private Date fechaRespuesta;
 
-    //@ManyToMany(mappedBy = "revisiones", fetch = FetchType.LAZY)
-    //private List<PropuestaTrabajoGradoTI_AEntity> propuestas;
-
-    public RevisionComiteEntity(){
+    public RevisionComiteTI_AEntity(){
 
     }
 }

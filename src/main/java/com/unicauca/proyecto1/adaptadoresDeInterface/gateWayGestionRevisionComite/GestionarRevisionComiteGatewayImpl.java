@@ -3,7 +3,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComi
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.RevisionComiteEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.RevisionComiteTI_AEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.respuestaComiteRepositorio.TI_A.RespuestaComiteRepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
 
@@ -21,8 +21,8 @@ public class GestionarRevisionComiteGatewayImpl implements GestionarRevisionComi
 
     @Override
     public RevisionComite guardar(RevisionComite revision) {
-        RevisionComiteEntity objRevisionEntity = this.revisionComiteMapper.map(revision, RevisionComiteEntity.class);
-        RevisionComiteEntity objRevisionEntityRegistrado = this.revisionComiteRepositorio.save(objRevisionEntity);
+        RevisionComiteTI_AEntity objRevisionEntity = this.revisionComiteMapper.map(revision, RevisionComiteTI_AEntity.class);
+        RevisionComiteTI_AEntity objRevisionEntityRegistrado = this.revisionComiteRepositorio.save(objRevisionEntity);
         RevisionComite objRevisionRespuesta = this.revisionComiteMapper.map(objRevisionEntityRegistrado, RevisionComite.class);
         return objRevisionRespuesta;
     }

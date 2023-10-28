@@ -2,8 +2,8 @@ package com.unicauca.proyecto1.frameworks.repositorios.respuestaComiteRepositori
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.RevisionComiteEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.RevisionComiteTI_AEntity;
 
-public interface RespuestaComiteRepositoryJPA extends CrudRepository<RevisionComiteEntity,Integer>{
+public interface RespuestaComiteRepositoryJPA extends CrudRepository<RevisionComiteTI_AEntity,Integer>{
     
 }
