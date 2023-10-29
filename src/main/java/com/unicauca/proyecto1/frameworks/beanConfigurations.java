@@ -2,6 +2,8 @@ package com.unicauca.proyecto1.frameworks;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.GestionarPropuestaTrabajoGradoPP_AGatewayInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.PropuestaTrabajoGradoPP_AFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.GestionarRevisionComiteGatewayInt;
@@ -10,9 +12,12 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.Gestion
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.RolFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.UsuarioFormateadorResultadosInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Rol.GestionarRolCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCU;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AImpl;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRevisionComite.factoryRevisionComiteImpl;
@@ -30,9 +35,15 @@ public class beanConfigurations {
     }
     
     @Bean
-    public factoryTI_AImpl crearPropuestaFactory(){
+    public factoryTI_AImpl crearPropuestaFactoryTI_A(){
         factoryTI_AImpl objFactoryTI_AImpl = new factoryTI_AImpl();
         return objFactoryTI_AImpl;
+    }
+
+    @Bean
+    public factoryPP_AImpl crearPropuestaFactoryPP_A(){
+        factoryPP_AImpl objFactoryPP_AImpl = new factoryPP_AImpl();
+        return objFactoryPP_AImpl;
     }
     
     @Bean
@@ -63,11 +74,21 @@ public class beanConfigurations {
                                                 PropuestaTrabajoGradoTI_AFormateadorResultadosInt objPropuestaFormateador,
                                                 factoryTI_AInt objFactoryPropuesta,
                                                 GestionarUsuarioGatewayInt objUsuarioGateway,
-                                                GestionarRevisionComiteGatewayInt objRevisionComiteGateway,
                                                 factoryRevisionComiteInt objFactoryRevisionComite,
                                                 RevisionComiteFormateadorResultadosInt objRevisionFormateador){
-        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objRevisionComiteGateway,objFactoryRevisionComite,objRevisionFormateador);
+        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
         return objTI_ACU;
+    }
+
+    @Bean
+    public GestionarPP_ACU crearGestionarPP_ACUInt(GestionarPropuestaTrabajoGradoPP_AGatewayInt objPropuestaGateway,
+                                                PropuestaTrabajoGradoPP_AFormateadorResultadosInt objPropuestaFormateador,
+                                                factoryPP_AInt objFactoryPropuesta,
+                                                GestionarUsuarioGatewayInt objUsuarioGateway,
+                                                factoryRevisionComiteInt objFactoryRevisionComite,
+                                                RevisionComiteFormateadorResultadosInt objRevisionFormateador){
+        GestionarPP_ACU objPP_ACU = new GestionarPP_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
+        return objPP_ACU;
     }
 
 }

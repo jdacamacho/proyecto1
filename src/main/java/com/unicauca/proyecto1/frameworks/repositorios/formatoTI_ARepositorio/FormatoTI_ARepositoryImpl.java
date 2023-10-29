@@ -62,7 +62,7 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
 
     @Override
     public List<PropuestaTrabajoGradoTI_AEntity> findByIdDirector(UsuarioEntity idDirector) {
-        System.out.println("Invocando a buscar propuestas por directos");
+        System.out.println("Invocando a buscar propuestas por director");
         return this.repositorioFormatoTI_A.findByIdentificacionDirectorTIA(idDirector);
     }
     
