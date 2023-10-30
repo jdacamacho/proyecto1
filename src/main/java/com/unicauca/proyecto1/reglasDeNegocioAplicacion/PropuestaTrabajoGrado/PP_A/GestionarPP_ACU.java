@@ -14,7 +14,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.GestionarPropuestaTrabajoGradoPP_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.PropuestaTrabajoGradoPP_AFormateadorResultadosInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.RevisionComiteFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.PP_A.RevisionComiteFormateadorResultadosPP_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AInt;
@@ -29,14 +29,14 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
     private final factoryPP_AInt objFactoryPropuesta;
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
     private final factoryRevisionComiteInt objFactoryRevsionComite;
-    private final RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision;
+    private final RevisionComiteFormateadorResultadosPP_AInt objFormateadorResultadosRevision;
 
     public GestionarPP_ACU(PropuestaTrabajoGradoPP_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoPP_AGatewayInt objPropuestaGateway,
                         factoryPP_AInt objFactoryTI_A,
                         GestionarUsuarioGatewayInt objUsuarioGateway,
                         factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision ){
+                        RevisionComiteFormateadorResultadosPP_AInt objFormateadorResultadosRevision ){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
@@ -106,7 +106,7 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
     @Override
     public RevisionComiteDTORespuesta realizarRevision(RevisionComiteDTOPeticion objPeticion) {
         if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionComitePrograma()) == false && this.objPropuestaGateway.existePropuesta(objPeticion.getIdPropuestaTrabajoGrado()) == false){
-            return this.objFormateadorResultadosRevision.prepararRespuestaFallida("no existe el usuario o la propuesta");
+            return this.objFormateadorResultadosRevision.prepararRespuestaFallida("no existe el usuario,el asesor o la propuesta");
         }else{
             Usuario comitePrograma = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionComitePrograma());
             PropuestaTrabajoGradoPP_A propuesta = this.objPropuestaGateway.consultarPropuesta(objPeticion.getIdPropuestaTrabajoGrado());

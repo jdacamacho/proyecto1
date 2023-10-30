@@ -21,11 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoPP_ADTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoPP_ADTORespuesta;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACUInt;
 
@@ -72,7 +70,7 @@ public class PP_ARestController {
     public ResponseEntity<Resource> descargarPropuesta(@PathVariable int idPropuesta) throws IOException {       
         if(this.gestionarPropuestaPP_ACU.existePropuesta(idPropuesta)){
             PropuestaTrabajoGradoPP_ADTORespuesta propuesta =  this.gestionarPropuestaPP_ACU.consultarPropuesta(idPropuesta);
-            String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
+            String rutaCompleta = propuesta.getRutaPropuestaTrabajoGrado() ; 
 
             Path path = Paths.get(rutaCompleta);
             Resource resource = new UrlResource(path.toUri());

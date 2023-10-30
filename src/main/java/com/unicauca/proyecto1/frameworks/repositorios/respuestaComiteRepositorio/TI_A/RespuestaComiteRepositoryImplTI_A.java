@@ -6,12 +6,12 @@ import org.springframework.stereotype.Repository;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.RevisionComiteTI_AEntity;
 
 @Repository
-public class RespuestaComiteRepositoryImpl implements RespuestaComiteRepositoryInt{
+public class RespuestaComiteRepositoryImplTI_A implements RespuestaComiteRepositoryTI_AInt{
 
     @Autowired
-    RespuestaComiteRepositoryJPA respuestaComiteRepositorio;
+    RespuestaComiteRepositoryTI_AJPA respuestaComiteRepositorio;
 
-    public RespuestaComiteRepositoryImpl(){
+    public RespuestaComiteRepositoryImplTI_A(){
 
     }
 

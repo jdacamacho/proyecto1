@@ -71,7 +71,7 @@ public class TI_ARestController {
     public ResponseEntity<Resource> descargarPropuesta(@PathVariable int idPropuesta) throws IOException {       
         if(this.gestionarPropuestaTI_ACU.existePropuesta(idPropuesta)){
             PropuestaTrabajoGradoTI_ADTORespuesta propuesta =  this.gestionarPropuestaTI_ACU.consultarPropuesta(idPropuesta);
-            String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
+            String rutaCompleta = propuesta.getRutaPropuestaTrabajoGrado(); 
 
             Path path = Paths.get(rutaCompleta);
             Resource resource = new UrlResource(path.toUri());

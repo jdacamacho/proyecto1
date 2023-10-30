@@ -15,8 +15,8 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.GestionarRevisionComiteGatewayInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.RevisionComiteFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.GestionarRevisionComiteGatewayTI_AInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.RevisionComiteFormateadorResultadosTI_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
@@ -31,14 +31,14 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     private final factoryTI_AInt objFactoryPropuesta;
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
     private final factoryRevisionComiteInt objFactoryRevsionComite;
-    private final RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision;
+    private final RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision;
 
     public GestionarTI_ACU(PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
                         factoryTI_AInt objFactoryTI_A,
                         GestionarUsuarioGatewayInt objUsuarioGateway,
                         factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision ){
+                        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision ){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;

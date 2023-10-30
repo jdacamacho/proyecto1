@@ -6,8 +6,9 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.PropuestaTrabajoGradoPP_AFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.GestionarRevisionComiteGatewayInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.RevisionComiteFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.PP_A.RevisionComiteFormateadorResultadosPP_AInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.GestionarRevisionComiteGatewayTI_AInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.RevisionComiteFormateadorResultadosTI_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.GestionarRolGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.RolFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
@@ -75,7 +76,7 @@ public class beanConfigurations {
                                                 factoryTI_AInt objFactoryPropuesta,
                                                 GestionarUsuarioGatewayInt objUsuarioGateway,
                                                 factoryRevisionComiteInt objFactoryRevisionComite,
-                                                RevisionComiteFormateadorResultadosInt objRevisionFormateador){
+                                                RevisionComiteFormateadorResultadosTI_AInt objRevisionFormateador){
         GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
         return objTI_ACU;
     }
@@ -86,7 +87,7 @@ public class beanConfigurations {
                                                 factoryPP_AInt objFactoryPropuesta,
                                                 GestionarUsuarioGatewayInt objUsuarioGateway,
                                                 factoryRevisionComiteInt objFactoryRevisionComite,
-                                                RevisionComiteFormateadorResultadosInt objRevisionFormateador){
+                                                RevisionComiteFormateadorResultadosPP_AInt objRevisionFormateador){
         GestionarPP_ACU objPP_ACU = new GestionarPP_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
         return objPP_ACU;
     }
