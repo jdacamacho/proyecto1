@@ -14,7 +14,6 @@ public class PropuestaTrabajoGradoTI_ADTOPeticion {
     private int identificacionCodirectorTIA;
     private int identificacionEstudiante2TIA;
     private String tituloPropuestaTrabajoGrado;
-    private String rutaPropuestaTrabajoGradoOrigen;
     
     public PropuestaTrabajoGradoTI_ADTOPeticion(){
 

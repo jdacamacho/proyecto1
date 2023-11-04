@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
-import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.RevisionComiteTI_AEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -67,7 +66,7 @@ public class PropuestaTrabajoGradoPP_AEntity {
         name="historialpp_a",joinColumns = @JoinColumn(name="idpropuestatrabajogradoppa", referencedColumnName="idpropuestatrabajogradoppa"),
         inverseJoinColumns = @JoinColumn(name="idrevisioncomite", referencedColumnName="idrevisioncomite")
     )
-    private List<RevisionComiteTI_AEntity> revisiones;
+    private List<RevisionComitePP_AEntity> revisiones;
 
     public PropuestaTrabajoGradoPP_AEntity(){
         this.revisiones = new ArrayList<>();

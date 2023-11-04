@@ -97,6 +97,7 @@ public class Usuario {
         Rol asistenteJefeDepartamento = new Rol(5,"Asistente del jefe de departamento");
         Rol estudiante = new Rol(6,"Estudiante");
         Rol evaluador = new Rol(7,"Evaluador");
+        Rol asesor = new Rol(8,"Asesor");
         rolesValidos.add(administrador);
         rolesValidos.add(director);
         rolesValidos.add(comite);
@@ -104,6 +105,7 @@ public class Usuario {
         rolesValidos.add(asistenteJefeDepartamento);
         rolesValidos.add(estudiante);
         rolesValidos.add(evaluador);
+        rolesValidos.add(asesor);
         return rolesValidos;
     }
 }

@@ -12,10 +12,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.AdaptadoresAPI.ExternalPropuestaDTO;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
@@ -23,8 +21,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.GestionarRevisionComiteGatewayInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.RevisionComiteFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.RevisionComiteFormateadorResultadosTI_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
@@ -38,22 +35,19 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     private final GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway;
     private final factoryTI_AInt objFactoryPropuesta;
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
-    private final GestionarRevisionComiteGatewayInt objRevisionComiteGateway;
     private final factoryRevisionComiteInt objFactoryRevsionComite;
-    private final RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision;
+    private final RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision;
 
     public GestionarTI_ACU(PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
                         factoryTI_AInt objFactoryTI_A,
                         GestionarUsuarioGatewayInt objUsuarioGateway,
-                        GestionarRevisionComiteGatewayInt objRevisionComiteGateway,
                         factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosInt objFormateadorResultadosRevision ){
+                        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision ){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
         this.objUsuarioGateway = objUsuarioGateway;
-        this.objRevisionComiteGateway = objRevisionComiteGateway;
         this.objFactoryRevsionComite = objFactoryRevisionComite;
         this.objFormateadorResultadosRevision = objFormateadorResultadosRevision;
     }
@@ -65,63 +59,50 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     }
 
     @Override
-    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(ExternalPropuestaDTO objPeticion, MultipartFile file){
+    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion,MultipartFile file) {
+        boolean banderaDirector = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionDirectorTIA());
+        boolean banderaEstudiante1 = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante1TIA());
+        boolean banderaEstudiante2 = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+        boolean banderaCodirector = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorTIA());
+        Usuario director = null;
+        Usuario estudiante1 = null;
+        Usuario estudiante2 = null;
+        Usuario codirector = null;
 
-        PropuestaTrabajoGradoTI_ADTOPeticion propuesta = objPeticion.adaptPropuestaEntries();
-        /**
-         * Se valida el usuario, si no existe se usuario es null
-         * de lo contrario se guarda la informcacion del usuario
-         */
-        Usuario director = this.validarUsuario(propuesta.getIdentificacionDirectorTIA());
-        Usuario estudiante1 = this.validarUsuario(propuesta.getIdentificacionEstudiante1TIA());
+        if(banderaDirector == false || banderaEstudiante1 == false){
+            return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario");
+        }else{
+            estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
+            director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
+            if(banderaCodirector == true && banderaEstudiante2 == false){
+                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+            }else if(banderaCodirector == false && banderaEstudiante2 == true){
+                estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+            }else if(banderaCodirector == true && banderaEstudiante2 == true){
+                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+                estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+            }
 
-        // La existencia de estos campos no es relevante para las validaciones
-        Usuario estudiante2 = this.validarUsuario(propuesta.getIdentificacionEstudiante2TIA());
-        Usuario codirector = this.validarUsuario(propuesta.getIdentificacionCodirectorTIA());
+            String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
+            String rutaDestino = "";   
+            try{
+                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+            }  catch(IOException exception){
+                return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
+            } 
 
-        /*
-         * Si no existe el director o el estudiante, se retorna un mensaje de error
-        */
-        if(director == null || estudiante1 == null) return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario");
-
-        /**
-         * Cargamos el archivo en el servidor
-         */
-        String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
-        String rutaDestino = "";   
-        try{
-            rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
-        }  catch(IOException exception){
-            return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
-        } 
-        
-        /**
-         * Procedemos a crear la propuesta
-        */
-        PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(
+            PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(
             director, 
             estudiante1, 
             codirector, 
             estudiante2, 
-            propuesta.getTituloPropuestaTrabajoGrado(),
+            objPeticion.getTituloPropuestaTrabajoGrado(),
             new Date(), 
             rutaDestino
-        );
+            );
 
-        this.objPropuestaGateway.guardar(objPropuetaCreada);    
-
-        return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-    }
-
-    //#region METODOS DE VALIDACCION DE USUARIO
-    private Usuario validarUsuario(Integer identificacionUsuario){
-        try{
-            if(this.objUsuarioGateway.existeUsuario(identificacionUsuario)){
-                return this.objUsuarioGateway.consultarUsuario(identificacionUsuario);
-            }
-            return null;
-        }catch(Exception e){
-            return null;
+            this.objPropuestaGateway.guardar(objPropuetaCreada); 
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
         }
     }
     //#endregion
@@ -181,6 +162,26 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         return null;
     }
 
+    @Override
+    public boolean existePropuesta(int idPropuesta) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+            return true;
+        }
+        return false;
+    }
+
+    private Usuario validarUsuario(Integer identificacionUsuario){
+        try{
+            if(this.objUsuarioGateway.existeUsuario(identificacionUsuario)){
+                return this.objUsuarioGateway.consultarUsuario(identificacionUsuario);
+            }
+            return null;
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
         return Files.exists(path) && !Files.isDirectory(path);
@@ -209,13 +210,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         return file.getAbsolutePath();
     }
 
-    @Override
-    public boolean existePropuesta(int idPropuesta) {
-        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
-            return true;
-        }
-        return false;
-    }
 
     private String cargarArchivoAprobado(String filePath, String nombreEstudiantes) {
         try {
