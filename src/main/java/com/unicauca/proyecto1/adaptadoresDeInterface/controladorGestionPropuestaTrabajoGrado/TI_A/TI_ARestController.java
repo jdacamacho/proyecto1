@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
@@ -53,8 +54,21 @@ public class TI_ARestController {
     }
 
     @PostMapping("/propuestas")
-    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(@RequestBody PropuestaTrabajoGradoTI_ADTOPeticion objPeticion){
-        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion);
+    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("title") String title,
+        @RequestParam("idDirector") Integer idDirector,
+        @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
+        @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
+        @RequestParam(name = "idCodirector", required = false) Integer idCodirector
+    ){
+        PropuestaTrabajoGradoTI_ADTOPeticion objPeticion = new PropuestaTrabajoGradoTI_ADTOPeticion();
+        objPeticion.setTituloPropuestaTrabajoGrado(title);
+        objPeticion.setIdentificacionDirectorTIA(idDirector);
+        objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
+        objPeticion.setIdentificacionCodirectorTIA(idCodirector);
+        objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
+        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion, file);
     }
     
     @PostMapping("/propuestasRevisionComite")
