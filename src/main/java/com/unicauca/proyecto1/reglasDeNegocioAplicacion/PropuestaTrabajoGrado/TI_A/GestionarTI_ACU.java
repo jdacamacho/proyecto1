@@ -66,9 +66,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(ExternalPropuestaDTO objPeticion, MultipartFile file){
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println(objPeticion);
-        System.out.println(file);
 
         PropuestaTrabajoGradoTI_ADTOPeticion propuesta = objPeticion.adaptPropuestaEntries();
         /**
@@ -111,8 +108,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             rutaDestino
         );
 
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println(objPropuetaCreada);
         this.objPropuestaGateway.guardar(objPropuetaCreada);    
 
         return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
