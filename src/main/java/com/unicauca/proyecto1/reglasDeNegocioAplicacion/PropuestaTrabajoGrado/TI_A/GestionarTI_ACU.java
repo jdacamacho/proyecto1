@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
@@ -54,56 +56,50 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     }
 
     @Override
-    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion) {
-        if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionDirectorTIA()) == false &&  this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante1TIA()) == false){
-            return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario");
-        }
-        else{
-            Usuario estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
-            Usuario director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
-            if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorTIA()) == true && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante2TIA()) == false){
-                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
-                    .crearTI_A(director, estudiante1, this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA()), null,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
-                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
-                    this.objPropuestaGateway.guardar(objPropuetaCreada);
-                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-                }else{
-                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
-                } 
-            }
-            else if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorTIA()) == false && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiante2TIA()) == true){
-                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
-                    .crearTI_A(director, estudiante1,null,this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA()),
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
-                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
-                    this.objPropuestaGateway.guardar(objPropuetaCreada);
-                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-                }else{
-                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
-                } 
-            }
-            else{
-                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                    PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta
-                    .crearTI_A(director, estudiante1,null,null,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
-                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
-                    this.objPropuestaGateway.guardar(objPropuetaCreada);
-                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-                }else{
-                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
-                } 
-            }
-        }
+    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion,MultipartFile file) {
+        /**
+         * Se valida el usuario, si no existe se usuario es null
+         * de lo contrario se guarda la informcacion del usuario
+         */
+        Usuario director = this.validarUsuario(objPeticion.getIdentificacionDirectorTIA());
+        Usuario estudiante1 = this.validarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
+
+        // La existencia de estos campos no es relevante para las validaciones
+        Usuario estudiante2 = this.validarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+        Usuario codirector = this.validarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+
+        /*
+         * Si no existe el director o el estudiante, se retorna un mensaje de error
+        */
+        if(director == null || estudiante1 == null) return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario");
+
+        /**
+         * Cargamos el archivo en el servidor
+         */
+        String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
+        String rutaDestino = "";   
+        try{
+            rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+        }  catch(IOException exception){
+            return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
+        } 
+        
+        /**
+         * Procedemos a crear la propuesta
+        */
+        PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(
+            director, 
+            estudiante1, 
+            codirector, 
+            estudiante2, 
+            propuesta.getTituloPropuestaTrabajoGrado(),
+            new Date(), 
+            rutaDestino
+        );
+
+        this.objPropuestaGateway.guardar(objPropuetaCreada);    
+
+        return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
     }
 
     @Override
@@ -168,6 +164,18 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }
         return false;
     }
+
+    private Usuario validarUsuario(Integer identificacionUsuario){
+        try{
+            if(this.objUsuarioGateway.existeUsuario(identificacionUsuario)){
+                return this.objUsuarioGateway.consultarUsuario(identificacionUsuario);
+            }
+            return null;
+        }catch(Exception e){
+            return null;
+        }
+    }
+
 
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
