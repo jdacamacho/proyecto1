@@ -1,8 +1,11 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.TI_A;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -18,8 +21,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.AdaptadoresAPI.ExternalPropuestaDTO;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
@@ -29,7 +35,7 @@ import com.unicauca.proyecto1.frameworks.repositorios.formatoTI_ARepositorio.For
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACUInt;
 
 @RestController
-@RequestMapping("/apiPropuestasTI_A")
+@RequestMapping("/api/PropuestasTI_A")
 public class TI_ARestController {
     
     private final GestionarTI_ACUInt gestionarPropuestaTI_ACU;
@@ -52,10 +58,39 @@ public class TI_ARestController {
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(@PathVariable int id ){
        return this.gestionarPropuestaTI_ACU.consultarPropuesta(id);
     }
-
+    
+    
     @PostMapping("/propuestas")
-    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(@RequestBody PropuestaTrabajoGradoTI_ADTOPeticion objPeticion){
-        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion);
+    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
+        //@RequestBody ExternalPropuestaDTO propuesta
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("title") String title,
+        @RequestParam("idDirector") Integer idDirector,
+        @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
+        @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
+        @RequestParam(name = "idCodirector", required = false) Integer idCodirector,
+        @RequestParam(name = "idAsistente", required = false) Integer idAsistente
+    ){
+        ExternalPropuestaDTO objPeticion = new ExternalPropuestaDTO();
+        objPeticion.setTitle(title);
+        objPeticion.setIdDirector(idDirector);
+        objPeticion.setEstudiante1(idEstudiante1);
+        objPeticion.setIdCodirector(idCodirector);
+        objPeticion.setIdAsistente(idAsistente);
+        objPeticion.setEstudiante2(idEstudiante2);
+
+        if(idCodirector == null){
+            objPeticion.setIdCodirector(-1);
+        }
+        if(idAsistente == null){
+            objPeticion.setIdAsistente(-1);
+        }
+        if(idEstudiante2 == null){
+            objPeticion.setEstudiante2(-1);
+        }
+
+
+        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion, file);
     }
     
     @PostMapping("/propuestasRevisionComite")
