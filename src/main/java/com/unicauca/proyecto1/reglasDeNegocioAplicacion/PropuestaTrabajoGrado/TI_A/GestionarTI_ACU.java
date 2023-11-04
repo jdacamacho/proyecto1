@@ -1,6 +1,10 @@
 package com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,7 +96,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             estudiante1, 
             codirector, 
             estudiante2, 
-            propuesta.getTituloPropuestaTrabajoGrado(),
+            objPeticion.getTituloPropuestaTrabajoGrado(),
             new Date(), 
             rutaDestino
         );
@@ -182,25 +186,27 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         return Files.exists(path) && !Files.isDirectory(path);
     }
 
-    private String cargarArchivoRecibidos(String filePath, String nombreEstudiantes) {
-        try {
-            Path sourcePath = Paths.get(filePath);
-            String baseFileName = nombreEstudiantes;
-            int counter = 1;
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos", baseFileName + ".docx");
-    
-            while (Files.exists(destinoPath)) {
-                baseFileName = nombreEstudiantes + "(" + counter + ")";
-                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos", baseFileName + ".docx");
-                counter++;
-            }
-    
-            Files.copy(sourcePath, destinoPath);
-            return destinoPath.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException{
+        String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos/" + fileName + ".docx";
+        File file = new File(fileDirectory);
+        System.out.println(fileDirectory);
+        System.out.println(file);
+
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
         }
+
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            int bytesRead;
+            byte[] buffer = new byte[4096];
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return file.getAbsolutePath();
     }
 
 
