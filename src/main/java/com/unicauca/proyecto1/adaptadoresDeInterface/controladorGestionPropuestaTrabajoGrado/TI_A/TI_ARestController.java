@@ -66,8 +66,16 @@ public class TI_ARestController {
         objPeticion.setTituloPropuestaTrabajoGrado(title);
         objPeticion.setIdentificacionDirectorTIA(idDirector);
         objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
-        objPeticion.setIdentificacionCodirectorTIA(idCodirector);
-        objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
+        if(idCodirector == null){
+            objPeticion.setIdentificacionCodirectorTIA(-1);
+        }else{
+            objPeticion.setIdentificacionCodirectorTIA(idCodirector);
+        }
+        if(idEstudiante2 == null){
+            objPeticion.setIdentificacionEstudiante2TIA(-1);
+        }else{
+            objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
+        }
         return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion, file);
     }
     

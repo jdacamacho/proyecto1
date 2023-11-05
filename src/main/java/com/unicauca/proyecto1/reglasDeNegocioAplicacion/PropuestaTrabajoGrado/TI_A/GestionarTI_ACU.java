@@ -75,9 +75,19 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
             director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
             if(banderaCodirector == true && banderaEstudiante2 == false){
-                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+                if(objPeticion.getIdentificacionEstudiante2TIA() == -1){
+                    codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+                }else{
+                    this.objFormateadorResultados.prepararRespuestaFallida("Estudiante 2 no valido");
+                }
+               
             }else if(banderaCodirector == false && banderaEstudiante2 == true){
-                estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+                if(objPeticion.getIdentificacionCodirectorTIA() == -1){
+                    estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+                }else{
+                    this.objFormateadorResultados.prepararRespuestaFallida("Codirector no valido");
+                }
+               
             }else if(banderaCodirector == true && banderaEstudiante2 == true){
                 codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
                 estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
@@ -91,15 +101,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             } 
 
-            PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(
-            director, 
-            estudiante1, 
-            codirector, 
-            estudiante2, 
-            objPeticion.getTituloPropuestaTrabajoGrado(),
-            new Date(), 
-            rutaDestino
-            );
+            PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
 
             this.objPropuestaGateway.guardar(objPropuetaCreada); 
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
@@ -169,43 +171,38 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         return false;
     }
 
-    private Usuario validarUsuario(Integer identificacionUsuario){
-        try{
-            if(this.objUsuarioGateway.existeUsuario(identificacionUsuario)){
-                return this.objUsuarioGateway.consultarUsuario(identificacionUsuario);
-            }
-            return null;
-        }catch(Exception e){
-            return null;
-        }
-    }
-
-
     private boolean fileExists(String filePath) {
         Path path = Paths.get(filePath);
         return Files.exists(path) && !Files.isDirectory(path);
     }
 
-    public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException{
+    public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
         String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos/" + fileName + ".docx";
         File file = new File(fileDirectory);
-        System.out.println(fileDirectory);
-        System.out.println(file);
-
+    
+        int count = 1;
+        String baseFileName = fileName;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos/" + fileName + ".docx";
+            file = new File(fileDirectory);
+            count++;
+        }
+    
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
-
+    
         try (InputStream inputStream = multipartFile.getInputStream();
              OutputStream outputStream = new FileOutputStream(file)) {
             int bytesRead;
             byte[] buffer = new byte[4096];
-
+    
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-
+    
         return file.getAbsolutePath();
     }
 
