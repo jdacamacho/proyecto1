@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 
@@ -15,7 +14,7 @@ public interface GestionarTI_ACUInt {
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion,MultipartFile file);
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(int idPropuesta);
     public RevisionComiteDTORespuesta realizarRevision (RevisionComiteDTOPeticion objPeticion);
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(RutaAprobadaADTOPeticion rutaAprobado);
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file);
     public boolean existePropuesta(int idPropuesta);
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector);
 }   

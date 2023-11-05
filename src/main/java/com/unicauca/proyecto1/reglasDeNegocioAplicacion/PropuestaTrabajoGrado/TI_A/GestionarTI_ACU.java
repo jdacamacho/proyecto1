@@ -74,25 +74,29 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }else{
             estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante1TIA());
             director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorTIA());
-            if(banderaCodirector == true && banderaEstudiante2 == false){
-                if(objPeticion.getIdentificacionEstudiante2TIA() == -1){
+            if(objPeticion.getIdentificacionEstudiante2TIA() != -1 && banderaEstudiante2 == false){
+                this.objFormateadorResultados.prepararRespuestaFallida("Estudiante 2 no valido");
+            }else if(objPeticion.getIdentificacionCodirectorTIA() != -1 && banderaCodirector == false){
+                this.objFormateadorResultados.prepararRespuestaFallida("Codirector no valido");
+            }else{
+                if(banderaCodirector == true && banderaEstudiante2 == false){
+                    if(objPeticion.getIdentificacionEstudiante2TIA() == -1){
+                        codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
+                    }else{
+                        this.objFormateadorResultados.prepararRespuestaFallida("Estudiante 2 no valido");
+                    }
+                }else if(banderaCodirector == false && banderaEstudiante2 == true){
+                    if(objPeticion.getIdentificacionCodirectorTIA() == -1){
+                        estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
+                    }else{
+                        this.objFormateadorResultados.prepararRespuestaFallida("Codirector no valido");
+                    }
+                
+                }else if(banderaCodirector == true && banderaEstudiante2 == true){
                     codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
-                }else{
-                    this.objFormateadorResultados.prepararRespuestaFallida("Estudiante 2 no valido");
-                }
-               
-            }else if(banderaCodirector == false && banderaEstudiante2 == true){
-                if(objPeticion.getIdentificacionCodirectorTIA() == -1){
                     estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
-                }else{
-                    this.objFormateadorResultados.prepararRespuestaFallida("Codirector no valido");
                 }
-               
-            }else if(banderaCodirector == true && banderaEstudiante2 == true){
-                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorTIA());
-                estudiante2 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiante2TIA());
             }
-
             String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
             String rutaDestino = "";   
             try{
@@ -135,22 +139,23 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     }
 
     @Override
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(RutaAprobadaADTOPeticion rutaAprobado) {
-        if(this.objPropuestaGateway.existePropuesta(rutaAprobado.getIdPropuestaTrabajoGrado())){
-            if(fileExists(rutaAprobado.getRutaRespuesta())){
-                PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(rutaAprobado.getIdPropuestaTrabajoGrado());
-                String rutaDestino = cargarArchivoAprobado(rutaAprobado.getRutaRespuesta(),propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin());
-                propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
-                this.objPropuestaGateway.modificar(rutaAprobado.getIdPropuestaTrabajoGrado(), propuesta);
-                return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
-            }else{
-                return this.objFormateadorResultados.
-                prepararRespuestaFallida("no existe el archivo");
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+            PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
+            String nombreArchivo = propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
+            String rutaDestino = "";   
+            try{
+                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+            }  catch(IOException exception){
+                return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             }
+            propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
+            this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
         }else{
-            return this.objFormateadorResultados.
-                prepararRespuestaFallida("no existe la propuesta buscada");
+            return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada");
         }
+        
     }
 
     @Override
@@ -207,24 +212,33 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     }
 
 
-    private String cargarArchivoAprobado(String filePath, String nombreEstudiantes) {
-        try {
-            Path sourcePath = Paths.get(filePath);
-            String baseFileName = nombreEstudiantes + "aprobado";
-            int counter = 1;
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados", baseFileName + ".docx");
+    private String cargarArchivoAprobado(MultipartFile multipartFile, String fileName) throws IOException {
+       String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados/" + fileName + ".docx";
+        File file = new File(fileDirectory);
     
-            while (Files.exists(destinoPath)) {
-                baseFileName = nombreEstudiantes + "(" + counter + ")";
-                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados", baseFileName + ".docx");
-                counter++;
-            }
-    
-            Files.copy(sourcePath, destinoPath);
-            return destinoPath.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        int count = 1;
+        String baseFileName = fileName;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Aprobados/" + fileName + ".docx";
+            file = new File(fileDirectory);
+            count++;
         }
+    
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+    
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            int bytesRead;
+            byte[] buffer = new byte[4096];
+    
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+    
+        return file.getAbsolutePath();
     }
 }

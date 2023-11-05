@@ -56,14 +56,14 @@ public class TI_ARestController {
     @PostMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("title") String title,
+        @RequestParam("titulo") String titulo,
         @RequestParam("idDirector") Integer idDirector,
         @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
         @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
         @RequestParam(name = "idCodirector", required = false) Integer idCodirector
     ){
         PropuestaTrabajoGradoTI_ADTOPeticion objPeticion = new PropuestaTrabajoGradoTI_ADTOPeticion();
-        objPeticion.setTituloPropuestaTrabajoGrado(title);
+        objPeticion.setTituloPropuestaTrabajoGrado(titulo);
         objPeticion.setIdentificacionDirectorTIA(idDirector);
         objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
         if(idCodirector == null){
@@ -85,8 +85,11 @@ public class TI_ARestController {
     }
 
     @PutMapping("/propuestas")
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarDocumentoAprobado(@RequestBody RutaAprobadaADTOPeticion objPeticion){
-        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(objPeticion);
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarDocumentoAprobado(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("idPropuesta") Integer idPropuesta
+    ){
+        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(idPropuesta,file);
     }
 
     @GetMapping("/propuestasSubidas/{idPropuesta}")
