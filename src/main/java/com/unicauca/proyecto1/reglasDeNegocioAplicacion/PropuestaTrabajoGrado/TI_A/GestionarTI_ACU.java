@@ -105,7 +105,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
         }
     }
-    //#endregion
 
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(int idPropuesta) {

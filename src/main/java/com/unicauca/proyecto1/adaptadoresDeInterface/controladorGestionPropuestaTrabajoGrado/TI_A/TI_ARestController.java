@@ -21,11 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.AdaptadoresAPI.ExternalPropuestaDTO;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
@@ -72,8 +70,16 @@ public class TI_ARestController {
         objPeticion.setTituloPropuestaTrabajoGrado(title);
         objPeticion.setIdentificacionDirectorTIA(idDirector);
         objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
-        objPeticion.setIdentificacionCodirectorTIA(idCodirector);
-        objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
+        if(idCodirector == null){
+            objPeticion.setIdentificacionCodirectorTIA(-1);
+        }else{
+            objPeticion.setIdentificacionCodirectorTIA(idCodirector);
+        }
+        if(idEstudiante2 == null){
+            objPeticion.setIdentificacionEstudiante2TIA(-1);
+        }else{
+            objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
+        }
         return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion, file);
     }
     
