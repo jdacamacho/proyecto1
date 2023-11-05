@@ -19,8 +19,8 @@ import org.springframework.http.MediaType;
 @RequestMapping("/apiPlantilla")
 public class PlantillaRestController {
 
-    @GetMapping("/plantillasTI-A")
-    public ResponseEntity<Resource> descargarPlantilla() throws IOException {
+    @GetMapping("/plantillasTI_A")
+    public ResponseEntity<Resource> descargarPlantillaTI_A() throws IOException {
 
         String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI-A.docx"; 
 
@@ -29,6 +29,26 @@ public class PlantillaRestController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI-A.docx"); 
+
+        MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(mediaType)
+            .body(resource);
+    }
+
+    @GetMapping("/plantillasPP_A")
+    public ResponseEntity<Resource> descargarPlantillaPP_A() throws IOException {
+
+        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoPP_A.docx"; 
+
+        Path path = Paths.get(rutaCompleta);
+        Resource resource = new UrlResource(path.toUri());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoPP_A.docx"); 
 
         MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
