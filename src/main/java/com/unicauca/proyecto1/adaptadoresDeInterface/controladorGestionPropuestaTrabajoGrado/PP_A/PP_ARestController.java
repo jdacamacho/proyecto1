@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoPP_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoPP_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACUInt;
@@ -52,8 +52,25 @@ public class PP_ARestController {
     }
 
     @PostMapping("/propuestas")
-    public PropuestaTrabajoGradoPP_ADTORespuesta crearPropuestas(@RequestBody PropuestaTrabajoGradoPP_ADTOPeticion objPeticion){
-        return this.gestionarPropuestaPP_ACU.crearPropuesta(objPeticion);
+    public PropuestaTrabajoGradoPP_ADTORespuesta crearPropuestas(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("titulo") String titulo,
+        @RequestParam("idDirector") Integer idDirector,
+        @RequestParam(name = "idEstudiante", required = false) Integer idEstudiante,
+        @RequestParam(name = "idAsesor", required = false) Integer idAsesor,
+        @RequestParam(name = "idCodirector", required = false) Integer idCodirector
+    ){
+        PropuestaTrabajoGradoPP_ADTOPeticion objPeticion = new PropuestaTrabajoGradoPP_ADTOPeticion();
+        objPeticion.setTituloPropuestaTrabajoGrado(titulo);
+        objPeticion.setIdentificacionDirectorPPA(idDirector);
+        objPeticion.setIdentificacionEstudiantePPA(idEstudiante);
+        objPeticion.setIdentificacionAsesorPPA(idAsesor);
+        if(idCodirector == null){
+            objPeticion.setIdentificacionCodirectorPPA(-1);
+        }else{
+            objPeticion.setIdentificacionCodirectorPPA(idCodirector);
+        }
+        return this.gestionarPropuestaPP_ACU.crearPropuesta(objPeticion,file);
     }
 
     @PostMapping("/propuestasRevisionComite")
@@ -62,8 +79,11 @@ public class PP_ARestController {
     }
 
     @PutMapping("/propuestas")
-    public PropuestaTrabajoGradoPP_ADTORespuesta anexarDocumentoAprobado(@RequestBody RutaAprobadaADTOPeticion objPeticion){
-        return this.gestionarPropuestaPP_ACU.anexarPropuestaAprobado(objPeticion);
+    public PropuestaTrabajoGradoPP_ADTORespuesta anexarDocumentoAprobado(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("idPropuesta") Integer idPropuesta
+    ){
+        return this.gestionarPropuestaPP_ACU.anexarPropuestaAprobado(idPropuesta,file);
     }
 
     @GetMapping("/propuestasSubidas/{idPropuesta}")

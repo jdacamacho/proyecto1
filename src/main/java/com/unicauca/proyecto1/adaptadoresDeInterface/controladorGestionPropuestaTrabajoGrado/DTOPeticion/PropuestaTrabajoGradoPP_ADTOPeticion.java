@@ -11,7 +11,6 @@ public class PropuestaTrabajoGradoPP_ADTOPeticion {
     private int identificacionCodirectorPPA;
     private int identificacionAsesorPPA;
     private String tituloPropuestaTrabajoGrado;
-    private String rutaPropuestaTrabajoGradoOrigen;
 
     public PropuestaTrabajoGradoPP_ADTOPeticion(){
 

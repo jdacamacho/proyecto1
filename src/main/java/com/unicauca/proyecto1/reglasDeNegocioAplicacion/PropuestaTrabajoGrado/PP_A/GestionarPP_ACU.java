@@ -1,15 +1,17 @@
 package com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoPP_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoPP_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.GestionarPropuestaTrabajoGradoPP_AGatewayInt;
@@ -52,43 +54,43 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
     }
 
     @Override
-    public PropuestaTrabajoGradoPP_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoPP_ADTOPeticion objPeticion) {
-        if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionDirectorPPA()) == false &&  this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiantePPA()) == false && this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionAsesorPPA()) == false){
-            return this.objFormateadorResultados.prepararRespuestaFallida("Error en director o usuario o asesor");
-        }
-        else{
-            Usuario estudiante1 = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiantePPA());
-            Usuario director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorPPA());
-            Usuario asesor = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionAsesorPPA());
-            if(this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorPPA()) == true){
-                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                    PropuestaTrabajoGradoPP_A objPropuetaCreada = this.objFactoryPropuesta
-                    .crearPP_A(director, estudiante1, this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA()), asesor,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
-                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
-                    this.objPropuestaGateway.guardar(objPropuetaCreada);
-                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-                }else{
-                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
-                } 
+    public PropuestaTrabajoGradoPP_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoPP_ADTOPeticion objPeticion,MultipartFile file) {
+        boolean banderaDirector = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionDirectorPPA());
+        boolean banderaEstudiante = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionEstudiantePPA() );
+        boolean banderaAsesor = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionAsesorPPA());
+        boolean banderaCodirector = this.objUsuarioGateway.existeUsuario(objPeticion.getIdentificacionCodirectorPPA());
+        Usuario director = null;
+        Usuario estudiante = null;
+        Usuario asesor = null;
+        Usuario codirector = null;
+
+        if(banderaDirector == false || banderaEstudiante == false || banderaAsesor == false){
+            return this.objFormateadorResultados.prepararRespuestaFallida("Error en director,estudiante o asesor");
+        }else{
+            director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorPPA());
+            estudiante = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiantePPA());
+            asesor = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionAsesorPPA());
+            if(objPeticion.getIdentificacionCodirectorPPA() != -1 && banderaCodirector == false){
+                return this.objFormateadorResultados.prepararRespuestaFallida("Error en codirector");
+            }else{
+                if(banderaCodirector == true){
+                    codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA());
+                }
             }
-            else{
-                if(fileExists(objPeticion.getRutaPropuestaTrabajoGradoOrigen())){
-                    PropuestaTrabajoGradoPP_A objPropuetaCreada = this.objFactoryPropuesta
-                    .crearPP_A(director, estudiante1,null,asesor,
-                    objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), objPeticion.getRutaPropuestaTrabajoGradoOrigen());
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();
-                    String rutaDestino = cargarArchivoRecibidos(objPeticion.getRutaPropuestaTrabajoGradoOrigen(), nombreArchivo);
-                    objPropuetaCreada.setRutaPropuestaTrabajoGrado(rutaDestino);
-                    this.objPropuestaGateway.guardar(objPropuetaCreada);
-                    return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
-                }else{
-                    return this.objFormateadorResultados.prepararRespuestaFallida("No existe la ruta");
-                } 
-            }
+
+            String nombreArchivo = estudiante.getLoginUsuario().getUserNameLogin();    
+            String rutaDestino = "";   
+            try{
+                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+            }  catch(IOException exception){
+                return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
+            } 
+
+            PropuestaTrabajoGradoPP_A objPropuestaCreada = this.objFactoryPropuesta.crearPP_A(director, estudiante, codirector, asesor, objPeticion.getTituloPropuestaTrabajoGrado(), new Date(), rutaDestino);
+            this.objPropuestaGateway.guardar(objPropuestaCreada);
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuestaCreada);
         }
+
     }
 
     @Override
@@ -118,22 +120,22 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
     }
 
     @Override
-    public PropuestaTrabajoGradoPP_ADTORespuesta anexarPropuestaAprobado(RutaAprobadaADTOPeticion rutaAprobado) {
-        if(this.objPropuestaGateway.existePropuesta(rutaAprobado.getIdPropuestaTrabajoGrado())){
-            if(fileExists(rutaAprobado.getRutaRespuesta())){
-                PropuestaTrabajoGradoPP_A propuesta = this.objPropuestaGateway.consultarPropuesta(rutaAprobado.getIdPropuestaTrabajoGrado());
-                String rutaDestino = cargarArchivoAprobado(rutaAprobado.getRutaRespuesta(),propuesta.getIdentificacionEstudiantePPA().getLoginUsuario().getUserNameLogin());
-                propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
-                this.objPropuestaGateway.modificar(rutaAprobado.getIdPropuestaTrabajoGrado(), propuesta);
-                return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
-            }else{
-                return this.objFormateadorResultados.
-                prepararRespuestaFallida("no existe el archivo");
-            }
-        }else{
-            return this.objFormateadorResultados.
-                prepararRespuestaFallida("no existe la propuesta buscada");
+    public PropuestaTrabajoGradoPP_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+        PropuestaTrabajoGradoPP_A propuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
+        String nombreArchivo = propuesta.getIdentificacionEstudiantePPA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
+        String rutaDestino = "";   
+        try{
+            rutaDestino = cargarArchivoAprobado(file, nombreArchivo);
+        }  catch(IOException exception){
+            return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
         }
+        propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
+        this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
+        return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
+    }else{
+        return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada");
+    }
     }
 
     @Override
@@ -154,52 +156,65 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
         return null;
     }
 
-    private boolean fileExists(String filePath) {
-        Path path = Paths.get(filePath);
-        return Files.exists(path) && !Files.isDirectory(path);
+    public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
+        String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Recibidos/" + fileName + ".docx";
+        File file = new File(fileDirectory);
+    
+        int count = 1;
+        String baseFileName = fileName;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Recibidos/" + fileName + ".docx";
+            file = new File(fileDirectory);
+            count++;
+        }
+    
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+    
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            int bytesRead;
+            byte[] buffer = new byte[4096];
+    
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+    
+        return file.getAbsolutePath();
     }
 
-    private String cargarArchivoRecibidos(String filePath, String nombreEstudiantes) {
-        try {
-            Path sourcePath = Paths.get(filePath);
-            String baseFileName = nombreEstudiantes;
-            int counter = 1;
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Recibidos", baseFileName + ".docx");
-    
-            while (Files.exists(destinoPath)) {
-                baseFileName = nombreEstudiantes + "(" + counter + ")";
-                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Recibidos", baseFileName + ".docx");
-                counter++;
-            }
-    
-            Files.copy(sourcePath, destinoPath);
-            return destinoPath.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-
-    private String cargarArchivoAprobado(String filePath, String nombreEstudiantes) {
-        try {
-            Path sourcePath = Paths.get(filePath);
-            String baseFileName = nombreEstudiantes + "aprobado";
-            int counter = 1;
-            Path destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Aprobados", baseFileName + ".docx");
+    private String cargarArchivoAprobado(MultipartFile multipartFile, String fileName) throws IOException {
+       String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Aprobados/" + fileName + ".docx";
+        File file = new File(fileDirectory);
     
-            while (Files.exists(destinoPath)) {
-                baseFileName = nombreEstudiantes + "(" + counter + ")";
-                destinoPath = Paths.get("src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Aprobados", baseFileName + ".docx");
-                counter++;
-            }
-    
-            Files.copy(sourcePath, destinoPath);
-            return destinoPath.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        int count = 1;
+        String baseFileName = fileName;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosPP_A/Aprobados/" + fileName + ".docx";
+            file = new File(fileDirectory);
+            count++;
         }
+    
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+    
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            int bytesRead;
+            byte[] buffer = new byte[4096];
+    
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+    
+        return file.getAbsolutePath();
     }
     
 }
