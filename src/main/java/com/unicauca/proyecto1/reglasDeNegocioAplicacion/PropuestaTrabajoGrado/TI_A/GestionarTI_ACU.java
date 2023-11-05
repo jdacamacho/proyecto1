@@ -5,9 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
@@ -105,10 +101,10 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             } 
 
-            PropuestaTrabajoGradoTI_A objPropuetaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
+            PropuestaTrabajoGradoTI_A objPropuestaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
 
-            this.objPropuestaGateway.guardar(objPropuetaCreada); 
-            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuetaCreada);
+            this.objPropuestaGateway.guardar(objPropuestaCreada); 
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuestaCreada);
         }
     }
 
@@ -145,7 +141,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             String nombreArchivo = propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
             String rutaDestino = "";   
             try{
-                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+                rutaDestino = cargarArchivoAprobado(file, nombreArchivo);
             }  catch(IOException exception){
                 return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             }
@@ -155,7 +151,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         }else{
             return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada");
         }
-        
     }
 
     @Override
@@ -174,11 +169,6 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return true;
         }
         return false;
-    }
-
-    private boolean fileExists(String filePath) {
-        Path path = Paths.get(filePath);
-        return Files.exists(path) && !Files.isDirectory(path);
     }
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
