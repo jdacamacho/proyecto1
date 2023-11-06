@@ -32,6 +32,7 @@ public interface UsuarioRepositoryJPA  extends CrudRepository<UsuarioEntity,Inte
         @Param("loginUsuario") String loginUsuario
         // @Param("estadoUsuario") int estadoUsuario
     );
+    
     @Query("SELECT u FROM UsuarioEntity u JOIN u.roles r WHERE r = :rol")
     List<UsuarioEntity> findUserByRol(@Param("rol") RolEntity rol);
 }
