@@ -19,10 +19,14 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.PropuestaTrabajoGradoTI_AFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.TI_A.RevisionComiteFormateadorResultadosTI_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRevisionComite.factoryRevisionComiteInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.notificacion.Notificacion;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 public class GestionarTI_ACU implements GestionarTI_ACUInt{
@@ -33,19 +37,25 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
     private final factoryRevisionComiteInt objFactoryRevsionComite;
     private final RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision;
+    private final GestionarNotificacionGatewayInt objNotificacionGateway;
+    private final factoryNotificacionInt objFactoryNotificacion;
 
     public GestionarTI_ACU(PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
                         factoryTI_AInt objFactoryTI_A,
                         GestionarUsuarioGatewayInt objUsuarioGateway,
                         factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision ){
+                        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision,
+                        GestionarNotificacionGatewayInt objNotificacionGateway,
+                        factoryNotificacionInt objFactoryNotificacion){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
         this.objUsuarioGateway = objUsuarioGateway;
         this.objFactoryRevsionComite = objFactoryRevisionComite;
         this.objFormateadorResultadosRevision = objFormateadorResultadosRevision;
+        this.objNotificacionGateway = objNotificacionGateway;
+        this.objFactoryNotificacion = objFactoryNotificacion;
     }
 
     @Override
@@ -103,7 +113,12 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
             PropuestaTrabajoGradoTI_A objPropuestaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
 
-            this.objPropuestaGateway.guardar(objPropuestaCreada); 
+            PropuestaTrabajoGradoTI_A propuestaR = this.objPropuestaGateway.guardar(objPropuestaCreada);
+            String mensajeEvidencia = "Usted realizo la entrega de una propuesta de trabajo de grado en modalida de investigacion. con id: "
+            + propuestaR.getIdPropuestaTrabajoGradoTIA() + " y titulo: " + propuestaR.getTituloPropuestaTrabajoGrado(); 
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(director,director , mensajeEvidencia, new Date());
+            this.objNotificacionGateway.guardar(notificacion);
+            this.observadorNotificacionComite(propuestaR);
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuestaCreada);
         }
     }
@@ -130,14 +145,18 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comitePrograma, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date());
             propuesta.getRevisiones().add(revisionCreada);
             this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGrado(), propuesta);
+            String mensaje = "Se ha realizado una revision de la propuesta de trabajo de grado con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() + " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado();
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comitePrograma,propuesta.getIdentificacionDirectorTIA(),mensaje,new Date());
+            this.objNotificacionGateway.guardar(notificacion);
             return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
         }
     }
 
     @Override
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file) {
-        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idComiteRevisa,int idPropuesta,MultipartFile file) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta) && this.objUsuarioGateway.existeUsuario(idComiteRevisa)){
             PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
+            Usuario comite = this.objUsuarioGateway.consultarUsuario(idComiteRevisa);
             String nombreArchivo = propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
             String rutaDestino = "";   
             try{
@@ -147,9 +166,13 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             }
             propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
             this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
+            String mensaje = "Se ha aprobado su propuesta de trabajo de grado con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() +
+            " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comite,propuesta.getIdentificacionDirectorTIA(), mensaje, new Date());
+            this.objNotificacionGateway.guardar(notificacion);
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
         }else{
-            return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada");
+            return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada o el evaluador del comite no existe");
         }
     }
 
@@ -169,6 +192,18 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void observadorNotificacionComite(PropuestaTrabajoGradoTI_A propuestaRegistrada) {
+        Rol comite = new Rol(3,"Comite del programa");
+        List<Usuario> usuariosConRolComite = this.objUsuarioGateway.buscarUsuariosPorRol(comite);
+        String mensaje = "Se ha registrado una nueva propuesta de trabajo de grado en modalidad de investigacion." + 
+        " id propuesta: " + propuestaRegistrada.getIdPropuestaTrabajoGradoTIA() + " titulo: " + propuestaRegistrada.getTituloPropuestaTrabajoGrado();
+        for(int i = 0 ; i<usuariosConRolComite.size(); i++){
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(propuestaRegistrada.getIdentificacionDirectorTIA(),usuariosConRolComite.get(i), mensaje, new Date());
+            this.objNotificacionGateway.guardar(notificacion);
+        }
     }
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {

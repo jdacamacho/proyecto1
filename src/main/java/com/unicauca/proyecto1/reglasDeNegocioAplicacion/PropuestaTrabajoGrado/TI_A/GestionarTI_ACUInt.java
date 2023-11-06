@@ -8,13 +8,15 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 
 public interface GestionarTI_ACUInt {
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestas();
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuesta(PropuestaTrabajoGradoTI_ADTOPeticion objPeticion,MultipartFile file);
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(int idPropuesta);
     public RevisionComiteDTORespuesta realizarRevision (RevisionComiteDTOPeticion objPeticion);
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file);
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idComiteRevisa,int idPropuesta,MultipartFile file);
     public boolean existePropuesta(int idPropuesta);
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector);
+    public void observadorNotificacionComite(PropuestaTrabajoGradoTI_A propuestaRegistrada);
 }   

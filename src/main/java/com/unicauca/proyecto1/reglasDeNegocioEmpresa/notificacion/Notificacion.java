@@ -19,4 +19,11 @@ public class Notificacion {
     public Notificacion(){
         
     }
+
+    public Notificacion(Usuario usuarioEmisor,Usuario usuarioReceptor,String mensaje,Date fecha){
+        this.usuarioEmisor = usuarioEmisor;
+        this.usuarioReceptor = usuarioReceptor;
+        this.mensaje = mensaje;
+        this.fecha = fecha;
+    }
 }
