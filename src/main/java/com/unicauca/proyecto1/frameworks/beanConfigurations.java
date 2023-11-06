@@ -12,10 +12,15 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.Gestion
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.RolFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.UsuarioFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.NotificacionFormateadorResultadosInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Notificacion.GestionarNotificacionCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Rol.GestionarRolCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCU;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AImpl;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.TI_A.factoryTI_AImpl;
@@ -53,6 +58,12 @@ public class beanConfigurations {
     }
 
     @Bean
+    public factoryNotificacionImpl crearNotificacionFactory(){
+        factoryNotificacionImpl objFactoryNotificacion = new factoryNotificacionImpl();
+        return objFactoryNotificacion;
+    }
+
+    @Bean
     public GestionarUsuariosCU crearGestionarUsuarioCUInt(
             GestionarUsuarioGatewayInt objGestionarUsuarioGateway,
             UsuarioFormateadorResultadosInt objUsuarioFormateadorResultados,
@@ -75,8 +86,10 @@ public class beanConfigurations {
                                                 factoryTI_AInt objFactoryPropuesta,
                                                 GestionarUsuarioGatewayInt objUsuarioGateway,
                                                 factoryRevisionComiteInt objFactoryRevisionComite,
-                                                RevisionComiteFormateadorResultadosTI_AInt objRevisionFormateador){
-        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
+                                                RevisionComiteFormateadorResultadosTI_AInt objRevisionFormateador,
+                                                GestionarNotificacionGatewayInt objNotificacionGateway,
+                                                factoryNotificacionInt objFactoryNotificacion){
+        GestionarTI_ACU objTI_ACU = new GestionarTI_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador,objNotificacionGateway,objFactoryNotificacion);
         return objTI_ACU;
     }
 
@@ -89,6 +102,16 @@ public class beanConfigurations {
                                                 RevisionComiteFormateadorResultadosPP_AInt objRevisionFormateador){
         GestionarPP_ACU objPP_ACU = new GestionarPP_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
         return objPP_ACU;
+    }
+
+    @Bean
+    public GestionarNotificacionCU crearGestionarNotificacionesInt(
+        GestionarNotificacionGatewayInt objGestionarNotificacionGateway,
+        NotificacionFormateadorResultadosInt objFormateadorResultados,
+        GestionarUsuarioGatewayInt objGestionarUsuarioGateway
+    ){
+        GestionarNotificacionCU objNotificacionCU = new GestionarNotificacionCU(objGestionarNotificacionGateway, objFormateadorResultados, objGestionarUsuarioGateway);
+        return objNotificacionCU;
     }
 
 }

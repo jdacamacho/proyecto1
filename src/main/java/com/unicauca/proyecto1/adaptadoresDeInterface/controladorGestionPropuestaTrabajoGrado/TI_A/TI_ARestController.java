@@ -26,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoTI_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RutaAprobadaADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACUInt;
@@ -60,14 +59,14 @@ public class TI_ARestController {
     @PostMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("title") String title,
+        @RequestParam("titulo") String titulo,
         @RequestParam("idDirector") Integer idDirector,
         @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
         @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
         @RequestParam(name = "idCodirector", required = false) Integer idCodirector
     ){
         PropuestaTrabajoGradoTI_ADTOPeticion objPeticion = new PropuestaTrabajoGradoTI_ADTOPeticion();
-        objPeticion.setTituloPropuestaTrabajoGrado(title);
+        objPeticion.setTituloPropuestaTrabajoGrado(titulo);
         objPeticion.setIdentificacionDirectorTIA(idDirector);
         objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
         if(idCodirector == null){
@@ -89,8 +88,12 @@ public class TI_ARestController {
     }
 
     @PutMapping("/propuestas")
-    public PropuestaTrabajoGradoTI_ADTORespuesta anexarDocumentoAprobado(@RequestBody RutaAprobadaADTOPeticion objPeticion){
-        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(objPeticion);
+    public PropuestaTrabajoGradoTI_ADTORespuesta anexarDocumentoAprobado(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("idPropuesta") Integer idPropuesta,
+        @RequestParam("idComite") Integer idComite
+    ){
+        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(idComite,idPropuesta,file);
     }
 
     @GetMapping("/propuestasSubidas/{idPropuesta}")

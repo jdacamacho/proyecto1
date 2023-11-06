@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.LoginEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.RolEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 @Repository
@@ -92,6 +93,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryInt {
         Iterable<UsuarioEntity> iterable = this.repositorioUsuarios.findByUserRoles(rol);
         List<UsuarioEntity> lista = new ArrayList<>();
         iterable.forEach(lista::add);
+        return lista;
+    }
+
+    @Override
+    public List<UsuarioEntity> buscarUsuariosPorRol(RolEntity rol) {
+        System.out.println("Invocando a buscar usuarios por rol");
+        List<UsuarioEntity> lista = this.repositorioUsuarios.findUserByRol(rol);
         return lista;
     }
 }
