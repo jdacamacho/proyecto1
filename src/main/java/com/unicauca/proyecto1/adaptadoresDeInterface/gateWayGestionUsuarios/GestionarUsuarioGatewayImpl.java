@@ -7,9 +7,11 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.LoginEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.RolEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.usuarioRepositorio.UsuarioRepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.login.Login;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 @Service
@@ -17,11 +19,13 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
     private final UsuarioRepositoryInt objUsuarioRepository;
     private final ModelMapper usuarioModelMapper;
     private final ModelMapper loginMapper;
+    private final ModelMapper rolMapper;
 
-    public GestionarUsuarioGatewayImpl(UsuarioRepositoryInt objUsuarioRepository, ModelMapper usuarioModelMapper,ModelMapper loginMapper) {
+    public GestionarUsuarioGatewayImpl(UsuarioRepositoryInt objUsuarioRepository, ModelMapper usuarioModelMapper,ModelMapper loginMapper,ModelMapper rolMapper) {
         this.objUsuarioRepository = objUsuarioRepository;
         this.usuarioModelMapper = usuarioModelMapper;
         this.loginMapper = loginMapper;
+        this.rolMapper = rolMapper;
     }
 
     @Override
@@ -81,6 +85,15 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
         UsuarioEntity objUsuarioEntity = this.objUsuarioRepository.buscarPorLogin(loginEntity);
         Usuario objUsuario = this.usuarioModelMapper.map(objUsuarioEntity,Usuario.class);
         return objUsuario;
+    }
+
+    @Override
+    public List<Usuario> buscarUsuariosPorRol(Rol rol) {
+        RolEntity rolEntity = this.rolMapper.map(rol,RolEntity.class);
+        List<UsuarioEntity> listaUsuarioEntity = this.objUsuarioRepository.buscarUsuariosPorRol(rolEntity);
+        List<Usuario> listaObtenida = this.usuarioModelMapper.map(listaUsuarioEntity, new TypeToken<List<Usuario>>() {
+        }.getType());
+        return listaObtenida;
     }
 
     

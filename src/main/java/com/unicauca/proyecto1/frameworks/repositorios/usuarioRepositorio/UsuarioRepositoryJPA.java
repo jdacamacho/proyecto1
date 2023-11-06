@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.RolEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 
 
@@ -31,4 +32,6 @@ public interface UsuarioRepositoryJPA  extends CrudRepository<UsuarioEntity,Inte
         @Param("loginUsuario") String loginUsuario
         // @Param("estadoUsuario") int estadoUsuario
     );
+    @Query("SELECT u FROM UsuarioEntity u JOIN u.roles r WHERE r = :rol")
+    List<UsuarioEntity> findUserByRol(@Param("rol") RolEntity rol);
 }

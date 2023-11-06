@@ -90,9 +90,10 @@ public class TI_ARestController {
     @PutMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta anexarDocumentoAprobado(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("idPropuesta") Integer idPropuesta
+        @RequestParam("idPropuesta") Integer idPropuesta,
+        @RequestParam("idComite") Integer idComite
     ){
-        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(idPropuesta,file);
+        return this.gestionarPropuestaTI_ACU.anexarPropuestaAprobado(idComite,idPropuesta,file);
     }
 
     @GetMapping("/propuestasSubidas/{idPropuesta}")
