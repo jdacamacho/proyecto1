@@ -99,8 +99,10 @@ public class beanConfigurations {
                                                 factoryPP_AInt objFactoryPropuesta,
                                                 GestionarUsuarioGatewayInt objUsuarioGateway,
                                                 factoryRevisionComiteInt objFactoryRevisionComite,
-                                                RevisionComiteFormateadorResultadosPP_AInt objRevisionFormateador){
-        GestionarPP_ACU objPP_ACU = new GestionarPP_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador);
+                                                RevisionComiteFormateadorResultadosPP_AInt objRevisionFormateador,
+                                                GestionarNotificacionGatewayInt objNotificacionGateway,
+                                                factoryNotificacionInt objFactoryNotificacion){
+        GestionarPP_ACU objPP_ACU = new GestionarPP_ACU(objPropuestaFormateador, objPropuestaGateway,objFactoryPropuesta,objUsuarioGateway,objFactoryRevisionComite,objRevisionFormateador,objNotificacionGateway,objFactoryNotificacion);
         return objPP_ACU;
     }
 
