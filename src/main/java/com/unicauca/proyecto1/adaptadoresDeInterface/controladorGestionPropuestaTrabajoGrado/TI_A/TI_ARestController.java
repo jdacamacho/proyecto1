@@ -130,9 +130,10 @@ public class TI_ARestController {
     }
 
     @GetMapping("/propuestasAprobadas/{idPropuesta}")
-    public ResponseEntity<Resource> descargarPropuestaAprobada(@PathVariable int idPropuesta) throws IOException {       
+    public ResponseEntity<Resource> descargarPropuestaAprobada(@PathVariable int idPropuesta) throws IOException {    
         if(this.gestionarPropuestaTI_ACU.existePropuesta(idPropuesta)){
             PropuestaTrabajoGradoTI_ADTORespuesta propuesta =  this.gestionarPropuestaTI_ACU.consultarPropuesta(idPropuesta);
+
             String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
 
             Path path = Paths.get(rutaCompleta);

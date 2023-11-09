@@ -28,7 +28,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACUInt;
 
 @RestController
-@RequestMapping("/apiPropuestasPP_A")
+@RequestMapping("/api/PropuestasPP_A")
 public class PP_ARestController {
     private final GestionarPP_ACUInt gestionarPropuestaPP_ACU;
 
