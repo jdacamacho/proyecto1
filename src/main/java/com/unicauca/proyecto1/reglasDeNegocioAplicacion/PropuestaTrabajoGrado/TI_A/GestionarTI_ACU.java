@@ -145,7 +145,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comitePrograma, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date());
             propuesta.getRevisiones().add(revisionCreada);
             this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGrado(), propuesta);
-            String mensaje = "Se ha realizado una revision de la propuesta de trabajo de grado con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() + " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado();
+            String mensaje = "Se ha realizado una revision de la propuesta de trabajo de grado en modalidad de investigacion con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() + " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado();
             Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comitePrograma,propuesta.getIdentificacionDirectorTIA(),mensaje,new Date());
             this.objNotificacionGateway.guardar(notificacion);
             return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
@@ -166,7 +166,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             }
             propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
             this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
-            String mensaje = "Se ha aprobado su propuesta de trabajo de grado con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() +
+            String mensaje = "Se ha aprobado su propuesta de trabajo de grado en modalidad de investigacion con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() +
             " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
             Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comite,propuesta.getIdentificacionDirectorTIA(), mensaje, new Date());
             this.objNotificacionGateway.guardar(notificacion);

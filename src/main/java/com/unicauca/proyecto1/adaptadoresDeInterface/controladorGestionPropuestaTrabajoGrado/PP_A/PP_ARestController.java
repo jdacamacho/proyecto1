@@ -81,9 +81,10 @@ public class PP_ARestController {
     @PutMapping("/propuestas")
     public PropuestaTrabajoGradoPP_ADTORespuesta anexarDocumentoAprobado(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("idPropuesta") Integer idPropuesta
+        @RequestParam("idPropuesta") Integer idPropuesta,
+        @RequestParam("idComite") Integer idComite
     ){
-        return this.gestionarPropuestaPP_ACU.anexarPropuestaAprobado(idPropuesta,file);
+        return this.gestionarPropuestaPP_ACU.anexarPropuestaAprobado(idComite,idPropuesta,file);
     }
 
     @GetMapping("/propuestasSubidas/{idPropuesta}")

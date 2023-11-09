@@ -18,10 +18,15 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.PP_A.PropuestaTrabajoGradoPP_AFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComite.PP_A.RevisionComiteFormateadorResultadosPP_AInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRevisionComite.factoryRevisionComiteInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.notificacion.Notificacion;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.revisionComite.RevisionComite;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 public class GestionarPP_ACU implements GestionarPP_ACUInt {
@@ -32,19 +37,25 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
     private final GestionarUsuarioGatewayInt objUsuarioGateway;
     private final factoryRevisionComiteInt objFactoryRevsionComite;
     private final RevisionComiteFormateadorResultadosPP_AInt objFormateadorResultadosRevision;
+    private final GestionarNotificacionGatewayInt objNotificacionGateway;
+    private final factoryNotificacionInt objFactoryNotificacion;
 
     public GestionarPP_ACU(PropuestaTrabajoGradoPP_AFormateadorResultadosInt objFormateadorResultados,
                         GestionarPropuestaTrabajoGradoPP_AGatewayInt objPropuestaGateway,
                         factoryPP_AInt objFactoryTI_A,
                         GestionarUsuarioGatewayInt objUsuarioGateway,
                         factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosPP_AInt objFormateadorResultadosRevision ){
+                        RevisionComiteFormateadorResultadosPP_AInt objFormateadorResultadosRevision,
+                        GestionarNotificacionGatewayInt objNotificacionGateway,
+                        factoryNotificacionInt objFactoryNotificacion){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
         this.objUsuarioGateway = objUsuarioGateway;
         this.objFactoryRevsionComite = objFactoryRevisionComite;
         this.objFormateadorResultadosRevision = objFormateadorResultadosRevision;
+        this.objNotificacionGateway = objNotificacionGateway;
+        this.objFactoryNotificacion = objFactoryNotificacion;
     }
 
     @Override
@@ -87,7 +98,13 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
             } 
 
             PropuestaTrabajoGradoPP_A objPropuestaCreada = this.objFactoryPropuesta.crearPP_A(director, estudiante, codirector, asesor, objPeticion.getTituloPropuestaTrabajoGrado(), new Date(), rutaDestino);
-            this.objPropuestaGateway.guardar(objPropuestaCreada);
+            PropuestaTrabajoGradoPP_A propuestaR = this.objPropuestaGateway.guardar(objPropuestaCreada);
+            String mensajeEvidencia = "Usted realizo la entrega de una propuesta de trabajo de grado en modalidad de practica profesional. con id: "
+            + propuestaR.getIdPropuestaTrabajoGradoPPA() + " y titulo: " + propuestaR.getTituloPropuestaTrabajoGrado(); 
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(director,director , mensajeEvidencia, new Date());
+            this.objNotificacionGateway.guardar(notificacion);
+            this.observadorNotificacionComite(propuestaR);
+
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaCrearPropuesta(objPropuestaCreada);
         }
 
@@ -115,14 +132,18 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
             RevisionComite revisionCreada = this.objFactoryRevsionComite.crearRevisionComite(comitePrograma, objPeticion.getComentariosRevisionComite(), objPeticion.getEstadoAvalRevisionComite(), new Date());
             propuesta.getRevisiones().add(revisionCreada);
             this.objPropuestaGateway.modificar(objPeticion.getIdPropuestaTrabajoGrado(), propuesta);
+            String mensaje = "Se ha realizado una revision de la propuesta de trabajo de grado en modalidad de practica profesional con id: " + propuesta.getIdPropuestaTrabajoGradoPPA() + " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado();
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comitePrograma,propuesta.getIdentificacionDirectorPPA(),mensaje,new Date());
+            this.objNotificacionGateway.guardar(notificacion);
             return this.objFormateadorResultadosRevision.prepararRespuestaSatisfactoriaCrearRevision(revisionCreada);
         }
     }
 
     @Override
-    public PropuestaTrabajoGradoPP_ADTORespuesta anexarPropuestaAprobado(int idPropuesta,MultipartFile file) {
-        if(this.objPropuestaGateway.existePropuesta(idPropuesta)){
+    public PropuestaTrabajoGradoPP_ADTORespuesta anexarPropuestaAprobado(int idComiteRevisa,int idPropuesta,MultipartFile file) {
+        if(this.objPropuestaGateway.existePropuesta(idPropuesta) && this.objUsuarioGateway.existeUsuario(idComiteRevisa)){
         PropuestaTrabajoGradoPP_A propuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
+        Usuario comite = this.objUsuarioGateway.consultarUsuario(idComiteRevisa);
         String nombreArchivo = propuesta.getIdentificacionEstudiantePPA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
         String rutaDestino = "";   
         try{
@@ -132,9 +153,13 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
         }
         propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
         this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
+        String mensaje = "Se ha aprobado su propuesta de trabajo de grado en modalidad de practica profesional con id: " + propuesta.getIdPropuestaTrabajoGradoPPA() +
+        " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
+        Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comite,propuesta.getIdentificacionDirectorPPA(), mensaje, new Date());
+        this.objNotificacionGateway.guardar(notificacion);
         return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
     }else{
-        return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada");
+        return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada o el miembro del comite");
     }
     }
 
@@ -154,6 +179,18 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaListarPropuestas(listaObtenida);
         }
         return null;
+    }
+
+    @Override
+    public void observadorNotificacionComite(PropuestaTrabajoGradoPP_A propuestaRegistrada) {
+        Rol comite = new Rol(3,"Comite del programa");
+        List<Usuario> usuariosConRolComite = this.objUsuarioGateway.buscarUsuariosPorRol(comite);
+        String mensaje = "Se ha registrado una nueva propuesta de trabajo de grado en modalidad de practica profesional." + 
+        " id propuesta: " + propuestaRegistrada.getIdPropuestaTrabajoGradoPPA() + " titulo: " + propuestaRegistrada.getTituloPropuestaTrabajoGrado();
+        for(int i = 0 ; i<usuariosConRolComite.size(); i++){
+            Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(propuestaRegistrada.getIdentificacionDirectorPPA(),usuariosConRolComite.get(i), mensaje, new Date());
+            this.objNotificacionGateway.guardar(notificacion);
+        }
     }
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
@@ -215,6 +252,5 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
         }
     
         return file.getAbsolutePath();
-    }
-    
+    }    
 }
