@@ -98,6 +98,7 @@ public class Usuario {
         Rol estudiante = new Rol(6,"Estudiante");
         Rol evaluador = new Rol(7,"Evaluador");
         Rol asesor = new Rol(8,"Asesor");
+        Rol coordinador = new Rol(9,"Coordinador");
         rolesValidos.add(administrador);
         rolesValidos.add(director);
         rolesValidos.add(comite);
@@ -106,6 +107,7 @@ public class Usuario {
         rolesValidos.add(estudiante);
         rolesValidos.add(evaluador);
         rolesValidos.add(asesor);
+        rolesValidos.add(coordinador);
         return rolesValidos;
     }
 }
