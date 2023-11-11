@@ -56,7 +56,7 @@ public class PP_ARestController {
         @RequestParam("file") MultipartFile file,
         @RequestParam("titulo") String titulo,
         @RequestParam("idDirector") Integer idDirector,
-        @RequestParam(name = "idEstudiante", required = false) Integer idEstudiante,
+        @RequestParam(name = "idEstudiante") Integer idEstudiante,
         @RequestParam(name = "idAsesor", required = false) Integer idAsesor,
         @RequestParam(name = "idCodirector", required = false) Integer idCodirector
     ){

@@ -81,12 +81,9 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
             director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorPPA());
             estudiante = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiantePPA());
             asesor = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionAsesorPPA());
-            if(objPeticion.getIdentificacionCodirectorPPA() != -1 && banderaCodirector == false){
-                return this.objFormateadorResultados.prepararRespuestaFallida("Error en codirector");
-            }else{
-                if(banderaCodirector == true){
-                    codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA());
-                }
+            
+            if(banderaCodirector == true){
+                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA());
             }
 
             String nombreArchivo = estudiante.getLoginUsuario().getUserNameLogin();    

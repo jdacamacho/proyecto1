@@ -59,7 +59,7 @@ public class TI_ARestController {
     @PostMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("titulo") String titulo,
+        @RequestParam("title") String titulo,
         @RequestParam("idDirector") Integer idDirector,
         @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
         @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
