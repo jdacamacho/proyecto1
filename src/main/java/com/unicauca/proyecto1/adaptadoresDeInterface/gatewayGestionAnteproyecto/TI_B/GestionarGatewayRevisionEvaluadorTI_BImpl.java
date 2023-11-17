@@ -39,7 +39,8 @@ public class GestionarGatewayRevisionEvaluadorTI_BImpl implements GestionarGatew
 
     @Override
     public int existeRevisionEvaluador(int idEvaluador) {
-        return this.repositorioRevisionEvaluador.existeRevisionParaEvaluador(idEvaluador);
+        return 1;
+        //return this.repositorioRevisionEvaluador.existeRevisionParaEvaluador(idEvaluador);
     }
 
     @Override

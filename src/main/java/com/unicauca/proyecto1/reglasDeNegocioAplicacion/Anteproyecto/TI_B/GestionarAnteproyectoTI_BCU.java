@@ -98,16 +98,17 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                     } 
                     RevisionEvaluadorTI_B revision1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0,null, null,"Revision",null,null);
                     RevisionEvaluadorTI_B revision2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0,null, null,"Revision",null,null);
-                    this.gatewayRevisionEvaluador.guardar(revision1);
-                    this.gatewayRevisionEvaluador.guardar(revision2);
+                    RevisionEvaluadorTI_B revisionGuardada1 =  this.gatewayRevisionEvaluador.guardar(revision1);
+                    RevisionEvaluadorTI_B revisionGuardada2 =  this.gatewayRevisionEvaluador.guardar(revision2);
                     RevisionTI_B revisionAnteproyecto = this.factoryRevisionAnteproyecto.crearRevisionAnteproyecto(0, revision1, revision2);
-                    this.gatewayRevisionAnteproyecto.guardar(revisionAnteproyecto);
+                    revisionAnteproyecto.setIdentificacionEvaluador1(revisionGuardada1);
+                    revisionAnteproyecto.setIdentificacionEvaluador2(revisionGuardada2);
+                    RevisionTI_B revisionAnteproyectoGuardada = this.gatewayRevisionAnteproyecto.guardar(revisionAnteproyecto);
                     PropuestaTrabajoGradoTI_A propuesta = this.gatewayPropuesta.consultarPropuesta(peticion.getIdPropuestaTIA());
                     AnteproyectoTI_B anteproyectoCreado = this.factoryAnteproyecto.crearAnteproyecto(peticion.getIdAnteProyectoTIB(), propuesta, director, estudiante1, estudiante2, codirector, peticion.getTituloAnteproyecto(), rutaDestino);
-                    anteproyectoCreado.getRevisiones().add(revisionAnteproyecto);
+                    anteproyectoCreado.getRevisiones().add(revisionAnteproyectoGuardada);
                     this.gatewayAnteproyecto.guardar(anteproyectoCreado);
                     return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyectoCreado);
-
                 }
             }
         }

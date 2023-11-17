@@ -19,11 +19,11 @@ public class AnteproyectoTI_BDTOPeticion {
     private int identificacionEstudiante2TIB;
     private int identificacionCodirector;
     private String tituloAnteproyecto;
-    private Date fechaRecepcionAnteproyectoTIB;
-    private String rutaAnteproyectoTIB;
-    private List<RevisionTI_BDTORespuesta> revisiones; 
+    //private Date fechaRecepcionAnteproyectoTIB;
+    //private String rutaAnteproyectoTIB;
+    //private List<RevisionTI_BDTORespuesta> revisiones; 
 
     public AnteproyectoTI_BDTOPeticion(){
-        this.revisiones = new ArrayList<>();
+        //this.revisiones = new ArrayList<>();
     }
 }
