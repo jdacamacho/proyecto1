@@ -29,9 +29,6 @@ public class RevisionTI_BEntity {
     @JoinColumn(name = "idrevisionevaluador2")
     private RevisionEvaluadorTI_BEntity identificacionEvaluador2;
 
-    @Column(name = "tipoformato")
-    private String tipoFormato;
-
     public RevisionTI_BEntity(){
 
     }

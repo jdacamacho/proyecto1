@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -26,6 +25,10 @@ public class AnteproyectoTI_BEntity {
     @Id
     @Column(name = "idanteproyectotib")
     private int idAnteProyectoTIB;
+
+    @ManyToOne
+    @JoinColumn(name = "idpropuestatia")
+    private PropuestaTrabajoGradoTI_AEntity idPropuestaTIA;
     
     @ManyToOne
     @JoinColumn(name = "identificaciondirectortib")
@@ -36,11 +39,11 @@ public class AnteproyectoTI_BEntity {
     private UsuarioEntity identificacionEstudiante1TIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionestudiante2tib",nullable = true)
+    @JoinColumn(name = "identificacionestudiante2tib")
     private UsuarioEntity identificacionEstudiante2TIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacioncodirector",nullable = true)
+    @JoinColumn(name = "identificacioncodirector")
     private UsuarioEntity identificacionCodirector;
 
     @Column(name = "tituloanteproyectotib")

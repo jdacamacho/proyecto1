@@ -3,6 +3,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproy
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AnteproyectoTI_BDTORespuesta {
     private int idAnteProyectoTIB;
+    private PropuestaTrabajoGradoTI_A idPropuestaTIA;
     private Usuario identificacionDirectorTIB;
     private Usuario identificacionEstudiante1TIB;
     private Usuario identificacionEstudiante2TIB;

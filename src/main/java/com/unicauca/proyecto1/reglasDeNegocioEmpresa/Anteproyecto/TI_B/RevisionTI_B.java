@@ -9,7 +9,6 @@ public class RevisionTI_B {
     private int idRevision;
     private RevisionEvaluadorTI_B identificacionEvaluador1;
     private RevisionEvaluadorTI_B identificacionEvaluador2;
-    private String tipoFormato;
 
     public RevisionTI_B(){
         
