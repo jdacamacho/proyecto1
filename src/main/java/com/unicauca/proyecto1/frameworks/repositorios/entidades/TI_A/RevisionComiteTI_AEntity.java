@@ -20,24 +20,24 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Entity
-@Table(name = "revisioncomiteti_a")
+@Table(name = "RevisionesComiteTI_A")
 public class RevisionComiteTI_AEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idrevisioncomite")
+    @Column(name = "idRevisionComite")
     private int idRevisionComite;
 
     @ManyToOne
-    @JoinColumn(name = "identificacioncomiteprograma")
+    @JoinColumn(name = "identificacionComitePrograma")
     private UsuarioEntity identificacionComitePrograma;
 
-    @Column(name = "comentariosrevisioncomite")
+    @Column(name = "comentariosRevisionComite")
     private String comentariosRevisionComite;
 
-    @Column(name = "estadoavalrevisioncomite")
+    @Column(name = "estadoAvalRevisionComite")
     private int estadoAvalRevisionComite;
 
-    @Column(name = "fecharespuesta")
+    @Column(name = "fechaRespuesta")
     private Date fechaRespuesta;
 
     public RevisionComiteTI_AEntity(){

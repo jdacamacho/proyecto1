@@ -26,45 +26,45 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Entity
-@Table(name = "propuestastrabajogradoti_a")
+@Table(name = "PropuestasTrabajoGradoTI_A")
 public class PropuestaTrabajoGradoTI_AEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idpropuestatrabajogradotia")
+    @Column(name = "idPropuestaTrabajoGradoTI_A")
     private int idPropuestaTrabajoGradoTIA;
 
     @ManyToOne
-    @JoinColumn(name = "identificaciondirectortia")
+    @JoinColumn(name = "identificacionDirectorTI_A")
     private UsuarioEntity identificacionDirectorTIA;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionestudiante1tia")
+    @JoinColumn(name = "identificacionEstudiante1TI_A")
     private UsuarioEntity identificacionEstudiante1TIA;
 
     @ManyToOne
-    @JoinColumn(name = "identificacioncodirectortia")
+    @JoinColumn(name = "identificacionCodirectorTI_A")
     private UsuarioEntity identificacionCodirectorTIA;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionestudiante2tia")
+    @JoinColumn(name = "identificacionEstudiante2TI_A")
     private UsuarioEntity identificacionEstudiante2TIA;
 
-    @Column(name = "titulopropuestatrabajogradotia")
+    @Column(name = "tituloPropuestaTrabajoGradoTI_A")
     private String tituloPropuestaTrabajoGrado;
 
-    @Column(name = "fechasubidopropuestatrabajogradotia")
+    @Column(name = "fechaSubidoPropuestaTrabajoGradoTI_A")
     private Date fechaSubidoPropuestaTrabajoGrado;
 
-    @Column(name = "rutapropuestatrabajogradotia")
+    @Column(name = "rutaPropuestaTrabajoGradoTI_A")
     private String rutaPropuestaTrabajoGrado;
 
-    @Column(name = "rutarespuestapropuestatrabajogrado")
+    @Column(name = "rutaRespuestaPropuestaTrabajoGrado")
     private String rutaRespuestaPropuestaTrabajoGrado;
 
     @ManyToMany(fetch =  FetchType.EAGER, cascade = CascadeType.MERGE )
     @JoinTable(
-        name="historialti_a",joinColumns = @JoinColumn(name="idpropuestatrabajogradotia", referencedColumnName="idpropuestatrabajogradotia"),
-        inverseJoinColumns = @JoinColumn(name="idrevisioncomite", referencedColumnName="idrevisioncomite")
+        name="historialTI_A",joinColumns = @JoinColumn(name="idPropuestaTrabajoGradotTI_A", referencedColumnName="idPropuestaTrabajoGradoTI_A"),
+        inverseJoinColumns = @JoinColumn(name="idRevisionComite", referencedColumnName="idRevisionComite")
     )
     private List<RevisionComiteTI_AEntity> revisiones;
 

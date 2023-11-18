@@ -12,13 +12,24 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.Gestion
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRoles.RolFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.UsuarioFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.AnteproyectoTI_BFormateadorResultadosInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayAnteproyectoTI_BInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionEvaluadorTI_BInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.NotificacionFormateadorResultadosInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.TI_B.GestionarAnteproyectoTI_BCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Notificacion.GestionarNotificacionCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.TI_A.GestionarTI_ACU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Rol.GestionarRolCU;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCU;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryAnteproyectoTI_BImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryAnteproyectoTI_BInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryRevisionEvaluadorTI_BImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryRevisionEvaluadorTI_BInt;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryRevisionTI_BImpl;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryAnteproyecto.TI_B.FactoryRevisionTI_BInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionImpl;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AImpl;
@@ -61,6 +72,40 @@ public class beanConfigurations {
     public factoryNotificacionImpl crearNotificacionFactory(){
         factoryNotificacionImpl objFactoryNotificacion = new factoryNotificacionImpl();
         return objFactoryNotificacion;
+    }
+
+    @Bean
+    public FactoryAnteproyectoTI_BImpl crearFactoryAnteproyectoTI_B(){
+        FactoryAnteproyectoTI_BImpl objFactoryAnteproyecto = new FactoryAnteproyectoTI_BImpl();
+        return objFactoryAnteproyecto;
+    }
+
+    @Bean
+    public FactoryRevisionEvaluadorTI_BImpl crearFactoryRevisionEvaluadorTI_B(){
+        FactoryRevisionEvaluadorTI_BImpl objFactoryRevision = new FactoryRevisionEvaluadorTI_BImpl();
+        return objFactoryRevision;
+    }
+
+    @Bean 
+    public FactoryRevisionTI_BImpl crearFactoryRevisionAnteproyecto(){
+        FactoryRevisionTI_BImpl objFactoryRevisionAnteproyecto = new FactoryRevisionTI_BImpl();
+        return objFactoryRevisionAnteproyecto;
+    }
+
+    @Bean
+    public GestionarAnteproyectoTI_BCU crearGestionarAnteproyectoTI_BCUInt(GestionarUsuarioGatewayInt gatewayUsuario,
+                                    GestionarPropuestaTrabajoGradoTI_AGatewayInt  gatewayPropuesta,
+                                    GestionarGatewayAnteproyectoTI_BInt gatewayAnteproyecto,
+                                    GestionarGatewayRevisionTI_BInt revisionEvaluador,
+                                    GestionarGatewayRevisionEvaluadorTI_BInt revisionAnteproyecto,
+                                    AnteproyectoTI_BFormateadorResultadosInt formateadorAnteproyecto,
+                                    FactoryAnteproyectoTI_BInt factoryAnteproyecto,
+                                    FactoryRevisionEvaluadorTI_BInt factoryRevisionEvaluador,
+                                    FactoryRevisionTI_BInt factoryRevisionAnteproyecto,
+                                    GestionarNotificacionGatewayInt gatewayNotificacion,
+                                    factoryNotificacionInt factoryNotificacion){
+        GestionarAnteproyectoTI_BCU anteproyectoCU = new GestionarAnteproyectoTI_BCU(gatewayUsuario, gatewayPropuesta, gatewayAnteproyecto, revisionEvaluador, revisionAnteproyecto, formateadorAnteproyecto, factoryAnteproyecto, factoryRevisionEvaluador, factoryRevisionAnteproyecto,gatewayNotificacion,factoryNotificacion);
+        return anteproyectoCU;
     }
 
     @Bean

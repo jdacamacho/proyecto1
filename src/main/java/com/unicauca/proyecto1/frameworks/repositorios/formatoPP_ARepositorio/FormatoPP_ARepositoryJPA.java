@@ -10,5 +10,5 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.PP_A.PropuestaTr
 
 @Repository
 public interface FormatoPP_ARepositoryJPA extends CrudRepository<PropuestaTrabajoGradoPP_AEntity,Integer>{
-    public List<PropuestaTrabajoGradoPP_AEntity> findByIdentificacionDirectorPPA(UsuarioEntity identificacionDirector);
+    public List<PropuestaTrabajoGradoPP_AEntity> findByIdentificacionDirectorPPA (UsuarioEntity identificacionDirector);
 }

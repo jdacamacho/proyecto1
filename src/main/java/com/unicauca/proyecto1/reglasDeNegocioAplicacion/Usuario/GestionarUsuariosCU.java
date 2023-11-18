@@ -61,10 +61,12 @@ public class GestionarUsuariosCU implements GestionarUsuariosCUInt{
             return this.objUsuarioFormateadorResultados
                     .prepararRespuestaFallida("Error, no se encuentra en el sistema un usuario con la identificacion ingresada");
         } else {
+            PasswordEncoder encriptador = new PasswordEncoder();
+            String contraseñaEncriptada = encriptador.encodePassword(objDTOPeticion.getLoginUsuario().getContraseñaLogin());
             Usuario objUsuario = this.objUsuarioFactory.crearUsuario(objDTOPeticion.getIdentificacionUsuario(),
                     objDTOPeticion.getNombresUsuario(), objDTOPeticion.getApellidosUsuario(),
                     objDTOPeticion.getEmailUsuario(),objDTOPeticion.getLoginUsuario().getUserNameLogin(),
-                    objDTOPeticion.getLoginUsuario().getContraseñaLogin(),objDTOPeticion.getEstadoUsuario());
+                    contraseñaEncriptada,objDTOPeticion.getEstadoUsuario());
             objUsuario.setRoles(objDTOPeticion.getRoles());
             if (!objUsuario.tipoDeRolEsValido() ) {
                 return this.objUsuarioFormateadorResultados

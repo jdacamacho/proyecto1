@@ -114,7 +114,7 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
             PropuestaTrabajoGradoTI_A objPropuestaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
 
             PropuestaTrabajoGradoTI_A propuestaR = this.objPropuestaGateway.guardar(objPropuestaCreada);
-            String mensajeEvidencia = "Usted realizo la entrega de una propuesta de trabajo de grado en modalida de investigacion. con id: "
+            String mensajeEvidencia = "Usted realizo la entrega de una propuesta de trabajo de grado en modalidad de investigacion. con id: "
             + propuestaR.getIdPropuestaTrabajoGradoTIA() + " y titulo: " + propuestaR.getTituloPropuestaTrabajoGrado(); 
             Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(director,director , mensajeEvidencia, new Date());
             this.objNotificacionGateway.guardar(notificacion);
