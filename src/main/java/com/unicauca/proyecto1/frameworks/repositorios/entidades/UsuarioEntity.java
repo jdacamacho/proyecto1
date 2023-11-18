@@ -4,7 +4,6 @@ package com.unicauca.proyecto1.frameworks.repositorios.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -24,32 +23,32 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Entity
-@Table(name = "usuario")
+@Table(name = "Usuarios")
 public class UsuarioEntity {
     @Id
-    @Column(name = "identificacionusuario")
+    @Column(name = "identificacionUsuario")
     private int identificacionUsuario;
 
-    @Column(name = "nombresusuario")
+    @Column(name = "nombresUsuario")
     private String nombresUsuario;
 
-    @Column(name = "apellidosusuario")
+    @Column(name = "apellidosUsuario")
     private String apellidosUsuario;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name="usuariorol",joinColumns = @JoinColumn(name="identificacionusuario", referencedColumnName="identificacionusuario"),
-        inverseJoinColumns = @JoinColumn(name="codigorol", referencedColumnName="codigorol")
+        name="usuario_roles",joinColumns = @JoinColumn(name="identificacionUsuario", referencedColumnName="identificacionUsuario"),
+        inverseJoinColumns = @JoinColumn(name="codigoRol", referencedColumnName="codigoRol")
     )
     private List<RolEntity> roles;
 
-    @Column(name = "emailusuario")
+    @Column(name = "emailUsuario")
     private String emailUsuario;
 
     @Embedded
     private LoginEntity loginUsuario;
 
-    @Column(name = "estadousuario")
+    @Column(name = "estadoUsuario")
     private int estadoUsuario;
 
     public UsuarioEntity(){

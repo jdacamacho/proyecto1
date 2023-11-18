@@ -28,7 +28,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuesta
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACUInt;
 
 @RestController
-@RequestMapping("/apiPropuestasPP_A")
+@RequestMapping("/api/PropuestasPP_A")
 public class PP_ARestController {
     private final GestionarPP_ACUInt gestionarPropuestaPP_ACU;
 
@@ -56,7 +56,7 @@ public class PP_ARestController {
         @RequestParam("file") MultipartFile file,
         @RequestParam("titulo") String titulo,
         @RequestParam("idDirector") Integer idDirector,
-        @RequestParam(name = "idEstudiante", required = false) Integer idEstudiante,
+        @RequestParam(name = "idEstudiante") Integer idEstudiante,
         @RequestParam(name = "idAsesor", required = false) Integer idAsesor,
         @RequestParam(name = "idCodirector", required = false) Integer idCodirector
     ){

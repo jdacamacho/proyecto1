@@ -16,19 +16,19 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "notificaciones")
+@Table(name = "Notificaciones")
 public class NotificacionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idnotificaciones")
+    @Column(name = "idNotificaciones")
     private int idNotificaciones;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionemisor")
+    @JoinColumn(name = "identificacionEmisor")
     private UsuarioEntity usuarioEmisor;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionreceptor")
+    @JoinColumn(name = "identificacionReceptor")
     private UsuarioEntity usuarioReceptor;
 
     @Column(name = "mensaje")

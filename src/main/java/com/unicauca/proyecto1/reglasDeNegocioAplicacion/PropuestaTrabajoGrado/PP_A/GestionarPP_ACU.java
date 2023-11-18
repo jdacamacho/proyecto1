@@ -20,7 +20,6 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionRevisionComit
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryNotificacion.factoryNotificacionInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryPropuesta.PP_A.factoryPP_AInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.factories.factoryRevisionComite.factoryRevisionComiteInt;
@@ -81,12 +80,9 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
             director = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionDirectorPPA());
             estudiante = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionEstudiantePPA());
             asesor = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionAsesorPPA());
-            if(objPeticion.getIdentificacionCodirectorPPA() != -1 && banderaCodirector == false){
-                return this.objFormateadorResultados.prepararRespuestaFallida("Error en codirector");
-            }else{
-                if(banderaCodirector == true){
-                    codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA());
-                }
+            
+            if(banderaCodirector == true){
+                codirector = this.objUsuarioGateway.consultarUsuario(objPeticion.getIdentificacionCodirectorPPA());
             }
 
             String nombreArchivo = estudiante.getLoginUsuario().getUserNameLogin();    

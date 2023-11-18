@@ -42,7 +42,7 @@ public class UsuarioRestController {
         UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 
         UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(adapter);
@@ -57,8 +57,7 @@ public class UsuarioRestController {
         ExternalUserDTOP objExterno = usuario;
         UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 		UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        System.out.println(usuario);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
@@ -86,7 +85,7 @@ public class UsuarioRestController {
         nuevoEstado.setLoginUsuario(usuarioSeleccionado.getLoginUsuario());
         nuevoEstado.setRoles(usuarioSeleccionado.getRoles());
 
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         if(nuevoEstado!=null){
@@ -120,8 +119,8 @@ public class UsuarioRestController {
         @RequestParam(name = "rol", required = false) String rol, 
         HttpSession httpSession
     ) {
-        List<UsuarioDTORespuesta> listaVacia = new ArrayList<>();
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        List<UsuarioDTORespuesta> listaVacia = new ArrayList();
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
 
         if ( rol != null ) {
             System.out.println("peticion a get usuarios por rol " + rol);
@@ -139,25 +138,14 @@ public class UsuarioRestController {
     @PatchMapping("/usuarios/{identificacion}")
     public UsuarioDTORespuesta addRol(@RequestBody Rol nuevoRol,@PathVariable Integer identificacion,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                objUsuarioR = objGestionarUsuariosCUInt.agregarRol(identificacion,nuevoRol);
-            }
-        }
+        objUsuarioR = objGestionarUsuariosCUInt.agregarRol(identificacion,nuevoRol);
         return objUsuarioR;
     }
 
     @DeleteMapping("/usuarios/{identificacion}")
     public UsuarioDTORespuesta deleteRol(@RequestBody Rol rolEliminar,@PathVariable Integer identificacion,HttpSession httpSession){
         UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
-            }
-        }
-
+        objUsuarioR = objGestionarUsuariosCUInt.eliminarRol(identificacion, rolEliminar);
         return objUsuarioR;
     }
 
@@ -177,7 +165,7 @@ public class UsuarioRestController {
          * Si el usuario no existe retornar null
          */
         if(objUsuarioR == null) return null;
-        
+
         /**
          * Encriptar la contraseña del DTO de entrada
          */
@@ -194,7 +182,7 @@ public class UsuarioRestController {
          * Si el usuario existe y la contraseña coincide, almacenar el nombre de usuario en la sesión
          */
         httpSession.setAttribute("user",login.getUserNameLogin());
-        almacenarRolSession(httpSession, objUsuarioR);
+        //almacenarRolSession(httpSession, objUsuarioR);
 
         /**
          * Retornar el usuario sin la contraseña
@@ -203,7 +191,7 @@ public class UsuarioRestController {
         return objUsuarioR;
     }
 
-    @PostMapping("/logout")
+    /*@PostMapping("/logout")
     public String logout(HttpSession session) {
        session.invalidate();
        return "Sesion terminada";
@@ -223,5 +211,5 @@ public class UsuarioRestController {
     private List<String> obtenerRolSession(HttpSession httpSession){
         List<String> rol = (List<String>) httpSession.getAttribute("rol");
         return rol;
-    }
+    }*/
 }

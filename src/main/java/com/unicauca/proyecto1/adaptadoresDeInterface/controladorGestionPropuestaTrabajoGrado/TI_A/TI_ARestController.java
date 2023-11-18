@@ -59,7 +59,7 @@ public class TI_ARestController {
     @PostMapping("/propuestas")
     public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
         @RequestParam("file") MultipartFile file,
-        @RequestParam("titulo") String titulo,
+        @RequestParam("title") String titulo,
         @RequestParam("idDirector") Integer idDirector,
         @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
         @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
@@ -130,9 +130,10 @@ public class TI_ARestController {
     }
 
     @GetMapping("/propuestasAprobadas/{idPropuesta}")
-    public ResponseEntity<Resource> descargarPropuestaAprobada(@PathVariable int idPropuesta) throws IOException {       
+    public ResponseEntity<Resource> descargarPropuestaAprobada(@PathVariable int idPropuesta) throws IOException {    
         if(this.gestionarPropuestaTI_ACU.existePropuesta(idPropuesta)){
             PropuestaTrabajoGradoTI_ADTORespuesta propuesta =  this.gestionarPropuestaTI_ACU.consultarPropuesta(idPropuesta);
+
             String rutaCompleta = propuesta.getRutaRespuestaPropuestaTrabajoGrado(); 
 
             Path path = Paths.get(rutaCompleta);
