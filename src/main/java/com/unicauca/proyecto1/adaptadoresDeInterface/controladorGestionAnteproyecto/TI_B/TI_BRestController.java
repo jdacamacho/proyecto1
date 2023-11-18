@@ -1,11 +1,14 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.TI_B;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
@@ -44,11 +47,27 @@ public class TI_BRestController {
 
     @PatchMapping("/anteproyectos")
     public AnteproyectoTI_BDTORespuesta asignarEvaluadores(
+        @RequestParam("jefeDepartamento") int idJefe,
         @RequestParam("evaluador1") int idEvaluador1,
         @RequestParam("evaluador2") int idEvaluador2,
         @RequestParam("anteproyecto") String idAnteproyecto
     ){
-        return this.anteproyectoCU.asignarEvaluador(idEvaluador1, idEvaluador2, idAnteproyecto);
+        return this.anteproyectoCU.asignarEvaluador(idJefe,idEvaluador1, idEvaluador2, idAnteproyecto);
+    }
+
+    @GetMapping("/anteproyectos")
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectos(){
+        return this.anteproyectoCU.listarAnteproyectos();
+    }
+
+    @GetMapping("/anteproyectosDirector")
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(@RequestParam("idDirector") int idDirector){
+        return this.anteproyectoCU.listarAnteproyectosDirector(idDirector);
+    }
+
+    @GetMapping("/anteproyectos/{idAnteproyecto}")
+    public AnteproyectoTI_BDTORespuesta consultarAnteproyecto(@PathVariable String idAnteproyecto){
+        return this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
     }
     
 }

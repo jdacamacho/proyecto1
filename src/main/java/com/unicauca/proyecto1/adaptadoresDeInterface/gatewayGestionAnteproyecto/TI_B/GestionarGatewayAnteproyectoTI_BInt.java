@@ -10,7 +10,7 @@ public interface GestionarGatewayAnteproyectoTI_BInt {
     public AnteproyectoTI_B consultarAnteproyecto(String idAnteproyecto);
     List<AnteproyectoTI_B> listarAnteproyectosDirector (Usuario objUsuarioReceptor);
     List<AnteproyectoTI_B> listarAnteproyectos();
-    public boolean existeAnteproyecto(int anteproyecto);
+    public boolean existeAnteproyecto(String anteproyecto);
     public long contarAnteproyectos(String idAnteproyecto);
 
 }

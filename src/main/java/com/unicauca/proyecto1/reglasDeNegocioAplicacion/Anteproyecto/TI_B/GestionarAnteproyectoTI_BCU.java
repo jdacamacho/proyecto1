@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -132,7 +133,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     }
 
     @Override
-    public AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1, int idEvaluador2, String idAnteproyecto) {
+    public AnteproyectoTI_BDTORespuesta asignarEvaluador(int idJefeDepartamento,int idEvaluador1, int idEvaluador2, String idAnteproyecto) {
         boolean banderaEvaluador1 = this.gatewayUsuario.existeUsuario(idEvaluador1);
         boolean banderaEvaluador2 = this.gatewayUsuario.existeUsuario(idEvaluador2);
         long banderaAnteproyecto = this.gatewayAnteproyecto.contarAnteproyectos(idAnteproyecto);
@@ -141,6 +142,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         }else{
             AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
             if(anteproyecto.controlMaximoDeVersiones()){
+                Usuario jefeDepartamento = this.gatewayUsuario.consultarUsuario(idJefeDepartamento);
                 Usuario evaluador1 = this.gatewayUsuario.consultarUsuario(idEvaluador1);
                 Usuario evaluador2 = this.gatewayUsuario.consultarUsuario(idEvaluador2);
                 RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "A revision", null, null);
@@ -151,6 +153,14 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                 RevisionTI_B revisionAlmacenada = this.gatewayRevisionAnteproyecto.guardar(revisionAnteproyecto);
                 anteproyecto.getRevisiones().add(revisionAlmacenada);
                 this.gatewayAnteproyecto.guardar(anteproyecto);
+                String mensaje1 = "Se ha asignado un anteproyecto para revisar con id de anteproyecto:" + idAnteproyecto + ", titulo :" +  
+                anteproyecto.getTituloAnteproyecto() + " con id revision:" + revisionEvaluador1creada.getIdRevisionEvaluadorTIB();
+                Notificacion notificacion1 = this.factoryNotificacion.crearNotificacion(jefeDepartamento, evaluador1, mensaje1, new Date());
+                String mensaje2 = "Se ha asignado un anteproyecto para revisar con id de anteproyecto:" + idAnteproyecto + ", titulo :" +  
+                anteproyecto.getTituloAnteproyecto() + " con id revision:" + revisionEvaluador2creada.getIdRevisionEvaluadorTIB();
+                Notificacion notificacion2 = this.factoryNotificacion.crearNotificacion(jefeDepartamento, evaluador2, mensaje2, new Date());
+                this.gatewayNotificacion.guardar(notificacion1);
+                this.gatewayNotificacion.guardar(notificacion2);
                 return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyecto);
             }else{
                 return this.formateadorAnteproyecto.prepararRespuestaFallida("Error, se alcanzo el maximo numero permitido de revisionees");
@@ -177,7 +187,52 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         }
     }
 
+    
+    @Override
+    public AnteproyectoTI_BDTORespuesta consultarAnteproyecto(String idAnteproyecto) {
+        if(this.gatewayAnteproyecto.contarAnteproyectos(idAnteproyecto) > 0){
+            AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
+            return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaConsultarAnteproyecto(anteproyecto);
+        }else{
+            return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el anteproyecto consultado");
+        }
+    }
 
+    @Override
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectos() {
+        List<AnteproyectoTI_B>  lista = this.gatewayAnteproyecto.listarAnteproyectos();
+        return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(lista);
+    }
+    @Override
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(int idDirector) {
+        boolean banderaDirector = this.gatewayUsuario.existeUsuario(idDirector);
+        if(banderaDirector){
+            Usuario director  = this.gatewayUsuario.consultarUsuario(idDirector);
+            List<AnteproyectoTI_B>  lista = this.gatewayAnteproyecto.listarAnteproyectosDirector(director);
+            return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(lista);
+        }
+        return null;
+    }
+
+    public List<RevisionEvaluadorTI_B> getRevision(int idEvaluador,String idAnteproyecto){
+        boolean banderaUsuario = this.gatewayUsuario.existeUsuario(idEvaluador);
+        boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
+        List<RevisionEvaluadorTI_B> revisiones = new ArrayList<>();
+        if(banderaUsuario == true && banderaAnteproyecto == true){
+            AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
+            List<RevisionTI_B>  revisionesEvaluador = anteproyecto.getRevisiones();
+            for(int i = 0 ; i < revisionesEvaluador.size() ; i++){
+                if(revisionesEvaluador.get(i).getIdentificacionEvaluador1().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
+                    revisiones.add(revisionesEvaluador.get(i).getIdentificacionEvaluador1());
+                }
+                if(revisionesEvaluador.get(i).getIdentificacionEvaluador2().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
+                    revisiones.add(revisionesEvaluador.get(i).getIdentificacionEvaluador2());
+                }
+            }
+
+        }
+        return revisiones;
+    }
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
         String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_B/Recibidos/" + fileName + ".docx";
