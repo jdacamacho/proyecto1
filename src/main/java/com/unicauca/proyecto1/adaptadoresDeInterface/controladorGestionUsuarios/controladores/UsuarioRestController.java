@@ -1,6 +1,5 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.controladores;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
