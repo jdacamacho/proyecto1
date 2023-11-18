@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class AnteproyectoTI_BDTORespuesta {
-    private int idAnteProyectoTIB;
+    private String idAnteProyectoTIB;
     private PropuestaTrabajoGradoTI_A idPropuestaTIA;
     private Usuario identificacionDirectorTIB;
     private Usuario identificacionEstudiante1TIB;

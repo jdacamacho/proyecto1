@@ -101,9 +101,10 @@ public class beanConfigurations {
                                     AnteproyectoTI_BFormateadorResultadosInt formateadorAnteproyecto,
                                     FactoryAnteproyectoTI_BInt factoryAnteproyecto,
                                     FactoryRevisionEvaluadorTI_BInt factoryRevisionEvaluador,
-                                    FactoryRevisionTI_BInt factoryRevisionAnteproyecto
-                                    ){
-        GestionarAnteproyectoTI_BCU anteproyectoCU = new GestionarAnteproyectoTI_BCU(gatewayUsuario, gatewayPropuesta, gatewayAnteproyecto, revisionEvaluador, revisionAnteproyecto, formateadorAnteproyecto, factoryAnteproyecto, factoryRevisionEvaluador, factoryRevisionAnteproyecto);
+                                    FactoryRevisionTI_BInt factoryRevisionAnteproyecto,
+                                    GestionarNotificacionGatewayInt gatewayNotificacion,
+                                    factoryNotificacionInt factoryNotificacion){
+        GestionarAnteproyectoTI_BCU anteproyectoCU = new GestionarAnteproyectoTI_BCU(gatewayUsuario, gatewayPropuesta, gatewayAnteproyecto, revisionEvaluador, revisionAnteproyecto, formateadorAnteproyecto, factoryAnteproyecto, factoryRevisionEvaluador, factoryRevisionAnteproyecto,gatewayNotificacion,factoryNotificacion);
         return anteproyectoCU;
     }
 

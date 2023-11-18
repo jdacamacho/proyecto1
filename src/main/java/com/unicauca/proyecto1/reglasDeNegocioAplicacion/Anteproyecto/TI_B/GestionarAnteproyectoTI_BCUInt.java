@@ -4,8 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.Anteproyecto.TI_B.AnteproyectoTI_B;
 
 public interface GestionarAnteproyectoTI_BCUInt {
     AnteproyectoTI_BDTORespuesta crearAnteproyecto(AnteproyectoTI_BDTOPeticion peticion,MultipartFile file);
     AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1,int idEvaluador2,int idAnteproyecto );
+    public void observerNotificacionJefatura(AnteproyectoTI_B anteproyectoRegistrado);
 }

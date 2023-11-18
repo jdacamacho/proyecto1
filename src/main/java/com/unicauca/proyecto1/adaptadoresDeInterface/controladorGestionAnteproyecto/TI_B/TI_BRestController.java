@@ -1,6 +1,5 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.TI_B;
 
-import org.hibernate.mapping.List;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

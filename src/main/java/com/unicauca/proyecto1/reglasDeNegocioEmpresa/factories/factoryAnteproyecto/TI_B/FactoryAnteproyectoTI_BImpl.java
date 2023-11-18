@@ -12,7 +12,7 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 public class FactoryAnteproyectoTI_BImpl implements FactoryAnteproyectoTI_BInt{
 
     @Override
-    public AnteproyectoTI_B crearAnteproyecto(int idAnteProyectoTIB, PropuestaTrabajoGradoTI_A idPropuestaTIA,
+    public AnteproyectoTI_B crearAnteproyecto(String idAnteProyectoTIB, PropuestaTrabajoGradoTI_A idPropuestaTIA,
             Usuario identificacionDirectorTIB, Usuario identificacionEstudiante1TIB,
             Usuario identificacionEstudiante2TIB, Usuario identificacionCodirector, String tituloAnteproyecto,
             String rutaAnteproyectoTIB) {

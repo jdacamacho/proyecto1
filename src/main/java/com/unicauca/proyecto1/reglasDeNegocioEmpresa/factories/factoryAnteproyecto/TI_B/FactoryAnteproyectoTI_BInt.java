@@ -4,7 +4,7 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 public interface FactoryAnteproyectoTI_BInt {
-    public AnteproyectoTI_B crearAnteproyecto(int idAnteProyectoTIB,PropuestaTrabajoGradoTI_A idPropuestaTIA,
+    public AnteproyectoTI_B crearAnteproyecto(String idAnteProyectoTIB,PropuestaTrabajoGradoTI_A idPropuestaTIA,
                                         Usuario identificacionDirectorTIB,Usuario identificacionEstudiante1TIB,
                                         Usuario identificacionEstudiante2TIB,Usuario identificacionCodirector,
                                         String tituloAnteproyecto,String rutaAnteproyectoTIB);
