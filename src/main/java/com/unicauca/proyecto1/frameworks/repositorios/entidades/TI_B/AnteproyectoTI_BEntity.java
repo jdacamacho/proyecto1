@@ -19,47 +19,47 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.util.List;
 
-@Entity(name = "anteproyectoti_b")
+@Entity(name = "AnteproyectosTI_B")
 @Data
 @AllArgsConstructor
 public class AnteproyectoTI_BEntity {
     @Id
-    @Column(name = "idanteproyectotib")
+    @Column(name = "idAnteproyectoTI_b")
     private int idAnteProyectoTIB;
 
     @ManyToOne
-    @JoinColumn(name = "idpropuestatia")
+    @JoinColumn(name = "idPropuestaTI_B")
     private PropuestaTrabajoGradoTI_AEntity idPropuestaTIA;
     
     @ManyToOne
-    @JoinColumn(name = "identificaciondirectortib")
+    @JoinColumn(name = "identificacionDirectorTI_B")
     private UsuarioEntity identificacionDirectorTIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionestudiante1tib")
+    @JoinColumn(name = "identificacionEstudiante1TI_B")
     private UsuarioEntity identificacionEstudiante1TIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionestudiante2tib")
+    @JoinColumn(name = "identificacionEstudiante2TI_B")
     private UsuarioEntity identificacionEstudiante2TIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacioncodirector")
+    @JoinColumn(name = "identificacionCodirectorTI_B")
     private UsuarioEntity identificacionCodirector;
 
-    @Column(name = "tituloanteproyectotib")
+    @Column(name = "tituloAnteproyectoTI_B")
     private String tituloAnteproyecto;
 
-    @Column(name = "fecharecepcionanteproyectotib")
+    @Column(name = "fechaRecepcionAnteproyectoTI_B")
     private Date fechaRecepcionAnteproyectoTIB;
 
-    @Column(name = "rutaanteproyectotib")
+    @Column(name = "rutaAnteproyecto")
     private String rutaAnteproyectoTIB;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    @JoinTable(name="versiones_anteproyecto_tib",
-        joinColumns = @JoinColumn(name = "idanteproyectotib",referencedColumnName = "idanteproyectotib"),
-        inverseJoinColumns = @JoinColumn(name = "idrevisionevaluadortib" ,referencedColumnName = "idrevision"))
+    @JoinTable(name="versiones_anteproyecto_TI_B",
+        joinColumns = @JoinColumn(name = "idAnteproyectoTI_B",referencedColumnName = "idAnteproyectoTI_b"),
+        inverseJoinColumns = @JoinColumn(name = "idRevisionAteproyectoTI_B" ,referencedColumnName = "idRevision"))
     private List<RevisionTI_BEntity> revisiones; 
 
     public AnteproyectoTI_BEntity(){

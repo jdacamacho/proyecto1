@@ -10,9 +10,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Embeddable
 public class LoginEntity {
-    @Column(name="loginusuario")
+    @Column(name="loginUsuario")
     private String userNameLogin;
-    @Column(name = "contraseñausuario")
+    @Column(name = "contraseñaUsuario")
     private String contraseñaLogin;
     
     public LoginEntity(){

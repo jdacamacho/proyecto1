@@ -14,32 +14,32 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Entity(name = "revisionevaluadorti_b")
+@Entity(name = "RevisionesEvaluadorTI_B")
 @Data
 @AllArgsConstructor
 public class RevisionEvaluadorTI_BEntity {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY )
-    @Column(name = "idrevisionevaluadortib")
+    @Column(name = "idRevisionEvaluadorTI_B")
     private int idRevisionEvaluadorTIB;
 
     @ManyToOne
-    @JoinColumn(name = "identificacionevaluador")
+    @JoinColumn(name = "identificacionEvaluador")
     private UsuarioEntity identificacionEvaluador;
 
-    @Column(name = "fechaasignacionrevisionevaluador")
+    @Column(name = "fechaAsignacionRevisionEvaluador")
     private Date fechaAsignacion;
 
-   @Column(name = "fechaconceptorevisionevaluador")
+   @Column(name = "fechaConceptoRevisionEvaluador")
     private Date fechaConcepto;
 
-    @Column(name = "conceptorevisionevaluador")
+    @Column(name = "conceptoRevisionEvaluador")
     private String conceptoRevision;
 
-    @Column(name = "observacionesrevisionevaluador")
+    @Column(name = "observacionesRevisionEvaluador")
     private String observaciones;
 
-    @Column(name = "rutarespuesta")
+    @Column(name = "rutaRespuesta")
     private String rutaRespuesta;
 
     public RevisionEvaluadorTI_BEntity(){

@@ -24,19 +24,9 @@ public class RolRestController {
 
     @GetMapping("/roles")
     public List<RolDTORespuesta> listar(HttpSession httpSession) {
-        List<RolDTORespuesta> listaVacia = new ArrayList<>();
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        if(httpSession.getAttribute("user") != null){
-            if(rolObjUsuario.contains("Administrador")){
-                listaVacia = this.objGestionarRolCUInt.listarRoles() ;
-                return listaVacia;
-            }
-        }
-        return listaVacia;
-    }
-
-    private List<String> obtenerRolSession(HttpSession httpSession){
-        List<String> rol = (List<String>) httpSession.getAttribute("rol");
-        return rol;
+        List<RolDTORespuesta> lista = new ArrayList<>();
+        lista = this.objGestionarRolCUInt.listarRoles() ;
+        return lista;
+        
     }
 }

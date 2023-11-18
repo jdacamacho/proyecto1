@@ -11,22 +11,22 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Entity(name = "revisionti_b")
+@Entity(name = "RevisionesAnteproyectoTI_B")
 @Data
 @AllArgsConstructor
 public class RevisionTI_BEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idrevision")
+    @Column(name = "idRevision")
     private int idRevision;
 
     @ManyToOne
-    @JoinColumn(name = "idrevisionevaluador1")
+    @JoinColumn(name = "idRevisionEvaluador1")
     private RevisionEvaluadorTI_BEntity identificacionEvaluador1;
 
     @ManyToOne
-    @JoinColumn(name = "idrevisionevaluador2")
+    @JoinColumn(name = "idRevisionEvaluador2")
     private RevisionEvaluadorTI_BEntity identificacionEvaluador2;
 
     public RevisionTI_BEntity(){
