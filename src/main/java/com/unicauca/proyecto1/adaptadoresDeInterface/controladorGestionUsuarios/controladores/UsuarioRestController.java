@@ -189,7 +189,7 @@ public class UsuarioRestController {
          */
         objUsuarioR.getLoginUsuario().setContraseñaLogin(null);
         return objUsuarioR;
-    }*/
+    }
 
     /*@PostMapping("/logout")
     public String logout(HttpSession session) {
