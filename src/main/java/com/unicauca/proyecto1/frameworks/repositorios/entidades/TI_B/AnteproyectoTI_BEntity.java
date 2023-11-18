@@ -30,7 +30,7 @@ public class AnteproyectoTI_BEntity {
     @Column(name = "idAnteproyectosTI_B")
     private int idAnteProyectosTIB;
 
-    @Column(name = "idAnteproyectoTI_B", unique = true)
+    @Column(name = "idAnteproyectoTI_B")
     private String idAnteproyectoTIB;
 
     @ManyToOne
@@ -62,7 +62,7 @@ public class AnteproyectoTI_BEntity {
     @Column(name = "rutaAnteproyecto")
     private String rutaAnteproyectoTIB;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="versiones_anteproyecto_TI_B",
         joinColumns = @JoinColumn(name = "idAnteproyectoTI_B",referencedColumnName = "idAnteproyectoTI_b"),
         inverseJoinColumns = @JoinColumn(name = "idRevisionAteproyectoTI_B" ,referencedColumnName = "idRevision"))

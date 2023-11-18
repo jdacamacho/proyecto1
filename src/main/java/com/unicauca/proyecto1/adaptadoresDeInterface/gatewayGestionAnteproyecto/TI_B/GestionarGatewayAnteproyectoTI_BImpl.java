@@ -1,5 +1,6 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -33,14 +34,14 @@ public class GestionarGatewayAnteproyectoTI_BImpl implements GestionarGatewayAnt
     }
 
     @Override
-    public AnteproyectoTI_B consultarAnteproyecto(int idAnteproyecto) {
-        AnteproyectoTI_BEntity anteproyectoConsultado = this.repositorioAnteproyecto.findById(idAnteproyecto).get();
+    public AnteproyectoTI_B consultarAnteproyecto(String idAnteproyecto) {
+        AnteproyectoTI_BEntity anteproyectoConsultado = this.repositorioAnteproyecto.findByIdAnteproyectoTIB(idAnteproyecto);
         AnteproyectoTI_B anteproyectoR = this.mapper.map(anteproyectoConsultado,AnteproyectoTI_B.class);
         return anteproyectoR;
     }
 
     @Override
-    public List<AnteproyectoTI_B> listarAnteproyecto(Usuario objUsuarioReceptor) {
+    public List<AnteproyectoTI_B> listarAnteproyectosDirector(Usuario objUsuarioReceptor) {
         UsuarioEntity usuario = this.mapper.map(objUsuarioReceptor,UsuarioEntity.class);
         List<AnteproyectoTI_BEntity> lista = this.repositorioAnteproyecto.findByIdentificacionDirectorTIB(usuario);
         List<AnteproyectoTI_B> listaObtenida = this.mapper.map(lista, new TypeToken<List<AnteproyectoTI_B>>() {
@@ -51,6 +52,22 @@ public class GestionarGatewayAnteproyectoTI_BImpl implements GestionarGatewayAnt
     @Override
     public boolean existeAnteproyecto(int anteproyecto) {
         return this.repositorioAnteproyecto.findById(anteproyecto).isPresent();
+    }
+
+    @Override
+    public List<AnteproyectoTI_B> listarAnteproyectos() {
+        Iterable<AnteproyectoTI_BEntity> iterable = this.repositorioAnteproyecto.findAll();
+        List<AnteproyectoTI_BEntity> lista = new ArrayList<>();
+        iterable.forEach(lista::add); 
+        List<AnteproyectoTI_B> listaObtenida = this.mapper.map(lista, new TypeToken<List<AnteproyectoTI_B>>() {
+        }.getType());
+        return listaObtenida;
+
+    }
+
+    @Override
+    public long contarAnteproyectos(String idAnteproyecto) {
+        return this.repositorioAnteproyecto.countByIdAnteproyectoTIB(idAnteproyecto);
     }
 
     

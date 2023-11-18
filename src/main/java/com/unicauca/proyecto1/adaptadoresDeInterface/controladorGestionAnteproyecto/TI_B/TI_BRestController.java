@@ -46,7 +46,7 @@ public class TI_BRestController {
     public AnteproyectoTI_BDTORespuesta asignarEvaluadores(
         @RequestParam("evaluador1") int idEvaluador1,
         @RequestParam("evaluador2") int idEvaluador2,
-        @RequestParam("anteproyecto") int idAnteproyecto
+        @RequestParam("anteproyecto") String idAnteproyecto
     ){
         return this.anteproyectoCU.asignarEvaluador(idEvaluador1, idEvaluador2, idAnteproyecto);
     }
