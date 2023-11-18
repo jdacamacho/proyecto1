@@ -8,6 +8,6 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.Anteproyecto.TI_B.Anteproye
 
 public interface GestionarAnteproyectoTI_BCUInt {
     AnteproyectoTI_BDTORespuesta crearAnteproyecto(AnteproyectoTI_BDTOPeticion peticion,MultipartFile file);
-    AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1,int idEvaluador2,int idAnteproyecto );
+    AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1,int idEvaluador2,String idAnteproyecto );
     public void observerNotificacionJefatura(AnteproyectoTI_B anteproyectoRegistrado);
 }

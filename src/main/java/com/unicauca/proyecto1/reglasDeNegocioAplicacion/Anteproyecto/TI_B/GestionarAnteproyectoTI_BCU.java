@@ -132,11 +132,11 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     }
 
     @Override
-    public AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1, int idEvaluador2, int idAnteproyecto) {
+    public AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1, int idEvaluador2, String idAnteproyecto) {
         boolean banderaEvaluador1 = this.gatewayUsuario.existeUsuario(idEvaluador1);
         boolean banderaEvaluador2 = this.gatewayUsuario.existeUsuario(idEvaluador2);
-        boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
-        if(banderaEvaluador1 == false && banderaEvaluador2 == false && banderaAnteproyecto == false){
+        long banderaAnteproyecto = this.gatewayAnteproyecto.contarAnteproyectos(idAnteproyecto);
+        if(banderaEvaluador1 == false && banderaEvaluador2 == false && banderaAnteproyecto == 0){
             return this.formateadorAnteproyecto.prepararRespuestaFallida("error es evaluadores o anteproyecto");
         }else{
             AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
@@ -166,7 +166,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         List<Usuario> usuariosConRolJefeDepartamento = this.gatewayUsuario.buscarUsuariosPorRol(JefeDepartamento);
         List<Usuario> usuariosConRolAsistenteJefeDepartamento = this.gatewayUsuario.buscarUsuariosPorRol(AsistenteJefeDepartamento);
         String mensaje = "Se ha registrado un nuevo anteproyecto en modalidad de investigacion." + 
-        " id Anteproyecto: " + anteproyectoRegistrado.getIdAnteProyectoTIB() + " titulo: " + anteproyectoRegistrado.getTituloAnteproyecto() + " para la propuesta de trabajo de grado : " + anteproyectoRegistrado.getIdPropuestaTIA() ;
+        " id Anteproyecto: " + anteproyectoRegistrado.getIdAnteProyectoTIB() + " titulo: " + anteproyectoRegistrado.getTituloAnteproyecto() + " para la propuesta de trabajo de grado : " + anteproyectoRegistrado.getIdPropuestaTIA().getIdPropuestaTrabajoGradoTIA() ;
         for(int i = 0 ; i<usuariosConRolJefeDepartamento.size(); i++){
             Notificacion notificacion = this.factoryNotificacion.crearNotificacion(anteproyectoRegistrado.getIdentificacionDirectorTIB(),usuariosConRolJefeDepartamento.get(i), mensaje, new Date());
             this.gatewayNotificacion.guardar(notificacion);

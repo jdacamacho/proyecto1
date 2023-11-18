@@ -10,4 +10,6 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 @Repository
 public interface FormatoAnteproyectoRepositoryJPA extends CrudRepository<AnteproyectoTI_BEntity,Integer>{
     List<AnteproyectoTI_BEntity> findByIdentificacionDirectorTIB(UsuarioEntity identificacionDirectorTIB);
+    AnteproyectoTI_BEntity findByIdAnteproyectoTIB(String idAnteproyectoTIB);
+    long countByIdAnteproyectoTIB(String idAnteproyecto);
 }
