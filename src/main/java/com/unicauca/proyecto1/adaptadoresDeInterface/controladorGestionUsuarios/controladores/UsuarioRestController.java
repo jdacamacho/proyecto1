@@ -177,7 +177,7 @@ public class UsuarioRestController {
          * Si el usuario no existe retornar null
          */
         if(objUsuarioR == null) return null;
-        
+
         /**
          * Encriptar la contraseña del DTO de entrada
          */

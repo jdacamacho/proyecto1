@@ -11,7 +11,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionNotificac
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Notificacion.GestionarNotificacionCUInt;
 
 @RestController
-@RequestMapping("/apiNotificaciones")
+@RequestMapping("/api/notificaciones")
 public class NotificacionRestController {
     
     private final GestionarNotificacionCUInt objGestionarNotificacionCU;
@@ -20,7 +20,7 @@ public class NotificacionRestController {
         this.objGestionarNotificacionCU = objGestionarNotificacionCUInt;
     }
 
-    @GetMapping("/notificaciones/{identificacion}")
+    @GetMapping("/{identificacion}")
     public List<NotificacionDTORespuesta> listarPorUsuario(@PathVariable Integer identificacion){
         return this.objGestionarNotificacionCU.listarPorUsuario(identificacion);
     }
