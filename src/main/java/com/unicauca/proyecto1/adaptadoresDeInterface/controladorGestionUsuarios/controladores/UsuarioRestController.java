@@ -1,5 +1,6 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.controladores;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Usuario.GestionarUsuariosCUInt;
+import com.unicauca.proyecto1.reglasDeNegocioAplicacion.encriptacion.PasswordEncoder;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.rol.Rol;
 
 import jakarta.servlet.http.HttpSession;
@@ -40,7 +42,7 @@ public class UsuarioRestController {
         UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 
         UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         objUsuarioR = objGestionarUsuariosCUInt.crearUsuario(adapter);
@@ -55,8 +57,7 @@ public class UsuarioRestController {
         ExternalUserDTOP objExterno = usuario;
         UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 		UsuarioDTORespuesta objUsuarioR = null;
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
-        System.out.println(usuario);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         objUsuarioR = objGestionarUsuariosCUInt.consultarUsuario(identificacion);
@@ -84,7 +85,7 @@ public class UsuarioRestController {
         nuevoEstado.setLoginUsuario(usuarioSeleccionado.getLoginUsuario());
         nuevoEstado.setRoles(usuarioSeleccionado.getRoles());
 
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
         // if(httpSession.getAttribute("user") != null){
         //     if(rolObjUsuario.contains("Administrador")){
         //         if(nuevoEstado!=null){
@@ -118,8 +119,8 @@ public class UsuarioRestController {
         @RequestParam(name = "rol", required = false) String rol, 
         HttpSession httpSession
     ) {
-        List<UsuarioDTORespuesta> listaVacia = new ArrayList<>();
-        List<String> rolObjUsuario = obtenerRolSession(httpSession);
+        List<UsuarioDTORespuesta> listaVacia = new ArrayList();
+        //List<String> rolObjUsuario = obtenerRolSession(httpSession);
 
         if ( rol != null ) {
             System.out.println("peticion a get usuarios por rol " + rol);
@@ -181,7 +182,7 @@ public class UsuarioRestController {
          * Si el usuario existe y la contraseña coincide, almacenar el nombre de usuario en la sesión
          */
         httpSession.setAttribute("user",login.getUserNameLogin());
-        almacenarRolSession(httpSession, objUsuarioR);
+        //almacenarRolSession(httpSession, objUsuarioR);
 
         /**
          * Retornar el usuario sin la contraseña
