@@ -13,7 +13,6 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproye
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.AnteproyectoTI_BFormateadorResultadosInt;
-import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayAnteproyectoTI_BImpl;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayAnteproyectoTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionEvaluadorTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionTI_BInt;
@@ -63,57 +62,83 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     @Override
     public AnteproyectoTI_BDTORespuesta crearAnteproyecto(AnteproyectoTI_BDTOPeticion peticion,MultipartFile file) {
         boolean banderaPropuesta = this.gatewayPropuesta.existePropuesta(peticion.getIdPropuestaTIA());
-        if(banderaPropuesta == false){
-            return this.formateadorAnteproyecto.prepararRespuestaFallida("Error, no existe la propuesta");
+        boolean banderaDirector = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionDirectorTIB());
+        boolean banderaEstudiante1 = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionEstudiante1TIB());
+        boolean banderaEstudiante2 = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionEstudiante2TIB());
+        boolean banderaCodirector = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionCodirector());
+        Usuario director = null;
+        Usuario estudiante1 = null;
+        Usuario estudiante2 = null;
+        Usuario codirector = null;
+        if(banderaPropuesta == false || banderaDirector == false || banderaEstudiante1 == false){
+            return this.formateadorAnteproyecto.prepararRespuestaFallida("Error, no existe la propuesta,docente o estudiante 1");
         }else{
-            boolean banderaDirector = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionDirectorTIB());
-            boolean banderaEstudiante1 = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionEstudiante1TIB());
-            boolean banderaEstudiante2 = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionEstudiante2TIB());
-            boolean banderaCodirector = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionCodirector());
-            Usuario director = null;
-            Usuario estudiante1 = null;
-            Usuario estudiante2 = null;
-            Usuario codirector = null;
-            if(banderaDirector == false || banderaEstudiante1 == false){
-                return this.formateadorAnteproyecto.prepararRespuestaFallida("error en director o estudiante");
+            if(this.gatewayPropuesta.consultarPropuesta(peticion.getIdPropuestaTIA()).getRutaRespuestaPropuestaTrabajoGrado() == null){
+                return this.formateadorAnteproyecto.prepararRespuestaFallida("La propuesta debe ser previamente aprobada");
             }else{
                 director = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionDirectorTIB());
                 estudiante1 = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionEstudiante1TIB());
-                if(banderaEstudiante2 == false && peticion.getIdentificacionEstudiante2TIB() != -1){
-                    return this.formateadorAnteproyecto.prepararRespuestaFallida("error en el estudiante 2");
-                }else{
-                    if(banderaCodirector == false && peticion.getIdentificacionCodirector() != -1){
-                        return this.formateadorAnteproyecto.prepararRespuestaFallida("error en el codirector");
+                if(banderaEstudiante2 == true && banderaCodirector == false){
+                    if(peticion.getIdentificacionCodirector() == -1){
+                        estudiante2 = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionEstudiante2TIB());                
+                    }else{
+                        return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el codirector");
                     }
-                    estudiante2 = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionEstudiante2TIB());
+                }else if(banderaEstudiante2 == false && banderaCodirector == true){
+                    if(peticion.getIdentificacionEstudiante2TIB() == -1){
+                        codirector = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionCodirector());
+                    }else{
+                        return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el estudiante 2");
+                    }
+                }else if(banderaEstudiante2 == true && banderaCodirector == true){
+                    estudiante2 = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionEstudiante2TIB()); 
                     codirector = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionCodirector());
-                    
-                    
-                    String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
-                    String rutaDestino = "";   
-                    try{
-                        rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
-                    }  catch(IOException exception){
-                        return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
-                    } 
-                    RevisionEvaluadorTI_B revision1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0,null, null,"Revision",null,null);
-                    RevisionEvaluadorTI_B revision2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0,null, null,"Revision",null,null);
-                    RevisionEvaluadorTI_B revisionGuardada1 =  this.gatewayRevisionEvaluador.guardar(revision1);
-                    RevisionEvaluadorTI_B revisionGuardada2 =  this.gatewayRevisionEvaluador.guardar(revision2);
-                    RevisionTI_B revisionAnteproyecto = this.factoryRevisionAnteproyecto.crearRevisionAnteproyecto(0, revision1, revision2);
-                    revisionAnteproyecto.setIdentificacionEvaluador1(revisionGuardada1);
-                    revisionAnteproyecto.setIdentificacionEvaluador2(revisionGuardada2);
-                    RevisionTI_B revisionAnteproyectoGuardada = this.gatewayRevisionAnteproyecto.guardar(revisionAnteproyecto);
-                    PropuestaTrabajoGradoTI_A propuesta = this.gatewayPropuesta.consultarPropuesta(peticion.getIdPropuestaTIA());
-                    AnteproyectoTI_B anteproyectoCreado = this.factoryAnteproyecto.crearAnteproyecto(peticion.getIdAnteProyectoTIB(), propuesta, director, estudiante1, estudiante2, codirector, peticion.getTituloAnteproyecto(), rutaDestino);
-                    anteproyectoCreado.getRevisiones().add(revisionAnteproyectoGuardada);
-                    this.gatewayAnteproyecto.guardar(anteproyectoCreado);
-                    return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyectoCreado);
                 }
+                
+                String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
+                String rutaDestino = "";   
+                try{
+                    rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+                }  catch(IOException exception){
+                    return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
+                } 
+                PropuestaTrabajoGradoTI_A propuestaAsociada = this.gatewayPropuesta.consultarPropuesta(peticion.getIdPropuestaTIA());
+                AnteproyectoTI_B anteproyectoCreado = this.factoryAnteproyecto.crearAnteproyecto(peticion.getIdAnteProyectoTIB(), propuestaAsociada, director, estudiante1, estudiante2, codirector, peticion.getTituloAnteproyecto(), rutaDestino);
+                this.gatewayAnteproyecto.guardar(anteproyectoCreado);
+                return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyectoCreado);
             }
         }
-        
     }
+
+    @Override
+    public AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1, int idEvaluador2, int idAnteproyecto) {
+        boolean banderaEvaluador1 = this.gatewayUsuario.existeUsuario(idEvaluador1);
+        boolean banderaEvaluador2 = this.gatewayUsuario.existeUsuario(idEvaluador2);
+        boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
+        if(banderaEvaluador1 == false && banderaEvaluador2 == false && banderaAnteproyecto == false){
+            return this.formateadorAnteproyecto.prepararRespuestaFallida("error es evaluadores o anteproyecto");
+        }else{
+            AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
+            if(anteproyecto.controlMaximoDeVersiones()){
+                Usuario evaluador1 = this.gatewayUsuario.consultarUsuario(idEvaluador1);
+                Usuario evaluador2 = this.gatewayUsuario.consultarUsuario(idEvaluador2);
+                RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "A revision", null, null);
+                RevisionEvaluadorTI_B revisionEvaluador2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador2, null, "A revision", null, null);
+                RevisionEvaluadorTI_B revisionEvaluador1creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador1);
+                RevisionEvaluadorTI_B revisionEvaluador2creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador2);
+                RevisionTI_B revisionAnteproyecto = this.factoryRevisionAnteproyecto.crearRevisionAnteproyecto(0, revisionEvaluador1creada, revisionEvaluador2creada);
+                RevisionTI_B revisionAlmacenada = this.gatewayRevisionAnteproyecto.guardar(revisionAnteproyecto);
+                anteproyecto.getRevisiones().add(revisionAlmacenada);
+                this.gatewayAnteproyecto.guardar(anteproyecto);
+                return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyecto);
+            }else{
+                return this.formateadorAnteproyecto.prepararRespuestaFallida("Error, se alcanzo el maximo numero permitido de revisionees");
+            }
+           
+        }
+    }
+
+
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
         String fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_B/Recibidos/" + fileName + ".docx";
@@ -123,7 +148,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         String baseFileName = fileName;
         while (file.exists()) {
             fileName = baseFileName + "(" + count + ")";
-            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_A/Recibidos/" + fileName + ".docx";
+            fileDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_B/Recibidos/" + fileName + ".docx";
             file = new File(fileDirectory);
             count++;
         }
@@ -144,5 +169,4 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     
         return file.getAbsolutePath();
     }
-    
 }

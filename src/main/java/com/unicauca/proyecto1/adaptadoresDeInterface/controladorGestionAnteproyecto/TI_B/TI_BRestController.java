@@ -1,5 +1,7 @@
 package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.TI_B;
 
+import org.hibernate.mapping.List;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,43 +28,28 @@ public class TI_BRestController {
         @RequestParam("idPropuesta") int idPropuesta,
         @RequestParam(name = "idDirector") int idDirector,
         @RequestParam(name = "idEstudiante1") int idEstudiante1,
-        @RequestParam(name = "idEstudiante2")  Integer idEstudiante2,
-        @RequestParam(name = "idCodirector") Integer idCodirector,
+        @RequestParam(name = "idEstudiante2",required = false)  Integer idEstudiante2,
+        @RequestParam(name = "idCodirector",required = false) Integer idCodirector,
         @RequestParam(name = "titulo") String titulo
     ){
-        AnteproyectoTI_BDTOPeticion peticion = new AnteproyectoTI_BDTOPeticion(idAnteproyecto,idPropuesta,idDirector,idEstudiante1,idEstudiante2,idCodirector,titulo);
         if(idEstudiante2 == null){
-            peticion.setIdentificacionEstudiante2TIB(-1);
+            idEstudiante2 = -1;
         }
         if(idCodirector == null){
-            peticion.setIdentificacionCodirector(-1);
+            idCodirector = -1;
         }
+        AnteproyectoTI_BDTOPeticion peticion = new AnteproyectoTI_BDTOPeticion(idAnteproyecto,idPropuesta,idDirector,idEstudiante1,idEstudiante2,idCodirector,titulo);
+        
         return anteproyectoCU.crearAnteproyecto(peticion, file);
     }
 
-    /*@PostMapping("/propuestas")
-    public PropuestaTrabajoGradoTI_ADTORespuesta crearPropuestas(
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("titulo") String titulo,
-        @RequestParam("idDirector") Integer idDirector,
-        @RequestParam(name = "idEstudiante1", required = false) Integer idEstudiante1,
-        @RequestParam(name = "idEstudiante2", required = false) Integer idEstudiante2,
-        @RequestParam(name = "idCodirector", required = false) Integer idCodirector
+    @PatchMapping("/anteproyectos")
+    public AnteproyectoTI_BDTORespuesta asignarEvaluadores(
+        @RequestParam("evaluador1") int idEvaluador1,
+        @RequestParam("evaluador2") int idEvaluador2,
+        @RequestParam("anteproyecto") int idAnteproyecto
     ){
-        PropuestaTrabajoGradoTI_ADTOPeticion objPeticion = new PropuestaTrabajoGradoTI_ADTOPeticion();
-        objPeticion.setTituloPropuestaTrabajoGrado(titulo);
-        objPeticion.setIdentificacionDirectorTIA(idDirector);
-        objPeticion.setIdentificacionEstudiante1TIA(idEstudiante1);
-        if(idCodirector == null){
-            objPeticion.setIdentificacionCodirectorTIA(-1);
-        }else{
-            objPeticion.setIdentificacionCodirectorTIA(idCodirector);
-        }
-        if(idEstudiante2 == null){
-            objPeticion.setIdentificacionEstudiante2TIA(-1);
-        }else{
-            objPeticion.setIdentificacionEstudiante2TIA(idEstudiante2);
-        }
-        return this.gestionarPropuestaTI_ACU.crearPropuesta(objPeticion, file);
-    } */
+        return this.anteproyectoCU.asignarEvaluador(idEvaluador1, idEvaluador2, idAnteproyecto);
+    }
+    
 }

@@ -29,5 +29,12 @@ public class AnteproyectoTI_B {
         this.revisiones = new ArrayList<>();
     }
 
+    public boolean controlMaximoDeVersiones(){
+        if(this.revisiones.size() < 3){
+            return true;
+        }
+        return false;
+    }
+
 
 }

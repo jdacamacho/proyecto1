@@ -7,4 +7,5 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproye
 
 public interface GestionarAnteproyectoTI_BCUInt {
     AnteproyectoTI_BDTORespuesta crearAnteproyecto(AnteproyectoTI_BDTOPeticion peticion,MultipartFile file);
+    AnteproyectoTI_BDTORespuesta asignarEvaluador(int idEvaluador1,int idEvaluador2,int idAnteproyecto );
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,10 +56,10 @@ public class AnteproyectoTI_BEntity {
     @Column(name = "rutaanteproyectotib")
     private String rutaAnteproyectoTIB;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinTable(name="versiones_anteproyecto_tib",
-        joinColumns = @JoinColumn(name = "idanteproyectotib"),
-        inverseJoinColumns = @JoinColumn(name = "idrevisionevaluadortib"))
+        joinColumns = @JoinColumn(name = "idanteproyectotib",referencedColumnName = "idanteproyectotib"),
+        inverseJoinColumns = @JoinColumn(name = "idrevisionevaluadortib" ,referencedColumnName = "idrevision"))
     private List<RevisionTI_BEntity> revisiones; 
 
     public AnteproyectoTI_BEntity(){
