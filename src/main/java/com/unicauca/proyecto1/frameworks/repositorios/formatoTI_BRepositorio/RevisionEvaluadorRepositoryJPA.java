@@ -10,5 +10,4 @@ import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 public interface RevisionEvaluadorRepositoryJPA extends CrudRepository<RevisionEvaluadorTI_BEntity,Integer> {
     List<RevisionEvaluadorTI_BEntity> findByConceptoRevision(String concepto);
     RevisionEvaluadorTI_BEntity findByIdentificacionEvaluador(UsuarioEntity identificacionEvaluador);
-
 }

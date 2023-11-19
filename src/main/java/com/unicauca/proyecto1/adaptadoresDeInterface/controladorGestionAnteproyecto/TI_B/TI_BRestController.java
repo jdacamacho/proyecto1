@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.RevisionEvaluadorTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.TI_B.GestionarAnteproyectoTI_BCUInt;
 
@@ -53,6 +55,24 @@ public class TI_BRestController {
         @RequestParam("anteproyecto") String idAnteproyecto
     ){
         return this.anteproyectoCU.asignarEvaluador(idJefe,idEvaluador1, idEvaluador2, idAnteproyecto);
+    }
+
+    @PutMapping("/anteproyectos")
+    public AnteproyectoTI_BDTORespuesta revisionEvaluador(
+        @RequestParam("idRevision") int idRevision,
+        @RequestParam("idEvaluador") int idEvaluador,
+        @RequestParam("idAnteproyecto") String idAnteproyecto,
+        @RequestParam("conceptoRevision") String concepto,
+        @RequestParam("observaciones") String observaciones,
+        @RequestParam("file") MultipartFile file
+    ){
+        RevisionEvaluadorTI_BDTOPeticion peticion = new RevisionEvaluadorTI_BDTOPeticion();
+        peticion.setIdRevisionEvaluadorTIB(idRevision);
+        peticion.setIdentificacionEvaluador(idEvaluador);
+        peticion.setIdAnteproyecto(idAnteproyecto);
+        peticion.setConceptoRevision(concepto);
+        peticion.setObservaciones(observaciones);
+        return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion, file);
     }
 
     @GetMapping("/anteproyectos")

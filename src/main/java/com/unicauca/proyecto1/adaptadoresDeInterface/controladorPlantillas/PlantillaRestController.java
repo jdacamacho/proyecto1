@@ -22,13 +22,13 @@ public class PlantillaRestController {
     @GetMapping("/plantillasTI_A")
     public ResponseEntity<Resource> descargarPlantillaTI_A() throws IOException {
 
-        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI-A.docx"; 
+        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI_A.docx";
 
         Path path = Paths.get(rutaCompleta);
         Resource resource = new UrlResource(path.toUri());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI-A.docx"); 
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI_A.docx"); 
 
         MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 

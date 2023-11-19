@@ -38,9 +38,8 @@ public class GestionarGatewayRevisionEvaluadorTI_BImpl implements GestionarGatew
     }
 
     @Override
-    public int existeRevisionEvaluador(int idEvaluador) {
-        return 1;
-        //return this.repositorioRevisionEvaluador.existeRevisionParaEvaluador(idEvaluador);
+    public boolean existeRevisionEvaluador(int idRevision) {
+       return this.repositorioRevisionEvaluador.findById(idRevision).isPresent();
     }
 
     @Override
@@ -49,5 +48,11 @@ public class GestionarGatewayRevisionEvaluadorTI_BImpl implements GestionarGatew
         throw new UnsupportedOperationException("Unimplemented method 'listarAnteproyectoConcepto'");
     }
 
+    @Override
+    public RevisionEvaluadorTI_B consultarRevisionEvaluador(int idRevision) {
+        RevisionEvaluadorTI_BEntity revisionEntity = this.repositorioRevisionEvaluador.findById(idRevision).get();
+        RevisionEvaluadorTI_B revisionR = this.mapper.map(revisionEntity, RevisionEvaluadorTI_B.class);
+        return revisionR;
+    }
 
 }
