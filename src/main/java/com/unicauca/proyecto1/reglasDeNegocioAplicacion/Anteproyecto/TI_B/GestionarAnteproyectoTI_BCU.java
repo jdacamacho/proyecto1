@@ -251,6 +251,11 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         }
     }
 
+    @Override
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosEvaluadores(int idEvaluador) {
+        return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(anteproyectosPorEvaluador(idEvaluador));
+    }
+
     public List<RevisionEvaluadorTI_B> getRevisiones(int idEvaluador,String idAnteproyecto){
         List<RevisionEvaluadorTI_B> revisiones = new ArrayList<>();
         AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
@@ -275,8 +280,29 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         return null;
     }
 
+    public List<AnteproyectoTI_B> anteproyectosPorEvaluador(int idEvaluador){
+        List<AnteproyectoTI_B> lista = this.gatewayAnteproyecto.listarAnteproyectos();
+        List<AnteproyectoTI_B> listaR = new ArrayList<>();
+        for(int i = 0 ; i < lista.size() ; i++){
+            List<RevisionTI_B> revisionAnteproyecto = lista.get(i).getRevisiones();
+            if(revisionAnteproyecto.size() != 0){
+                 for(int j = 0 ; j < revisionAnteproyecto.size() ; j++){
+                    if(revisionAnteproyecto.get(j).getIdentificacionEvaluador1().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
+                        lista.get(i).getRevisiones().get(j).setIdentificacionEvaluador2(null);
+                        listaR.add(lista.get(i));
+                    }
+                    else if(revisionAnteproyecto.get(j).getIdentificacionEvaluador2().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
+                        lista.get(i).getRevisiones().get(j).setIdentificacionEvaluador1(null);
+                        listaR.add(lista.get(i));
+                    }
+                }
+            }
+        }
+        return listaR;
+    }
+
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
-        String baseDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/Anteproyectos/Investigacion";
+        String baseDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/Anteproyectos/Investigacion/";
         String fileExtension = ".docx";
         
         File directory = new File(baseDirectory);
@@ -382,7 +408,5 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     
         return file.getAbsolutePath();
     }
-
-    
 
 }

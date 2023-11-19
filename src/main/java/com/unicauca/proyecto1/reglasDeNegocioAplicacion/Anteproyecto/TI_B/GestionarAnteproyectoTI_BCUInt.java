@@ -16,6 +16,7 @@ public interface GestionarAnteproyectoTI_BCUInt {
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectos();
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(int idDirector);
     AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile file);
+    List<AnteproyectoTI_BDTORespuesta>  listarAnteproyectosEvaluadores(int idEvaluador);
     
 
 

@@ -80,6 +80,11 @@ public class TI_BRestController {
         return this.anteproyectoCU.listarAnteproyectos();
     }
 
+    @GetMapping("/anteproyectosEvaluador/{idEvaluador}")
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosEvaluador(@PathVariable int idEvaluador){
+        return this.anteproyectoCU.listarAnteproyectosEvaluadores(idEvaluador);
+    }
+
     @GetMapping("/anteproyectosDirector")
     public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(@RequestParam("idDirector") int idDirector){
         return this.anteproyectoCU.listarAnteproyectosDirector(idDirector);
