@@ -6,12 +6,9 @@ import java.util.Date;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -25,11 +22,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class AnteproyectoTI_BEntity {
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idAnteproyectosTI_B")
-    private int idAnteProyectosTIB;
+    private int idAnteProyectosTIB;*/
 
+    @Id
     @Column(name = "idAnteproyectoTI_B")
     private String idAnteproyectoTIB;
 
@@ -64,7 +62,7 @@ public class AnteproyectoTI_BEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="versiones_anteproyecto_TI_B",
-        joinColumns = @JoinColumn(name = "idAnteproyectoTI_B",referencedColumnName = "idAnteproyectoTI_b"),
+        joinColumns = @JoinColumn(name = "idAnteproyectoTI_B",referencedColumnName = "idAnteproyectoTI_B"),
         inverseJoinColumns = @JoinColumn(name = "idRevisionAteproyectoTI_B" ,referencedColumnName = "idRevision"))
     private List<RevisionTI_BEntity> revisiones; 
 

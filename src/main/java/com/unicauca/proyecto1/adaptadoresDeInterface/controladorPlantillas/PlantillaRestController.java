@@ -22,7 +22,7 @@ public class PlantillaRestController {
     @GetMapping("/TI-A")
     public ResponseEntity<Resource> descargarPlantillaTI() throws IOException {
 
-        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI_A.docx"; 
+        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI_A.docx";
 
         Path path = Paths.get(rutaCompleta);
         Resource resource = new UrlResource(path.toUri());

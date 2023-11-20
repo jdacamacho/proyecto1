@@ -50,7 +50,7 @@ public class GestionarGatewayAnteproyectoTI_BImpl implements GestionarGatewayAnt
     }
 
     @Override
-    public boolean existeAnteproyecto(int anteproyecto) {
+    public boolean existeAnteproyecto(String anteproyecto) {
         return this.repositorioAnteproyecto.findById(anteproyecto).isPresent();
     }
 
