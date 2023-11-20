@@ -12,4 +12,7 @@ public interface FormatoTI_ARepositoryInt {
     public PropuestaTrabajoGradoTI_AEntity update(Integer id,PropuestaTrabajoGradoTI_AEntity propuestaTI_A);
     public boolean existePropuesta(int idPropuesta);
     List<PropuestaTrabajoGradoTI_AEntity> findByIdDirector(UsuarioEntity idDirector);
+    
+    public List<PropuestaTrabajoGradoTI_AEntity> findAllByEstado(int estado);
+    public List<PropuestaTrabajoGradoTI_AEntity> findAllByIdAndEstado(UsuarioEntity id, int estado);
 }

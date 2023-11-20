@@ -22,15 +22,23 @@ public class PropuestaTrabajoGradoTI_A {
     private String rutaPropuestaTrabajoGrado;
     private String rutaRespuestaPropuestaTrabajoGrado;
     private List<RevisionComite> revisiones;
+    private int estadoPropuestaTrabajoGradoTIA;
 
     public PropuestaTrabajoGradoTI_A(){
 
     }
 
-    public PropuestaTrabajoGradoTI_A(Usuario identificacionDirectorTIA, Usuario identificacionEstudiante1TIA,
-            Usuario identificacionCodirectorTIA, Usuario identificacionEstudiante2TIA,
-            String tituloPropuestaTrabajoGrado, Date fechaSubidoPropuestaTrabajoGrado,
-            String rutaPropuestaTrabajoGrado,List<RevisionComite> revisiones) {
+    public PropuestaTrabajoGradoTI_A(
+        Usuario identificacionDirectorTIA, 
+        Usuario identificacionEstudiante1TIA,
+        Usuario identificacionCodirectorTIA, 
+        Usuario identificacionEstudiante2TIA,
+        String tituloPropuestaTrabajoGrado, 
+        Date fechaSubidoPropuestaTrabajoGrado,
+        String rutaPropuestaTrabajoGrado,
+        List<RevisionComite> revisiones, 
+        int estadoPropuestaTrabajoGradoTIA
+    ) {
         this.identificacionDirectorTIA = identificacionDirectorTIA;
         this.identificacionEstudiante1TIA = identificacionEstudiante1TIA;
         this.identificacionCodirectorTIA = identificacionCodirectorTIA;
@@ -39,6 +47,7 @@ public class PropuestaTrabajoGradoTI_A {
         this.fechaSubidoPropuestaTrabajoGrado = fechaSubidoPropuestaTrabajoGrado;
         this.rutaPropuestaTrabajoGrado = rutaPropuestaTrabajoGrado;
         this.revisiones = revisiones;
+        this.estadoPropuestaTrabajoGradoTIA = estadoPropuestaTrabajoGradoTIA;
     }
     
 }

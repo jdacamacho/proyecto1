@@ -12,4 +12,8 @@ public interface GestionarPropuestaTrabajoGradoTI_AGatewayInt {
     public PropuestaTrabajoGradoTI_A modificar(int id,PropuestaTrabajoGradoTI_A objPropuesta);
     public boolean existePropuesta(int idPropuesta);
     public List<PropuestaTrabajoGradoTI_A> listarPorDirector(Usuario idDirector);
+
+    /** METODOS PARA CONSULTA POR ESTADO: MESA */
+    public List<PropuestaTrabajoGradoTI_A> listarPropuestasPorEstado(int estado);
+    public List<PropuestaTrabajoGradoTI_A> listarPorDirectorYestado(Usuario idDirector, int estado);
 }

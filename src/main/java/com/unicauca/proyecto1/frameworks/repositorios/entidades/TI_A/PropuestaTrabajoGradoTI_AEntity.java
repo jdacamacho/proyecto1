@@ -61,6 +61,9 @@ public class PropuestaTrabajoGradoTI_AEntity {
     @Column(name = "rutaRespuestaPropuestaTrabajoGrado")
     private String rutaRespuestaPropuestaTrabajoGrado;
 
+    @Column(name = "estadoPropuestaTrabajoGradoTI_A")
+    private int estadoPropuestaTrabajoGradoTIA;
+
     @ManyToMany(fetch =  FetchType.EAGER, cascade = CascadeType.MERGE )
     @JoinTable(
         name="historialTI_A",joinColumns = @JoinColumn(name="idPropuestaTrabajoGradotTI_A", referencedColumnName="idPropuestaTrabajoGradoTI_A"),

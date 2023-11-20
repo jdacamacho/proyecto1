@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PP_A.PropuestaTrabajoGradoPP_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.formatoPP_ARepositorio.FormatoPP_ARepositoryInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 @Service
@@ -26,6 +28,23 @@ public class GestionarPropuestaTrabajoGradoPP_AGatewayImpl implements GestionarP
     @Override
     public List<PropuestaTrabajoGradoPP_A> listar() {
         List<PropuestaTrabajoGradoPP_AEntity> lista = this.objPP_ARepositorio.findAll();
+        List<PropuestaTrabajoGradoPP_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoPP_A>>() {
+        }.getType());
+        return listaObtenida;
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoPP_A> listarPropuestasPorEstado(int estado) {
+        List<PropuestaTrabajoGradoPP_AEntity> lista = this.objPP_ARepositorio.findByEstado(estado);
+        List<PropuestaTrabajoGradoPP_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoPP_A>>() {
+        }.getType());
+        return listaObtenida;
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoPP_A> listarPorDirectorYestado(Usuario idDirector, int estado) {
+        UsuarioEntity objUsuarioEntity = this.propuestaModelMapper.map(idDirector, UsuarioEntity.class);
+        List<PropuestaTrabajoGradoPP_AEntity> lista = this.objPP_ARepositorio.findAllByIdAndEstado(objUsuarioEntity, estado);
         List<PropuestaTrabajoGradoPP_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoPP_A>>() {
         }.getType());
         return listaObtenida;

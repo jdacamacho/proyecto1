@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PP_A.PropuestaTrabajoGradoPP_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 
 @Repository
 public class FormatoPP_ARepositoryImpl implements FormatoPP_ARepositoryInt{
@@ -27,6 +28,23 @@ public class FormatoPP_ARepositoryImpl implements FormatoPP_ARepositoryInt{
         iterable.forEach(lista::add);
         return lista;
     }
+
+    //#region
+    @Override
+    public List<PropuestaTrabajoGradoPP_AEntity> findByEstado(int estado) {
+        System.out.println("Invocando a listar propuestas por estado");
+        Iterable<PropuestaTrabajoGradoPP_AEntity> iterable = this.repositorioFormatoPP_A.findByEstadoPropuestaTrabajoGradoPPA(estado);
+        List<PropuestaTrabajoGradoPP_AEntity> lista = new ArrayList<>();
+        iterable.forEach(lista::add);
+        return lista;
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoPP_AEntity> findAllByIdAndEstado(UsuarioEntity id, int estado) {
+        System.out.println("Invocando a buscar propuestas por id y estado");
+        return this.repositorioFormatoPP_A.findByIdentificacionDirectorPPAAndEstadoPropuestaTrabajoGradoPPA(id, estado);
+    }
+    //#endregion
 
     @Override
     public PropuestaTrabajoGradoPP_AEntity findById(Integer id) {

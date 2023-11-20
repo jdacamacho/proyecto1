@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoPP_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoPP_ADTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
 
@@ -19,4 +20,7 @@ public interface GestionarPP_ACUInt {
     public boolean existePropuesta(int idPropuesta);
     public List<PropuestaTrabajoGradoPP_ADTORespuesta> listarPropuestasDirector(int idDirector);
     public void observadorNotificacionComite(PropuestaTrabajoGradoPP_A propuestaRegistrada);
+    
+    public List<PropuestaTrabajoGradoPP_ADTORespuesta> listarPropuestasPorEstado(int estado);
+    public List<PropuestaTrabajoGradoPP_ADTORespuesta> listarPropuestasDirectorPorEstado(int idDirector, int estado);
 }   

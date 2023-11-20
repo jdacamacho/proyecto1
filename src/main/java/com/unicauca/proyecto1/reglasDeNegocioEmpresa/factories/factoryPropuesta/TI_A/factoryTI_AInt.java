@@ -8,5 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface factoryTI_AInt {
     public PropuestaTrabajoGradoTI_A crearTI_A(Usuario director,Usuario estudiante1,Usuario codirectorUsuario,   
-                                    Usuario estudiante2,String titulo,Date subido,String rutaPropuesta);
+                                    Usuario estudiante2,String titulo,Date subido,String rutaPropuesta, int estadoPropuestaTrabajoGradoTIA);
 }

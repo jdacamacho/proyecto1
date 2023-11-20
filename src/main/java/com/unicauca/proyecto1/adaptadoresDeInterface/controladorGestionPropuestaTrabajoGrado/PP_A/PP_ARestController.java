@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.PropuestaTrabajoGradoPP_ADTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoPP_ADTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.PropuestaTrabajoGradoTI_ADTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTORespuesta.RevisionComiteDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.PropuestaTrabajoGrado.PP_A.GestionarPP_ACUInt;
 
@@ -41,9 +42,22 @@ public class PP_ARestController {
         return this.gestionarPropuestaPP_ACU.listarPropuestas();
     }
 
+    @GetMapping("/propuestas/estado/{estado}")
+    public Iterable<PropuestaTrabajoGradoPP_ADTORespuesta> listar(@PathVariable int estado){
+        return this.gestionarPropuestaPP_ACU.listarPropuestasPorEstado(estado);
+    }
+
     @GetMapping("/propuestasDirector")
     public Iterable<PropuestaTrabajoGradoPP_ADTORespuesta> listarDirector(@RequestParam(name = "idDirector",required = false) Integer idDirector){
         return this.gestionarPropuestaPP_ACU.listarPropuestasDirector(idDirector);
+    }
+
+    @GetMapping("/propuestasDirector/estado/{estado}")
+    public Iterable<PropuestaTrabajoGradoPP_ADTORespuesta> listarDirectorYestado(
+        @RequestParam(name = "idDirector",required = false) Integer idDirector,
+        @PathVariable int estado
+    ){
+        return this.gestionarPropuestaPP_ACU.listarPropuestasDirectorPorEstado(idDirector, estado);
     }
 
     @GetMapping("/propuestas/{id}")

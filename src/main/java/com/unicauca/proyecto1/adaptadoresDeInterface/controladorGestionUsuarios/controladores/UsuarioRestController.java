@@ -38,6 +38,7 @@ public class UsuarioRestController {
 
     @PostMapping("/usuarios")
     public UsuarioDTORespuesta create(@RequestBody ExternalUserDTOP objUsuario,HttpSession httpSession ) {
+        System.out.println("peticion a post usuarios" + objUsuario);
         ExternalUserDTOP objExterno = objUsuario;
         UsuarioDTOPeticion adapter = objExterno.adaptUserEntries();
 
@@ -149,7 +150,7 @@ public class UsuarioRestController {
         return objUsuarioR;
     }
 
-    @PostMapping("/usuariosLogin")
+    @PostMapping("/login")
     public UsuarioDTORespuesta login(@RequestBody ExternalLoginDTO loginRequest,HttpSession httpSession){
         /**
          * Adaptar el DTO de entrada a un DTO de la capa de aplicación
@@ -191,13 +192,13 @@ public class UsuarioRestController {
         return objUsuarioR;
     }
 
-    /*@PostMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpSession session) {
        session.invalidate();
        return "Sesion terminada";
     }
 
-    private void almacenarRolSession(HttpSession httpSession, UsuarioDTORespuesta objUsuarioR) {
+    /*private void almacenarRolSession(HttpSession httpSession, UsuarioDTORespuesta objUsuarioR) {
         List<Rol> roles = objUsuarioR.getRoles();
         List<String> tiposDeRol = new ArrayList<>();
     

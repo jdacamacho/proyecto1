@@ -18,11 +18,28 @@ public class GestionarPropuestaTrabajoGradoTI_AGatewayImpl implements GestionarP
     private final FormatoTI_ARepositoryInt objTI_ARepositorio;
     private final ModelMapper propuestaModelMapper;
     
-    public GestionarPropuestaTrabajoGradoTI_AGatewayImpl(FormatoTI_ARepositoryInt objTI_ARepositorio,
-                                                    ModelMapper propuestModelMapper){
+    public GestionarPropuestaTrabajoGradoTI_AGatewayImpl(FormatoTI_ARepositoryInt objTI_ARepositorio, ModelMapper propuestModelMapper){
         this.objTI_ARepositorio = objTI_ARepositorio;
         this.propuestaModelMapper = propuestModelMapper;
     }
+
+    //#region CONSULTAS POR ESTADO MESA
+    @Override
+    public List<PropuestaTrabajoGradoTI_A> listarPropuestasPorEstado(int estado) {
+        List<PropuestaTrabajoGradoTI_AEntity> lista = this.objTI_ARepositorio.findAllByEstado(estado);
+        List<PropuestaTrabajoGradoTI_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoTI_A>>() {}.getType());
+        return listaObtenida;
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoTI_A> listarPorDirectorYestado(Usuario idDirector, int estado) {
+        UsuarioEntity objUsuarioEntity = this.propuestaModelMapper.map(idDirector, UsuarioEntity.class);
+        List<PropuestaTrabajoGradoTI_AEntity> lista = this.objTI_ARepositorio.findAllByIdAndEstado(objUsuarioEntity, estado);
+        List<PropuestaTrabajoGradoTI_A> listaObtenida = this.propuestaModelMapper.map(lista, new TypeToken<List<PropuestaTrabajoGradoTI_A>>() {
+        }.getType());
+        return listaObtenida;
+    }
+    //#endregion
 
     @Override
     public List<PropuestaTrabajoGradoTI_A> listar() {

@@ -20,4 +20,8 @@ public interface GestionarTI_ACUInt {
     public boolean existePropuesta(int idPropuesta);
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector);
     public void observadorNotificacionComite(PropuestaTrabajoGradoTI_A propuestaRegistrada);
+
+    //* CONSULTAS EXTRAS EN BASE AL ESTADO: MESA */
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasEstado(int estado);
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirectorPorEstado(int idDirector, int estado);
 }   

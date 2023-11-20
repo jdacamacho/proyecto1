@@ -65,5 +65,19 @@ public class FormatoTI_ARepositoryImpl implements FormatoTI_ARepositoryInt{
         System.out.println("Invocando a buscar propuestas por director");
         return this.repositorioFormatoTI_A.findByIdentificacionDirectorTIA(idDirector);
     }
+
+    //#region MESA
+    @Override
+    public List<PropuestaTrabajoGradoTI_AEntity> findAllByEstado(int estado) {
+        System.out.println("Invocando a buscar propuestas por estado");
+        return this.repositorioFormatoTI_A.findByEstadoPropuestaTrabajoGradoTIA(estado);
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoTI_AEntity> findAllByIdAndEstado(UsuarioEntity id, int estado) {
+        System.out.println("Invocando a buscar propuestas por id y estado");
+        return this.repositorioFormatoTI_A.findByIdentificacionDirectorTIAAndEstadoPropuestaTrabajoGradoTIA(id, estado);
+    }
+    //#endregion
     
 }

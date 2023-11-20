@@ -23,6 +23,7 @@ public class PropuestaTrabajoGradoTI_ADTORespuesta {
     private String rutaPropuestaTrabajoGrado;
     private String rutaRespuestaPropuestaTrabajoGrado;
     private List<RevisionComite> revisiones;
+    private int estadoPropuestaTrabajoGradoTIA;
 
     public PropuestaTrabajoGradoTI_ADTORespuesta(){
         this.revisiones =  new ArrayList<>();

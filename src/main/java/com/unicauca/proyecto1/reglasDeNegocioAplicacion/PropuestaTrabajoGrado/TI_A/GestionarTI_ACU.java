@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -39,15 +41,19 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
     private final RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision;
     private final GestionarNotificacionGatewayInt objNotificacionGateway;
     private final factoryNotificacionInt objFactoryNotificacion;
+    Dictionary<String, Integer> dict= new Hashtable<>();
+            
 
-    public GestionarTI_ACU(PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
-                        GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
-                        factoryTI_AInt objFactoryTI_A,
-                        GestionarUsuarioGatewayInt objUsuarioGateway,
-                        factoryRevisionComiteInt objFactoryRevisionComite,
-                        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision,
-                        GestionarNotificacionGatewayInt objNotificacionGateway,
-                        factoryNotificacionInt objFactoryNotificacion){
+    public GestionarTI_ACU(
+        PropuestaTrabajoGradoTI_AFormateadorResultadosInt objFormateadorResultados,
+        GestionarPropuestaTrabajoGradoTI_AGatewayInt objPropuestaGateway,
+        factoryTI_AInt objFactoryTI_A,
+        GestionarUsuarioGatewayInt objUsuarioGateway,
+        factoryRevisionComiteInt objFactoryRevisionComite,
+        RevisionComiteFormateadorResultadosTI_AInt objFormateadorResultadosRevision,
+        GestionarNotificacionGatewayInt objNotificacionGateway,
+        factoryNotificacionInt objFactoryNotificacion
+    ){
         this.objFormateadorResultados = objFormateadorResultados;
         this.objPropuestaGateway = objPropuestaGateway;
         this.objFactoryPropuesta = objFactoryTI_A;
@@ -56,6 +62,10 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
         this.objFormateadorResultadosRevision = objFormateadorResultadosRevision;
         this.objNotificacionGateway = objNotificacionGateway;
         this.objFactoryNotificacion = objFactoryNotificacion;
+
+        this.dict.put("REVISION", 0);
+        this.dict.put("APROBADO", 1);
+        this.dict.put("RECHAZADO", -1);
     }
 
     @Override
@@ -111,7 +121,16 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
                 return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             } 
 
-            PropuestaTrabajoGradoTI_A objPropuestaCreada = this.objFactoryPropuesta.crearTI_A(director, estudiante1, codirector, estudiante2, objPeticion.getTituloPropuestaTrabajoGrado(),new Date(), rutaDestino);
+            PropuestaTrabajoGradoTI_A objPropuestaCreada = this.objFactoryPropuesta.crearTI_A(
+                director, 
+                estudiante1, 
+                codirector, 
+                estudiante2, 
+                objPeticion.getTituloPropuestaTrabajoGrado(),
+                new Date(), 
+                rutaDestino, 
+                dict.get("REVISION")
+            );
 
             PropuestaTrabajoGradoTI_A propuestaR = this.objPropuestaGateway.guardar(objPropuestaCreada);
             String mensajeEvidencia = "Usted realizo la entrega de una propuesta de trabajo de grado en modalidad de investigacion. con id: "
@@ -154,27 +173,56 @@ public class GestionarTI_ACU implements GestionarTI_ACUInt{
 
     @Override
     public PropuestaTrabajoGradoTI_ADTORespuesta anexarPropuestaAprobado(int idComiteRevisa,int idPropuesta,MultipartFile file) {
+
         if(this.objPropuestaGateway.existePropuesta(idPropuesta) && this.objUsuarioGateway.existeUsuario(idComiteRevisa)){
             PropuestaTrabajoGradoTI_A propuesta = this.objPropuestaGateway.consultarPropuesta(idPropuesta);
             Usuario comite = this.objUsuarioGateway.consultarUsuario(idComiteRevisa);
             String nombreArchivo = propuesta.getIdentificacionEstudiante1TIA().getLoginUsuario().getUserNameLogin() + "Aprobado";    
             String rutaDestino = "";   
+
             try{
                 rutaDestino = cargarArchivoAprobado(file, nombreArchivo);
             }  catch(IOException exception){
                 return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
             }
+
+            /**
+             * Se cambia el estado de la propuesta a aprobado
+             * Se cambia la ruta de la propuesta aprovada a la ruta del archivo aprobado
+             */
             propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
+            propuesta.setEstadoPropuestaTrabajoGradoTIA(dict.get("APROBADO"));
+
             this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
+
             String mensaje = "Se ha aprobado su propuesta de trabajo de grado en modalidad de investigacion con id: " + propuesta.getIdPropuestaTrabajoGradoTIA() +
-            " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
+                             " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
+
             Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comite,propuesta.getIdentificacionDirectorTIA(), mensaje, new Date());
             this.objNotificacionGateway.guardar(notificacion);
+
             return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
-        }else{
-            return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada o el evaluador del comite no existe");
         }
+        return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada o el evaluador del comite no existe");        
     }
+
+    //#region modificaciones nuevas con consuiltas en base al estado: MESA
+    @Override
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasEstado(int estado) {
+        List<PropuestaTrabajoGradoTI_A> listaObtenida = objPropuestaGateway.listarPropuestasPorEstado(estado);
+        return this.objFormateadorResultados.prepararRespuestaSatisfactoriaListarPropuestas(listaObtenida);
+    }
+
+    @Override
+    public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirectorPorEstado(int idDirector, int estado) {
+        if(this.objUsuarioGateway.existeUsuario(idDirector)){
+            Usuario director = this.objUsuarioGateway.consultarUsuario(idDirector);
+            List<PropuestaTrabajoGradoTI_A> listaObtenida = objPropuestaGateway.listarPorDirectorYestado(director, estado);
+            return this.objFormateadorResultados.prepararRespuestaSatisfactoriaListarPropuestas(listaObtenida);
+        }
+        return null;
+    }
+    //#endregion
 
     @Override
     public List<PropuestaTrabajoGradoTI_ADTORespuesta> listarPropuestasDirector(int idDirector) {

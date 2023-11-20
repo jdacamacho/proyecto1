@@ -12,7 +12,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproye
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.TI_B.GestionarAnteproyectoTI_BCUInt;
 
 @RestController
-@RequestMapping("/apiAnteproyectoTI_B")
+@RequestMapping("/api/AnteproyectoTI_B")
 public class TI_BRestController {
     private final GestionarAnteproyectoTI_BCUInt anteproyectoCU;
 
@@ -20,7 +20,7 @@ public class TI_BRestController {
         this.anteproyectoCU = anteproyectoCU;
     }
 
-    @PostMapping("/anteproyectos")
+    @PostMapping("/")
     public AnteproyectoTI_BDTORespuesta crearAnteproyecto(
         @RequestParam("file") MultipartFile file,
         @RequestParam("idAnteproyecto") int idAnteproyecto,
@@ -42,7 +42,7 @@ public class TI_BRestController {
         return anteproyectoCU.crearAnteproyecto(peticion, file);
     }
 
-    @PatchMapping("/anteproyectos")
+    @PatchMapping("/")
     public AnteproyectoTI_BDTORespuesta asignarEvaluadores(
         @RequestParam("evaluador1") int idEvaluador1,
         @RequestParam("evaluador2") int idEvaluador2,

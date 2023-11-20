@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.UsuarioEntity;
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.PP_A.PropuestaTrabajoGradoPP_AEntity;
+import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_A.PropuestaTrabajoGradoTI_AEntity;
 
 public interface FormatoPP_ARepositoryInt {
     public List<PropuestaTrabajoGradoPP_AEntity> findAll();
@@ -12,4 +13,7 @@ public interface FormatoPP_ARepositoryInt {
     public PropuestaTrabajoGradoPP_AEntity update(Integer id,PropuestaTrabajoGradoPP_AEntity propuestaPP_A);
     public boolean existePropuesta(int idPropuesta);
     List<PropuestaTrabajoGradoPP_AEntity> findByIdDirector(UsuarioEntity idDirector);
+
+    public List<PropuestaTrabajoGradoPP_AEntity> findByEstado(int estado);
+    public List<PropuestaTrabajoGradoPP_AEntity> findAllByIdAndEstado(UsuarioEntity id, int estado);
 }

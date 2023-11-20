@@ -45,10 +45,25 @@ public class TI_ARestController {
         return this.gestionarPropuestaTI_ACU.listarPropuestas();
     }
 
+    @GetMapping("/propuestas/estado/{estado}")
+    public Iterable<PropuestaTrabajoGradoTI_ADTORespuesta> listar(@PathVariable int estado){
+        System.out.println("🚀 ~ file: TI_ARestController.java:50 ~ TI_ARestController ~ Iterable<PropuestaTrabajoGradoTI_ADTORespuesta>listar ~ estado:" + estado);
+        return this.gestionarPropuestaTI_ACU.listarPropuestasEstado(estado);
+    }
+
     @GetMapping("/propuestasDirector")
     public Iterable<PropuestaTrabajoGradoTI_ADTORespuesta> listarDirector(@RequestParam(name = "idDirector",required = false) Integer idDirector){
         return this.gestionarPropuestaTI_ACU.listarPropuestasDirector(idDirector);
     }
+
+    @GetMapping("/propuestasDirector/estado/{estado}")
+    public Iterable<PropuestaTrabajoGradoTI_ADTORespuesta> listarDirectorYestado(
+        @RequestParam(name = "idDirector",required = false) Integer idDirector,
+        @PathVariable int estado
+    ){
+        return this.gestionarPropuestaTI_ACU.listarPropuestasDirectorPorEstado(idDirector, estado);
+    }
+
 
     @GetMapping("/propuestas/{id}")
     public PropuestaTrabajoGradoTI_ADTORespuesta consultarPropuesta(@PathVariable int id ){
