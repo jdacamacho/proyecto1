@@ -4,6 +4,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.unicauca.proyecto1.frameworks.repositorios.entidades.TI_B.RevisionEvaluadorTI_BEntity;
@@ -44,8 +45,11 @@ public class GestionarGatewayRevisionEvaluadorTI_BImpl implements GestionarGatew
 
     @Override
     public List<RevisionEvaluadorTI_B> listarAnteproyectoConcepto(String concepto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarAnteproyectoConcepto'");
+        List<RevisionEvaluadorTI_BEntity> lista = this.repositorioRevisionEvaluador.findByConceptoRevision(concepto);
+        List<RevisionEvaluadorTI_B> listaObtenida = this.mapper.map(lista,
+                new TypeToken<List<RevisionEvaluadorTI_B>>() {
+                }.getType()); 
+        return listaObtenida;
     }
 
     @Override

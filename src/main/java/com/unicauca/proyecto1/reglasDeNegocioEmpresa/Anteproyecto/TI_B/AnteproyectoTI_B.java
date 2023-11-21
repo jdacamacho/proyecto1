@@ -24,7 +24,10 @@ public class AnteproyectoTI_B {
     private Date fechaRecepcionAnteproyectoTIB;
     private String rutaAnteproyectoTIB;
     private List<RevisionTI_B> revisiones; 
-
+    private String rutaFormatoTI_C;
+    private String estado;
+    private int nVersion;
+    
     public AnteproyectoTI_B(){
         this.revisiones = new ArrayList<>();
     }

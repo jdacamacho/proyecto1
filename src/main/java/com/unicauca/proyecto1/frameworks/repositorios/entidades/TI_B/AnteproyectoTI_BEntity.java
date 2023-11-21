@@ -22,10 +22,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class AnteproyectoTI_BEntity {
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idAnteproyectosTI_B")
-    private int idAnteProyectosTIB;*/
 
     @Id
     @Column(name = "idAnteproyectoTI_B")
@@ -59,6 +55,15 @@ public class AnteproyectoTI_BEntity {
 
     @Column(name = "rutaAnteproyecto")
     private String rutaAnteproyectoTIB;
+
+    @Column(name = "rutaTI_C")
+    private String rutaFormatoTI_C;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "version")
+    private int nVersion;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="versiones_anteproyecto_TI_B",

@@ -16,6 +16,7 @@ import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayAnteproyectoTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionEvaluadorTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionTI_BInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.RevisionEvaluadorTI_BFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.NotificacionFormateadorResultadosInt;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.TI_B.GestionarAnteproyectoTI_BCU;
@@ -103,8 +104,14 @@ public class beanConfigurations {
                                     FactoryRevisionEvaluadorTI_BInt factoryRevisionEvaluador,
                                     FactoryRevisionTI_BInt factoryRevisionAnteproyecto,
                                     GestionarNotificacionGatewayInt gatewayNotificacion,
-                                    factoryNotificacionInt factoryNotificacion){
-        GestionarAnteproyectoTI_BCU anteproyectoCU = new GestionarAnteproyectoTI_BCU(gatewayUsuario, gatewayPropuesta, gatewayAnteproyecto, revisionEvaluador, revisionAnteproyecto, formateadorAnteproyecto, factoryAnteproyecto, factoryRevisionEvaluador, factoryRevisionAnteproyecto,gatewayNotificacion,factoryNotificacion);
+                                    factoryNotificacionInt factoryNotificacion,
+                                    RevisionEvaluadorTI_BFormateadorResultadosInt formateadorRevisionEvaluador){
+        GestionarAnteproyectoTI_BCU anteproyectoCU = new GestionarAnteproyectoTI_BCU(gatewayUsuario, gatewayPropuesta, 
+                                                                                    gatewayAnteproyecto, revisionEvaluador,
+                                                                                    revisionAnteproyecto, formateadorAnteproyecto,
+                                                                                    factoryAnteproyecto, factoryRevisionEvaluador,
+                                                                                    factoryRevisionAnteproyecto,gatewayNotificacion,
+                                                                                    factoryNotificacion,formateadorRevisionEvaluador);
         return anteproyectoCU;
     }
 

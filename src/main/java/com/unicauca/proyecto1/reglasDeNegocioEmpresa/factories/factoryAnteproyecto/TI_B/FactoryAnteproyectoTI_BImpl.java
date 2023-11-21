@@ -21,7 +21,7 @@ public class FactoryAnteproyectoTI_BImpl implements FactoryAnteproyectoTI_BInt{
                                                         identificacionDirectorTIB,identificacionEstudiante1TIB,
                                                         identificacionEstudiante2TIB,identificacionCodirector,
                                                         tituloAnteproyecto,new Date(), rutaAnteproyectoTIB,
-                                                        revisiones);                                            
+                                                        revisiones,"","En revision",1);                                            
         return anteproyecto;
     }
     

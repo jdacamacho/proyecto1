@@ -14,6 +14,7 @@ import java.util.List;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.RevisionEvaluadorTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.RevisionEvaluadorTI_BDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.TI_B.GestionarAnteproyectoTI_BCUInt;
 
 @RestController
@@ -93,6 +94,38 @@ public class TI_BRestController {
     @GetMapping("/anteproyectos/{idAnteproyecto}")
     public AnteproyectoTI_BDTORespuesta consultarAnteproyecto(@PathVariable String idAnteproyecto){
         return this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
+    }
+
+    @GetMapping("/anteproyectosRevisiones")
+    public List<RevisionEvaluadorTI_BDTORespuesta> listarRevisionesAnteproyectoEvaluador(
+        @RequestParam("idEvaluador") int idEvaluador,
+        @RequestParam("idAnteproyecto") String idAnteproyecto
+    ){
+        /*Para listarle al evaluador las revisiones que puede realizar respecto a un anteproyecto */
+        return this.anteproyectoCU.listarRevisionesAnteproyectoParaEvaluador(idEvaluador, idAnteproyecto);
+    }
+
+    @GetMapping("/anteproyectosConcepto")
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosConcepto(
+        @RequestParam("concepto") String concepto
+    ){
+        return this.anteproyectoCU.listarAnteproyectosConcepto(concepto);
+    }
+
+    @PatchMapping("/anteproyectosTI_C")
+    public AnteproyectoTI_BDTORespuesta anexarTI_C(
+        @RequestParam("idAnteproyecto") String idAnteproyecto,
+        @RequestParam("file") MultipartFile file
+    ){
+        return this.anteproyectoCU.anexarFormatoTI_C(idAnteproyecto, file);
+    }
+
+    @PatchMapping("/anteproyectosNuevo")
+    public AnteproyectoTI_BDTORespuesta modificarArchivo(
+        @RequestParam("idAnteproyecto") String idAnteproyecto,
+        @RequestParam("file") MultipartFile file
+    ){
+        return this.anteproyectoCU.modificarArchivoAnteproyecto(idAnteproyecto, file);
     }
     
 }
