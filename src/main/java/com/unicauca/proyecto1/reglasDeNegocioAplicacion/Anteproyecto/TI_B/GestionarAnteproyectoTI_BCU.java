@@ -10,18 +10,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.history.Revision;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.RevisionEvaluadorTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.RevisionEvaluadorTI_BDTORespuesta;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionPropuestas.TI_A.GestionarPropuestaTrabajoGradoTI_AGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios.GestionarUsuarioGatewayInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.AnteproyectoTI_BFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayAnteproyectoTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionEvaluadorTI_BInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.GestionarGatewayRevisionTI_BInt;
+import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionAnteproyecto.TI_B.RevisionEvaluadorTI_BFormateadorResultadosInt;
 import com.unicauca.proyecto1.adaptadoresDeInterface.gatewayGestionNotificacion.GestionarNotificacionGatewayInt;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.Anteproyecto.TI_B.AnteproyectoTI_B;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.Anteproyecto.TI_B.RevisionEvaluadorTI_B;
@@ -48,6 +49,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     private final FactoryRevisionTI_BInt factoryRevisionAnteproyecto;
     private final GestionarNotificacionGatewayInt gatewayNotificacion;
     private final factoryNotificacionInt factoryNotificacion;
+    private final RevisionEvaluadorTI_BFormateadorResultadosInt formateadorRevisionEvaluador;
 
     public GestionarAnteproyectoTI_BCU(GestionarUsuarioGatewayInt gatewayUsuario,
                                     GestionarPropuestaTrabajoGradoTI_AGatewayInt  gatewayPropuesta,
@@ -59,7 +61,8 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                                     FactoryRevisionEvaluadorTI_BInt factoryRevisionEvaluador,
                                     FactoryRevisionTI_BInt factoryRevisionAnteproyecto,
                                     GestionarNotificacionGatewayInt gatewayNotificacion,
-                                    factoryNotificacionInt factoryNotificacion){
+                                    factoryNotificacionInt factoryNotificacion,
+                                    RevisionEvaluadorTI_BFormateadorResultadosInt formateadorRevisionEvaluador){
         
         this.gatewayUsuario = gatewayUsuario;
         this.gatewayPropuesta = gatewayPropuesta;
@@ -72,6 +75,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         this.factoryRevisionAnteproyecto = factoryRevisionAnteproyecto;
         this.gatewayNotificacion = gatewayNotificacion;
         this.factoryNotificacion = factoryNotificacion;
+        this.formateadorRevisionEvaluador = formateadorRevisionEvaluador;
 
     }
 
@@ -112,7 +116,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                     codirector = this.gatewayUsuario.consultarUsuario(peticion.getIdentificacionCodirector());
                 }
                 
-                String nombreArchivo = estudiante1.getLoginUsuario().getUserNameLogin();    
+                String nombreArchivo = "Anteproyecto_Version_1" + estudiante1.getLoginUsuario().getUserNameLogin();    
                 String rutaDestino = "";   
                 try{
                     rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
@@ -146,8 +150,8 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                 Usuario jefeDepartamento = this.gatewayUsuario.consultarUsuario(idJefeDepartamento);
                 Usuario evaluador1 = this.gatewayUsuario.consultarUsuario(idEvaluador1);
                 Usuario evaluador2 = this.gatewayUsuario.consultarUsuario(idEvaluador2);
-                RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "A revision", null, null);
-                RevisionEvaluadorTI_B revisionEvaluador2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador2, null, "A revision", null, null);
+                RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "En revision", null, null);
+                RevisionEvaluadorTI_B revisionEvaluador2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador2, null, "En revision", null, null);
                 RevisionEvaluadorTI_B revisionEvaluador1creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador1);
                 RevisionEvaluadorTI_B revisionEvaluador2creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador2);
                 RevisionTI_B revisionAnteproyecto = this.factoryRevisionAnteproyecto.crearRevisionAnteproyecto(0, revisionEvaluador1creada, revisionEvaluador2creada);
@@ -228,8 +232,9 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
             if(revisionEvaluador == null){
                 return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe la revision buscada");
             }else{
+                AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(peticion.getIdAnteproyecto());
                 RevisionEvaluadorTI_B revisionObtenida = this.gatewayRevisionEvaluador.consultarRevisionEvaluador(peticion.getIdRevisionEvaluadorTIB());
-                String nombreArchivo = "Anteproyecto_"+ peticion.getIdAnteproyecto() +"_evaluador_" + revisionObtenida.getIdentificacionEvaluador().getLoginUsuario().getUserNameLogin();    
+                String nombreArchivo = "Anteproyecto_Version"+ anteproyecto.getNVersion() +"_" + peticion.getIdAnteproyecto() +"_evaluador_" + revisionObtenida.getIdentificacionEvaluador().getLoginUsuario().getUserNameLogin();    
                 String rutaDestino = "";  
                 try{
                     if(peticion.getConceptoRevision().equals("Aprobado")){
@@ -245,7 +250,14 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                 revisionObtenida.setFechaConcepto(new Date());
                 revisionObtenida.setRutaRespuesta(rutaDestino);
                 this.gatewayRevisionEvaluador.guardar(revisionObtenida);
-                AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(peticion.getIdAnteproyecto());
+                String mensajeDirector = "Se ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
+                String mensajeEvaluador = "usted ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
+                Notificacion notificacionDirector = this.factoryNotificacion.crearNotificacion(revisionEvaluador.getIdentificacionEvaluador(), anteproyecto.getIdentificacionDirectorTIB(), mensajeDirector, new Date());
+                Notificacion notificacionEvaluador = this.factoryNotificacion.crearNotificacion(revisionEvaluador.getIdentificacionEvaluador(), revisionEvaluador.getIdentificacionEvaluador(), mensajeEvaluador, new Date());
+                this.gatewayNotificacion.guardar(notificacionDirector);
+                this.gatewayNotificacion.guardar(notificacionEvaluador);
+                checkAnteproyectoEstado(this.gatewayAnteproyecto.consultarAnteproyecto(peticion.getIdAnteproyecto()));
+
                 return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaCrearAnteproyecto(anteproyecto);
             }
         }
@@ -254,6 +266,80 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     @Override
     public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosEvaluadores(int idEvaluador) {
         return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(anteproyectosPorEvaluador(idEvaluador));
+    }
+
+    @Override
+    public List<RevisionEvaluadorTI_BDTORespuesta> listarRevisionesAnteproyectoParaEvaluador(int idEvaluador,
+            String idAnteproyecto) {
+        return this.formateadorRevisionEvaluador.prepararRespuestaSatisfactoriaListar(getRevisiones(idEvaluador, idAnteproyecto));
+    }
+
+    @Override
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosConcepto(String concepto) {
+        /*Conceptos validos : Aprobado,Rechazado,En revision */
+        List<AnteproyectoTI_B> listaPorConcepto = new ArrayList<>();
+        List<AnteproyectoTI_B> anteproyectos = this.gatewayAnteproyecto.listarAnteproyectos();
+        for(AnteproyectoTI_B anteproyectoTI_B : anteproyectos) {
+            if(anteproyectoTI_B.getRevisiones() != null){
+                List<RevisionTI_B> revisiones = anteproyectoTI_B.getRevisiones();
+                for (RevisionTI_B revisionTI_B : revisiones) {
+                    if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) || revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto)){
+                        if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) == false){
+                            revisionTI_B.setIdentificacionEvaluador1(null);
+                        }
+                        if(revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto) == false){
+                            revisionTI_B.setIdentificacionEvaluador2(null);
+                        }
+                        listaPorConcepto.add(anteproyectoTI_B);
+                    }
+                }
+            }
+        }
+        return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(listaPorConcepto);
+    }
+
+    @Override
+    public AnteproyectoTI_BDTORespuesta anexarFormatoTI_C(String idAnteproyecto, MultipartFile file) {
+        boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
+        if(banderaAnteproyecto){
+            AnteproyectoTI_B anteproyectoAprobado = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
+            String nombreArchivo = "Anteproyecto_" + anteproyectoAprobado.getIdAnteProyectoTIB() + "_TI_C";
+            String rutaDestino = "";  
+            try{
+                rutaDestino = cargarArchivoTI_C(file, nombreArchivo);
+            }  catch(IOException exception){
+                return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
+            } 
+            anteproyectoAprobado.setRutaFormatoTI_C(rutaDestino);
+            this.gatewayAnteproyecto.guardar(anteproyectoAprobado);
+            return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaModificarAnteproyecto(anteproyectoAprobado);
+        }
+        return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el anteproyecto consultado...");
+    }
+
+    @Override
+    public AnteproyectoTI_BDTORespuesta modificarArchivoAnteproyecto(String idAnteproyecto, MultipartFile file) {
+        if(this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto)){
+            AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
+            int nuevoIndice = anteproyecto.getNVersion() + 1;
+            String nombreArchivo = "Anteproyecto_Version_"+ nuevoIndice +"_"+ anteproyecto.getIdentificacionEstudiante1TIB().getLoginUsuario().getUserNameLogin();
+            String rutaDestino = "";  
+            try{
+                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+            }  catch(IOException exception){
+                return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
+            }
+            if(nuevoIndice == 2){
+                anteproyecto.setRutaAnteproyectoTIBV2(rutaDestino);
+            }else{
+                anteproyecto.setRutaAnteproyectoTIBV3(rutaDestino);
+            }
+            
+            anteproyecto.setNVersion(nuevoIndice);
+            this.gatewayAnteproyecto.guardar(anteproyecto);
+            return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaModificarAnteproyecto(anteproyecto);
+        }
+        return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el anteproyecto");
     }
 
     public List<RevisionEvaluadorTI_B> getRevisiones(int idEvaluador,String idAnteproyecto){
@@ -299,6 +385,18 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
             }
         }
         return listaR;
+    }
+
+    public void checkAnteproyectoEstado(AnteproyectoTI_B anteproyectoTI_B){
+        RevisionTI_B revision = anteproyectoTI_B.getRevisiones().get(anteproyectoTI_B.getNVersion() - 1);
+        if(revision.getIdentificacionEvaluador1().getConceptoRevision().equals("Aprobado") && revision.getIdentificacionEvaluador2().getConceptoRevision().equals("Aprobado")){
+            anteproyectoTI_B.setEstado("Aprobado");
+            this.gatewayAnteproyecto.guardar(anteproyectoTI_B);
+        }
+        if(revision.getIdentificacionEvaluador1().getConceptoRevision().equals("Rechazado") && revision.getIdentificacionEvaluador2().getConceptoRevision().equals("Rechazado")){
+            anteproyectoTI_B.setEstado("Rechazado");
+            this.gatewayAnteproyecto.guardar(anteproyectoTI_B);
+        }
     }
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
@@ -407,6 +505,47 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         }
     
         return file.getAbsolutePath();
+    }
+
+    public String cargarArchivoTI_C(MultipartFile multipartFile, String fileName) throws IOException {
+        String baseDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/FormatosTI_C/";
+        String fileExtension = ".docx";
+        
+        File directory = new File(baseDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    
+        String baseFileName = fileName;  
+        String fullFilePath = baseDirectory + fileName + fileExtension;
+        File file = new File(fullFilePath);
+    
+        int count = 1;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fullFilePath = baseDirectory + fileName + fileExtension;
+            file = new File(fullFilePath);
+            count++;
+        }
+    
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+    
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error al cargar el archivo", e);
+        }
+    
+        return file.getAbsolutePath();
+    }
+
+    @Override
+    public boolean existeAnteproyecto(String idAnteproyecto) {
+        return this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.AnteproyectoTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.TI_B.RevisionEvaluadorTI_BDTOPeticion;
 import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.AnteproyectoTI_BDTORespuesta;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTORespuesta.TI_B.RevisionEvaluadorTI_BDTORespuesta;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.Anteproyecto.TI_B.AnteproyectoTI_B;
 
 public interface GestionarAnteproyectoTI_BCUInt {
@@ -17,7 +18,9 @@ public interface GestionarAnteproyectoTI_BCUInt {
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(int idDirector);
     AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile file);
     List<AnteproyectoTI_BDTORespuesta>  listarAnteproyectosEvaluadores(int idEvaluador);
-    
-
-
+    List<RevisionEvaluadorTI_BDTORespuesta> listarRevisionesAnteproyectoParaEvaluador(int idEvaluador,String idAnteproyecto);
+    List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosConcepto(String concepto);
+    AnteproyectoTI_BDTORespuesta anexarFormatoTI_C(String idAnteproyecto,MultipartFile file);
+    AnteproyectoTI_BDTORespuesta modificarArchivoAnteproyecto(String idAnteproyecto,MultipartFile file);
+    boolean existeAnteproyecto(String idAnteproyecto);
 }

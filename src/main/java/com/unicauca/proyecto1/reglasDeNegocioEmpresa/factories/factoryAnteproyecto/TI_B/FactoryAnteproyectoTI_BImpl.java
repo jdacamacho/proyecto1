@@ -20,8 +20,8 @@ public class FactoryAnteproyectoTI_BImpl implements FactoryAnteproyectoTI_BInt{
         AnteproyectoTI_B anteproyecto = new AnteproyectoTI_B(idAnteProyectoTIB,idPropuestaTIA,
                                                         identificacionDirectorTIB,identificacionEstudiante1TIB,
                                                         identificacionEstudiante2TIB,identificacionCodirector,
-                                                        tituloAnteproyecto,new Date(), rutaAnteproyectoTIB,
-                                                        revisiones);                                            
+                                                        tituloAnteproyecto,new Date(), rutaAnteproyectoTIB,"","",
+                                                        revisiones,"","En revision",1);                                            
         return anteproyecto;
     }
     

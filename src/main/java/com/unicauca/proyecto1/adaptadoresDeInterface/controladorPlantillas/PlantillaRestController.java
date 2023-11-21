@@ -58,4 +58,24 @@ public class PlantillaRestController {
             .contentType(mediaType)
             .body(resource);
     }
+
+    @GetMapping("/plantillasTI_B")
+    public ResponseEntity<Resource> descargarPlantillaTI_B() throws IOException {
+
+        String rutaCompleta = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/plantillas/formatoTI_B.docx"; 
+
+        Path path = Paths.get(rutaCompleta);
+        Resource resource = new UrlResource(path.toUri());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI_B.docx"); 
+
+        MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(mediaType)
+            .body(resource);
+    }
 }
