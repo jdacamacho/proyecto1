@@ -22,4 +22,5 @@ public interface GestionarAnteproyectoTI_BCUInt {
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosConcepto(String concepto);
     AnteproyectoTI_BDTORespuesta anexarFormatoTI_C(String idAnteproyecto,MultipartFile file);
     AnteproyectoTI_BDTORespuesta modificarArchivoAnteproyecto(String idAnteproyecto,MultipartFile file);
+    boolean existeAnteproyecto(String idAnteproyecto);
 }

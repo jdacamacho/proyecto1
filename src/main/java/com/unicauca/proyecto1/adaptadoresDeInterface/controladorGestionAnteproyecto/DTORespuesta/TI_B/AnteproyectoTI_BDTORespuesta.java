@@ -22,7 +22,9 @@ public class AnteproyectoTI_BDTORespuesta {
     private Usuario identificacionCodirector;
     private String tituloAnteproyecto;
     private Date fechaRecepcionAnteproyectoTIB;
-    private String rutaAnteproyectoTIB;
+    private String rutaAnteproyectoTIBV1;
+    private String rutaAnteproyectoTIBV2;
+    private String rutaAnteproyectoTIBV3;
     private List<RevisionTI_BDTORespuesta> revisiones; 
     private String rutaFormatoTI_C;
     private String estado;

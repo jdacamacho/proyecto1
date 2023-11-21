@@ -53,8 +53,14 @@ public class AnteproyectoTI_BEntity {
     @Column(name = "fechaRecepcionAnteproyectoTI_B")
     private Date fechaRecepcionAnteproyectoTIB;
 
-    @Column(name = "rutaAnteproyecto")
-    private String rutaAnteproyectoTIB;
+    @Column(name = "rutaAnteproyectoV1")
+    private String rutaAnteproyectoTIBV1;
+
+    @Column(name = "rutaAnteproyectoV2")
+    private String rutaAnteproyectoTIBV2;
+
+    @Column(name = "rutaAnteproyectoV3")
+    private String rutaAnteproyectoTIBV3;
 
     @Column(name = "rutaTI_C")
     private String rutaFormatoTI_C;
