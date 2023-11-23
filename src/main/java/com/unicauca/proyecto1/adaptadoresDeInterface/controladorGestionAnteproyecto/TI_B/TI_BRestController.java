@@ -59,7 +59,7 @@ public class TI_BRestController {
         return anteproyectoCU.crearAnteproyecto(peticion, file);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("/asignarEvaluadores")
     public AnteproyectoTI_BDTORespuesta asignarEvaluadores(
         @RequestParam("jefeDepartamento") int idJefe,
         @RequestParam("evaluador1") int idEvaluador1,
@@ -69,7 +69,7 @@ public class TI_BRestController {
         return this.anteproyectoCU.asignarEvaluador(idJefe,idEvaluador1, idEvaluador2, idAnteproyecto);
     }
 
-    @PutMapping("/anteproyectos")
+    @PutMapping("/revision")
     public AnteproyectoTI_BDTORespuesta revisionEvaluador(
         @RequestParam("idRevision") int idRevision,
         @RequestParam("idEvaluador") int idEvaluador,
@@ -87,7 +87,7 @@ public class TI_BRestController {
         return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion, file);
     }
 
-    @GetMapping("/anteproyectos")
+    @GetMapping("/")
     public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectos(){
         return this.anteproyectoCU.listarAnteproyectos();
     }
@@ -97,12 +97,12 @@ public class TI_BRestController {
         return this.anteproyectoCU.listarAnteproyectosEvaluadores(idEvaluador);
     }
 
-    @GetMapping("/anteproyectosDirector")
-    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(@RequestParam("idDirector") int idDirector){
+    @GetMapping("/anteproyectosDirector/{idDirector}")
+    public List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(@PathVariable int idDirector){
         return this.anteproyectoCU.listarAnteproyectosDirector(idDirector);
     }
 
-    @GetMapping("/anteproyectos/{idAnteproyecto}")
+    @GetMapping("/{idAnteproyecto}")
     public AnteproyectoTI_BDTORespuesta consultarAnteproyecto(@PathVariable String idAnteproyecto){
         return this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
     }

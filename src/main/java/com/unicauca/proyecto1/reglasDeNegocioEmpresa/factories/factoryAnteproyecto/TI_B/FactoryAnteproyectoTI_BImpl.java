@@ -12,16 +12,33 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 public class FactoryAnteproyectoTI_BImpl implements FactoryAnteproyectoTI_BInt{
 
     @Override
-    public AnteproyectoTI_B crearAnteproyecto(String idAnteProyectoTIB, PropuestaTrabajoGradoTI_A idPropuestaTIA,
-            Usuario identificacionDirectorTIB, Usuario identificacionEstudiante1TIB,
-            Usuario identificacionEstudiante2TIB, Usuario identificacionCodirector, String tituloAnteproyecto,
-            String rutaAnteproyectoTIB) {
+    public AnteproyectoTI_B crearAnteproyecto(
+        String idAnteProyectoTIB, 
+        PropuestaTrabajoGradoTI_A idPropuestaTIA,
+        Usuario identificacionDirectorTIB, 
+        Usuario identificacionEstudiante1TIB,
+        Usuario identificacionEstudiante2TIB, 
+        Usuario identificacionCodirector, 
+        String tituloAnteproyecto,
+        String rutaAnteproyectoTIB
+    ) {
         List<RevisionTI_B> revisiones = new ArrayList<>();
-        AnteproyectoTI_B anteproyecto = new AnteproyectoTI_B(idAnteProyectoTIB,idPropuestaTIA,
-                                                        identificacionDirectorTIB,identificacionEstudiante1TIB,
-                                                        identificacionEstudiante2TIB,identificacionCodirector,
-                                                        tituloAnteproyecto,new Date(), rutaAnteproyectoTIB,"","",
-                                                        revisiones,"","En revision",1);                                            
+
+        AnteproyectoTI_B anteproyecto = new AnteproyectoTI_B(
+            idAnteProyectoTIB,idPropuestaTIA,
+            identificacionDirectorTIB,
+            identificacionEstudiante1TIB,
+            identificacionEstudiante2TIB,
+            identificacionCodirector,
+            tituloAnteproyecto,
+            new Date(), 
+            rutaAnteproyectoTIB,            
+            "",
+            "",
+            revisiones,"",
+            "En revision",
+            1
+        );                                            
         return anteproyecto;
     }
     
