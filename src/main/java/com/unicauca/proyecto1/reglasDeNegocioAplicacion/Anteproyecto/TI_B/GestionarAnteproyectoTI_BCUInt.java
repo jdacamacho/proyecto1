@@ -16,11 +16,11 @@ public interface GestionarAnteproyectoTI_BCUInt {
     public AnteproyectoTI_BDTORespuesta consultarAnteproyecto(String idAnteproyecto);
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectos();
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosDirector(int idDirector);
-    AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile file);
+    AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile fileTI_B,MultipartFile fileAnteproyectoCorreciones);
     List<AnteproyectoTI_BDTORespuesta>  listarAnteproyectosEvaluadores(int idEvaluador);
     List<RevisionEvaluadorTI_BDTORespuesta> listarRevisionesAnteproyectoParaEvaluador(int idEvaluador,String idAnteproyecto);
     List<AnteproyectoTI_BDTORespuesta> listarAnteproyectosConcepto(String concepto);
     AnteproyectoTI_BDTORespuesta anexarFormatoTI_C(String idAnteproyecto,MultipartFile file);
-    AnteproyectoTI_BDTORespuesta modificarArchivoAnteproyecto(String idAnteproyecto,MultipartFile file);
+    AnteproyectoTI_BDTORespuesta agregarNuevaVersionAnteproyecto(String idAnteproyecto,MultipartFile file);
     boolean existeAnteproyecto(String idAnteproyecto);
 }

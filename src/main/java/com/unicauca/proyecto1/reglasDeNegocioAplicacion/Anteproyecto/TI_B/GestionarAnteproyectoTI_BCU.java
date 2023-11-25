@@ -150,8 +150,8 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                 Usuario jefeDepartamento = this.gatewayUsuario.consultarUsuario(idJefeDepartamento);
                 Usuario evaluador1 = this.gatewayUsuario.consultarUsuario(idEvaluador1);
                 Usuario evaluador2 = this.gatewayUsuario.consultarUsuario(idEvaluador2);
-                RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "En revision", null, null);
-                RevisionEvaluadorTI_B revisionEvaluador2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador2, null, "En revision", null, null);
+                RevisionEvaluadorTI_B revisionEvaluador1 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador1, null, "En revision", null, null,null);
+                RevisionEvaluadorTI_B revisionEvaluador2 = this.factoryRevisionEvaluador.crearRevisionEvaluador(0, evaluador2, null, "En revision", null, null,null);
                 RevisionEvaluadorTI_B revisionEvaluador1creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador1);
                 RevisionEvaluadorTI_B revisionEvaluador2creada = this.gatewayRevisionEvaluador.guardar(revisionEvaluador2);
                 RevisionTI_B revisionAnteproyecto = this.factoryRevisionAnteproyecto.crearRevisionAnteproyecto(0, revisionEvaluador1creada, revisionEvaluador2creada);
@@ -221,7 +221,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     }
 
     @Override
-    public AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile file) {
+    public AnteproyectoTI_BDTORespuesta realizarRevisionAnteproyecto(RevisionEvaluadorTI_BDTOPeticion peticion,MultipartFile fileTI_B,MultipartFile fileAnteproyectoCorreciones) {
         boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(peticion.getIdAnteproyecto());
         boolean banderaEvaluador = this.gatewayUsuario.existeUsuario(peticion.getIdentificacionEvaluador());
         if(banderaAnteproyecto == false || banderaEvaluador == false){
@@ -238,17 +238,27 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
                 String rutaDestino = "";  
                 try{
                     if(peticion.getConceptoRevision().equals("Aprobado")){
-                        rutaDestino = cargarArchivoAprobadosTI_B(file, nombreArchivo);
+                        rutaDestino = cargarArchivoAprobadosTI_B(fileTI_B, nombreArchivo);
                     }else{
-                        rutaDestino = cargarArchivoRecibidosTI_B(file, nombreArchivo);
+                        rutaDestino = cargarArchivoRecibidosTI_B(fileTI_B, nombreArchivo);
                     }
                 }  catch(IOException exception){
                     return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
-                } 
+                }
+                String rutaDestinoRevisado = ""; 
+                if(fileAnteproyectoCorreciones != null){
+                    String nombreArchivoRevisado = "Anteproyecto_Version"+ anteproyecto.getNVersion() +"_" + peticion.getIdAnteproyecto() +"_evaluador_" + revisionObtenida.getIdentificacionEvaluador().getLoginUsuario().getUserNameLogin()+"_anotaciones";
+                    try {
+                        rutaDestinoRevisado = cargarArchivoEvaluadorCorreciones(fileAnteproyectoCorreciones,nombreArchivoRevisado);
+                    } catch (Exception e) {
+                        return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
+                    }
+                }
                 revisionObtenida.setConceptoRevision(peticion.getConceptoRevision());
                 revisionObtenida.setObservaciones(peticion.getObservaciones());
                 revisionObtenida.setFechaConcepto(new Date());
                 revisionObtenida.setRutaRespuesta(rutaDestino);
+                revisionObtenida.setRutaAnteproyectoRevisado(rutaDestinoRevisado);
                 this.gatewayRevisionEvaluador.guardar(revisionObtenida);
                 String mensajeDirector = "Se ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
                 String mensajeEvaluador = "usted ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
@@ -318,7 +328,7 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
     }
 
     @Override
-    public AnteproyectoTI_BDTORespuesta modificarArchivoAnteproyecto(String idAnteproyecto, MultipartFile file) {
+    public AnteproyectoTI_BDTORespuesta agregarNuevaVersionAnteproyecto(String idAnteproyecto, MultipartFile file) {
         if(this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto)){
             AnteproyectoTI_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
             int nuevoIndice = anteproyecto.getNVersion() + 1;
@@ -401,6 +411,42 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
 
     public String cargarArchivoRecibidos(MultipartFile multipartFile, String fileName) throws IOException {
         String baseDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/Anteproyectos/Investigacion/";
+        String fileExtension = ".docx";
+        
+        File directory = new File(baseDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    
+        String baseFileName = fileName;  
+        String fullFilePath = baseDirectory + fileName + fileExtension;
+        File file = new File(fullFilePath);
+    
+        int count = 1;
+        while (file.exists()) {
+            fileName = baseFileName + "(" + count + ")";
+            fullFilePath = baseDirectory + fileName + fileExtension;
+            file = new File(fullFilePath);
+            count++;
+        }
+    
+        try (InputStream inputStream = multipartFile.getInputStream();
+             OutputStream outputStream = new FileOutputStream(file)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+    
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error al cargar el archivo", e);
+        }
+    
+        return file.getAbsolutePath();
+    }
+
+    public String cargarArchivoEvaluadorCorreciones(MultipartFile multipartFile, String fileName) throws IOException {
+        String baseDirectory = "src/main/java/com/unicauca/proyecto1/frameworks/archivos/Anteproyectos/AnotacionesEvaluador/";
         String fileExtension = ".docx";
         
         File directory = new File(baseDirectory);
