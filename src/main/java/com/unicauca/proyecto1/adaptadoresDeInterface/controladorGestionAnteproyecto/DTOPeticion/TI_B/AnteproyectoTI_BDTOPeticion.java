@@ -2,7 +2,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproy
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
+import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproyecto.DTOPeticion.PP_B.RevisionPP_BDTOPeticion;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class AnteproyectoTI_BDTOPeticion {
     private int identificacionEstudiante2TIB;
     private int identificacionCodirector;
     private String tituloAnteproyecto;
-    private List<RevisionComiteDTOPeticion> revisiones; 
+    private List<RevisionPP_BDTOPeticion> revisiones; 
 
     public AnteproyectoTI_BDTOPeticion(){
         this.revisiones = new ArrayList<>();
