@@ -290,19 +290,8 @@ public class GestionarAnteproyectoTI_BCU implements GestionarAnteproyectoTI_BCUI
         List<AnteproyectoTI_B> listaPorConcepto = new ArrayList<>();
         List<AnteproyectoTI_B> anteproyectos = this.gatewayAnteproyecto.listarAnteproyectos();
         for(AnteproyectoTI_B anteproyectoTI_B : anteproyectos) {
-            if(anteproyectoTI_B.getRevisiones() != null){
-                List<RevisionTI_B> revisiones = anteproyectoTI_B.getRevisiones();
-                for (RevisionTI_B revisionTI_B : revisiones) {
-                    if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) || revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto)){
-                        if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) == false){
-                            revisionTI_B.setIdentificacionEvaluador1(null);
-                        }
-                        if(revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto) == false){
-                            revisionTI_B.setIdentificacionEvaluador2(null);
-                        }
-                        listaPorConcepto.add(anteproyectoTI_B);
-                    }
-                }
+            if(anteproyectoTI_B.getEstado().equals(concepto)){
+                listaPorConcepto.add(anteproyectoTI_B);
             }
         }
         return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(listaPorConcepto);

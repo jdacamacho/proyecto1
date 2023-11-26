@@ -115,7 +115,7 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
                 PropuestaTrabajoGradoPP_A propuestaAsociada = this.gatewayPropuesta.consultarPropuesta(peticion.getIdPropuestaPPA());
                 String idAnteproyecto = año + "." + peticion.getIdAnteProyectoPPB();
                 AnteproyectoPP_B anteproyectoCreado = this.factoryAnteproyecto.crearAnteproyecto(idAnteproyecto, propuestaAsociada, director, estudiante, asesor, codirector, peticion.getTituloAnteproyecto(), rutaDestino);
-                String mensaje = "Usted ha realizado el envio de un anteproyecto en modalidad de investigacion con Id:" + anteproyectoCreado.getIdAnteProyectoTIB() + 
+                String mensaje = "Usted ha realizado el envio de un anteproyecto en modalidad de investigacion con Id:" + anteproyectoCreado.getIdAnteproyectoPPB() + 
                 " de la propuesta de trabajo de grado con id: " + anteproyectoCreado.getIdPropuestaPPA().getIdPropuestaTrabajoGradoPPA();
                 Notificacion notificacion = this.factoryNotificacion.crearNotificacion(director, director, mensaje, new Date());
                 AnteproyectoPP_B anteproyectoGuardado = this.gatewayAnteproyecto.guardar(anteproyectoCreado);
@@ -170,7 +170,7 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
         List<Usuario> usuariosConRolJefeDepartamento = this.gatewayUsuario.buscarUsuariosPorRol(JefeDepartamento);
         List<Usuario> usuariosConRolAsistenteJefeDepartamento = this.gatewayUsuario.buscarUsuariosPorRol(AsistenteJefeDepartamento);
         String mensaje = "Se ha registrado un nuevo anteproyecto en modalidad de practica profesional." + 
-        " id Anteproyecto: " + anteproyectoRegistrado.getIdAnteProyectoTIB() + " titulo: " + anteproyectoRegistrado.getTituloAnteproyecto() + " para la propuesta de trabajo de grado : " + anteproyectoRegistrado.getIdPropuestaPPA().getIdPropuestaTrabajoGradoPPA() ;
+        " id Anteproyecto: " + anteproyectoRegistrado.getIdAnteproyectoPPB() + " titulo: " + anteproyectoRegistrado.getTituloAnteproyecto() + " para la propuesta de trabajo de grado : " + anteproyectoRegistrado.getIdPropuestaPPA().getIdPropuestaTrabajoGradoPPA() ;
         for(int i = 0 ; i<usuariosConRolJefeDepartamento.size(); i++){
             Notificacion notificacion = this.factoryNotificacion.crearNotificacion(anteproyectoRegistrado.getIdentificacionDirectorPPB(),usuariosConRolJefeDepartamento.get(i), mensaje, new Date());
             this.gatewayNotificacion.guardar(notificacion);
@@ -249,8 +249,8 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
                 revisionObtenida.setRutaRespuesta(rutaDestino);
                 revisionObtenida.setRutaAnteproyectoRevisado(rutaDestinoRevisado);
                 this.gatewayRevisionEvaluador.guardar(revisionObtenida);
-                String mensajeDirector = "Se ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
-                String mensajeEvaluador = "usted ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteProyectoTIB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
+                String mensajeDirector = "Se ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteproyectoPPB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
+                String mensajeEvaluador = "usted ha realizado una revision al anteproyecto con id: " + anteproyecto.getIdAnteproyectoPPB() + " con titulo: " + anteproyecto.getTituloAnteproyecto();
                 Notificacion notificacionDirector = this.factoryNotificacion.crearNotificacion(revisionEvaluador.getIdentificacionEvaluador(), anteproyecto.getIdentificacionDirectorPPB(), mensajeDirector, new Date());
                 Notificacion notificacionEvaluador = this.factoryNotificacion.crearNotificacion(revisionEvaluador.getIdentificacionEvaluador(), revisionEvaluador.getIdentificacionEvaluador(), mensajeEvaluador, new Date());
                 this.gatewayNotificacion.guardar(notificacionDirector);
@@ -279,19 +279,8 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
         List<AnteproyectoPP_B> listaPorConcepto = new ArrayList<>();
         List<AnteproyectoPP_B> anteproyectos = this.gatewayAnteproyecto.listarAnteproyectos();
         for(AnteproyectoPP_B anteproyectoTI_B : anteproyectos) {
-            if(anteproyectoTI_B.getRevisiones() != null){
-                List<RevisionPP_B> revisiones = anteproyectoTI_B.getRevisiones();
-                for (RevisionPP_B revisionTI_B : revisiones) {
-                    if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) || revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto)){
-                        if(revisionTI_B.getIdentificacionEvaluador1().getConceptoRevision().equals(concepto) == false){
-                            revisionTI_B.setIdentificacionEvaluador1(null);
-                        }
-                        if(revisionTI_B.getIdentificacionEvaluador2().getConceptoRevision().equals(concepto) == false){
-                            revisionTI_B.setIdentificacionEvaluador2(null);
-                        }
-                        listaPorConcepto.add(anteproyectoTI_B);
-                    }
-                }
+            if(anteproyectoTI_B.getEstado().equals(concepto)){
+                listaPorConcepto.add(anteproyectoTI_B);
             }
         }
         return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaListar(listaPorConcepto);
@@ -302,7 +291,7 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
         boolean banderaAnteproyecto = this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto);
         if(banderaAnteproyecto){
             AnteproyectoPP_B anteproyectoAprobado = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
-            String nombreArchivo = "Anteproyecto_" + anteproyectoAprobado.getIdAnteProyectoTIB() + "_TI_C";
+            String nombreArchivo = "Anteproyecto_" + anteproyectoAprobado.getIdAnteproyectoPPB() + "_TI_C";
             String rutaDestino = "";  
             try{
                 rutaDestino = cargarArchivoTI_C(file, nombreArchivo);

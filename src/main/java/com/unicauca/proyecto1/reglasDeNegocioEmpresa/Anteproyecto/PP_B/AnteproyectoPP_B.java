@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AnteproyectoPP_B {
-private String idAnteProyectoTIB;
+    private String idAnteproyectoPPB;
     private PropuestaTrabajoGradoPP_A idPropuestaPPA;
     private Usuario identificacionDirectorPPB;
     private Usuario identificacionEstudiantePPB;

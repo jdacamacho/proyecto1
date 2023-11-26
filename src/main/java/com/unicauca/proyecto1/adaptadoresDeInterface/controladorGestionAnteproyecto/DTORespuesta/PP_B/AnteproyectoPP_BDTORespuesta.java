@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.TI_A.PropuestaTrabajoGradoTI_A;
+import com.unicauca.proyecto1.reglasDeNegocioEmpresa.PropuestaTrabajoGrado.PP_A.PropuestaTrabajoGradoPP_A;
 import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AnteproyectoPP_BDTORespuesta {
     private String idAnteProyectoPPB;
-    private PropuestaTrabajoGradoTI_A idPropuestaPPA;
+    private PropuestaTrabajoGradoPP_A idPropuestaPPA;
     private Usuario identificacionDirectorPPB;
     private Usuario identificacionEstudiantePPB;
     private Usuario identificacionAsesorPPB;

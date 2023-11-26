@@ -157,7 +157,7 @@ public class TI_BRestController {
             Resource resource = new UrlResource(path.toUri());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_subido.docx"); 
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_TI_B.docx"); 
 
             MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 

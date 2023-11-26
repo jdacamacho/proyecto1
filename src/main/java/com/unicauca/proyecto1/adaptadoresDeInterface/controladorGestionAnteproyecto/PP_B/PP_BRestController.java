@@ -180,8 +180,8 @@ public class PP_BRestController {
         }
     } 
 
-    @GetMapping("/anteproyectosTI_B/{idAnteproyecto}/{version}/{evaluador}")
-    public ResponseEntity<Resource> descargarTI_B(@PathVariable String idAnteproyecto, @PathVariable int version,@PathVariable int evaluador) throws IOException {       
+    @GetMapping("/anteproyectosPP_B/{idAnteproyecto}/{version}/{evaluador}")
+    public ResponseEntity<Resource> descargarPP_B(@PathVariable String idAnteproyecto, @PathVariable int version,@PathVariable int evaluador) throws IOException {       
         /*Las versiones serian 3 y la recibicion de evaluador seria la del evaluador 1 o 2 */
         if(this.anteproyectoCU.existeAnteproyecto(idAnteproyecto) && version > 0 && version <4 && evaluador > 0 && evaluador < 3){
             AnteproyectoPP_BDTORespuesta anteproyecto = this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
@@ -197,7 +197,7 @@ public class PP_BRestController {
             Resource resource = new UrlResource(path.toUri());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_subido.docx"); 
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_PP_B.docx"); 
 
             MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
