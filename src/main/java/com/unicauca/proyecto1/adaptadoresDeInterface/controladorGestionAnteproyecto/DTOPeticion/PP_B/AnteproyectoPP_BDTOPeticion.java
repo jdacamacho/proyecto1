@@ -3,8 +3,6 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionAnteproy
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unicauca.proyecto1.adaptadoresDeInterface.controladorGestionPropuestaTrabajoGrado.DTOPeticion.RevisionComiteDTOPeticion;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

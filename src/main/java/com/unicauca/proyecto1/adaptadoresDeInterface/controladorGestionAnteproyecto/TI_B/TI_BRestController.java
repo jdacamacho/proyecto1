@@ -76,7 +76,7 @@ public class TI_BRestController {
         @RequestParam("idAnteproyecto") String idAnteproyecto,
         @RequestParam("conceptoRevision") String concepto,
         @RequestParam("observaciones") String observaciones,
-        @RequestParam("fileTI_C") MultipartFile fileTI_C,
+        @RequestParam("fileTI_B") MultipartFile fileTI_B,
         @RequestParam("fileAnteproyectoRevisado") MultipartFile fileAnteproyectoRevisado
     ){
         RevisionEvaluadorTI_BDTOPeticion peticion = new RevisionEvaluadorTI_BDTOPeticion();
@@ -85,7 +85,7 @@ public class TI_BRestController {
         peticion.setIdAnteproyecto(idAnteproyecto);
         peticion.setConceptoRevision(concepto);
         peticion.setObservaciones(observaciones);
-        return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion,fileTI_C,fileAnteproyectoRevisado);
+        return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion,fileTI_B,fileAnteproyectoRevisado);
     }
 
     @GetMapping("/anteproyectos")
