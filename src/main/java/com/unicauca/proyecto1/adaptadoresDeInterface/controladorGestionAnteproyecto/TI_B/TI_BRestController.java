@@ -66,6 +66,8 @@ public class TI_BRestController {
         @RequestParam("evaluador2") int idEvaluador2,
         @RequestParam("anteproyecto") String idAnteproyecto
     ){
+        System.out.printf("🚀 ~ file: TI_BRestController.java:69 ~ TI_BRestController ~ idJefe:", idJefe);
+        
         return this.anteproyectoCU.asignarEvaluador(idJefe,idEvaluador1, idEvaluador2, idAnteproyecto);
     }
 
