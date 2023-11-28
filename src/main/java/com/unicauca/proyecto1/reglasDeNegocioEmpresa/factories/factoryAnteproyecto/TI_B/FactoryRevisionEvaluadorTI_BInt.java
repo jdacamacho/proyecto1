@@ -8,5 +8,6 @@ import com.unicauca.proyecto1.reglasDeNegocioEmpresa.usuario.Usuario;
 public interface FactoryRevisionEvaluadorTI_BInt {
     public RevisionEvaluadorTI_B crearRevisionEvaluador(int idRevisionEvaluadorTIB,Usuario identificacionEvaluador,
                                                        Date fechaConcepto,String conceptoRevision,
-                                                       String observaciones,String rutaRespuesta);
+                                                       String observaciones,String rutaRespuesta,
+                                                       String rutaAnteproyectoRevisado);
 }

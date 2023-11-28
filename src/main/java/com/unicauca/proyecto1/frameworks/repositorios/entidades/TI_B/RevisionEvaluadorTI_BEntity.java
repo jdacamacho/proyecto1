@@ -42,6 +42,9 @@ public class RevisionEvaluadorTI_BEntity {
     @Column(name = "rutaRespuesta")
     private String rutaRespuesta;
 
+    @Column(name = "rutaAnteproyectoRevisado")
+    private String rutaAnteproyectoRevisado;
+
     public RevisionEvaluadorTI_BEntity(){
 
     }

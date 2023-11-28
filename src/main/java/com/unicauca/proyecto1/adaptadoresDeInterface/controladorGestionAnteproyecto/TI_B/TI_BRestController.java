@@ -78,7 +78,8 @@ public class TI_BRestController {
         @RequestParam("idAnteproyecto") String idAnteproyecto,
         @RequestParam("conceptoRevision") String concepto,
         @RequestParam("observaciones") String observaciones,
-        @RequestParam("file") MultipartFile file
+        @RequestParam("fileTI_B") MultipartFile fileTI_B,
+        @RequestParam("fileAnteproyectoRevisado") MultipartFile fileAnteproyectoRevisado
     ){
         RevisionEvaluadorTI_BDTOPeticion peticion = new RevisionEvaluadorTI_BDTOPeticion();
         peticion.setIdRevisionEvaluadorTIB(idRevision);
@@ -86,7 +87,7 @@ public class TI_BRestController {
         peticion.setIdAnteproyecto(idAnteproyecto);
         peticion.setConceptoRevision(concepto);
         peticion.setObservaciones(observaciones);
-        return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion, file);
+        return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion,fileTI_B,fileAnteproyectoRevisado);
     }
 
     @GetMapping("/")
@@ -138,7 +139,7 @@ public class TI_BRestController {
         @RequestParam("idAnteproyecto") String idAnteproyecto,
         @RequestParam("file") MultipartFile file
     ){
-        return this.anteproyectoCU.modificarArchivoAnteproyecto(idAnteproyecto, file);
+        return this.anteproyectoCU.agregarNuevaVersionAnteproyecto(idAnteproyecto, file);
     }
 
     @GetMapping("/anteproyectosSubidos/{idAnteproyecto}/{version}")
@@ -158,7 +159,7 @@ public class TI_BRestController {
             Resource resource = new UrlResource(path.toUri());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_subido.docx"); 
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_TI_B.docx"); 
 
             MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 

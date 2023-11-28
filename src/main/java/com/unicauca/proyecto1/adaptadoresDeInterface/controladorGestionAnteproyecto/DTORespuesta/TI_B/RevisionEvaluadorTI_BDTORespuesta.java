@@ -17,6 +17,7 @@ public class RevisionEvaluadorTI_BDTORespuesta {
     private String conceptoRevision;
     private String observaciones;
     private String rutaRespuesta;
+    private String rutaAnteproyectoRevisado;
 
     public RevisionEvaluadorTI_BDTORespuesta(){
 

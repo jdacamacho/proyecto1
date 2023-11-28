@@ -28,7 +28,7 @@ public class AnteproyectoTI_BEntity {
     private String idAnteproyectoTIB;
 
     @ManyToOne
-    @JoinColumn(name = "idPropuestaTI_B")
+    @JoinColumn(name = "idPropuestaTI_A")
     private PropuestaTrabajoGradoTI_AEntity idPropuestaTIA;
     
     @ManyToOne

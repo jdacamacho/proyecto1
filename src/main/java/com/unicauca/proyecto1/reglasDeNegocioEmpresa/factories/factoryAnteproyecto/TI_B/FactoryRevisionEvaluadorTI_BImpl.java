@@ -9,10 +9,10 @@ public class FactoryRevisionEvaluadorTI_BImpl implements FactoryRevisionEvaluado
 
     @Override
     public RevisionEvaluadorTI_B crearRevisionEvaluador(int idRevisionEvaluadorTIB, Usuario identificacionEvaluador,
-            Date fechaConcepto, String conceptoRevision, String observaciones, String rutaRespuesta) {
+            Date fechaConcepto, String conceptoRevision, String observaciones, String rutaRespuesta,String rutaAnteproyectoCorregido) {
         RevisionEvaluadorTI_B revisionEvaluador = new RevisionEvaluadorTI_B(idRevisionEvaluadorTIB,identificacionEvaluador,
                                                                             new Date(),fechaConcepto,conceptoRevision,
-                                                                            observaciones,rutaRespuesta);
+                                                                            observaciones,rutaRespuesta,rutaAnteproyectoCorregido);
         return revisionEvaluador;
     }
     
