@@ -369,10 +369,12 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
                     if(revisionAnteproyecto.get(j).getIdentificacionEvaluador1().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
                         lista.get(i).getRevisiones().get(j).setIdentificacionEvaluador2(null);
                         listaR.add(lista.get(i));
+                        break;
                     }
                     else if(revisionAnteproyecto.get(j).getIdentificacionEvaluador2().getIdentificacionEvaluador().getIdentificacionUsuario() == idEvaluador){
                         lista.get(i).getRevisiones().get(j).setIdentificacionEvaluador1(null);
                         listaR.add(lista.get(i));
+                        break;
                     }
                 }
             }
