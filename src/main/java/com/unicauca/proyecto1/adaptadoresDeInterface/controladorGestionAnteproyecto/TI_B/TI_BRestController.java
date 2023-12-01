@@ -133,7 +133,7 @@ public class TI_BRestController {
     }
 
     @PatchMapping("/anteproyectosNuevo")
-    public AnteproyectoTI_BDTORespuesta modificarArchivo(
+    public AnteproyectoTI_BDTORespuesta agregarNuevaVersionAnteproyecto(
         @RequestParam("idAnteproyecto") String idAnteproyecto,
         @RequestParam("file") MultipartFile file
     ){
@@ -141,7 +141,7 @@ public class TI_BRestController {
     }
 
     @GetMapping("/anteproyectosSubidos/{idAnteproyecto}/{version}")
-    public ResponseEntity<Resource> descargarPropuesta(@PathVariable String idAnteproyecto, @PathVariable int version) throws IOException {       
+    public ResponseEntity<Resource> descargarAnteproyeto(@PathVariable String idAnteproyecto, @PathVariable int version) throws IOException {       
         if(this.anteproyectoCU.existeAnteproyecto(idAnteproyecto) && version > 0 && version <4){
             AnteproyectoTI_BDTORespuesta anteproyecto = this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
             String rutaCompleta;
@@ -197,7 +197,41 @@ public class TI_BRestController {
             Resource resource = new UrlResource(path.toUri());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Anteproyecto_subido.docx"); 
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI_B.docx"); 
+
+            MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+            return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .contentType(mediaType)
+                .body(resource);
+        }else{
+            byte[] emptyContent = new byte[0];
+            Resource emptyResource = new ByteArrayResource(emptyContent);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=empty.docx");
+
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .headers(headers)
+                .body(emptyResource);
+        }
+    } 
+
+    @GetMapping("/anteproyectosTI_C/{idAnteproyecto}")
+    public ResponseEntity<Resource> descargarTI_C(@PathVariable String idAnteproyecto) throws IOException {       
+        if(this.anteproyectoCU.existeAnteproyecto(idAnteproyecto)){
+            AnteproyectoTI_BDTORespuesta anteproyecto = this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
+            String rutaCompleta = "";
+            rutaCompleta = anteproyecto.getRutaFormatoTI_C();
+        
+            Path path = Paths.get(rutaCompleta);
+            Resource resource = new UrlResource(path.toUri());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=formatoTI_C.docx"); 
 
             MediaType mediaType = MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 

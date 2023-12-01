@@ -310,22 +310,27 @@ public class GestionarAnteproyectoPP_BCU implements GestionarAnteproyectoPP_BCUI
         if(this.gatewayAnteproyecto.existeAnteproyecto(idAnteproyecto)){
             AnteproyectoPP_B anteproyecto = this.gatewayAnteproyecto.consultarAnteproyecto(idAnteproyecto);
             int nuevoIndice = anteproyecto.getNVersion() + 1;
-            String nombreArchivo = "Anteproyecto_Version_"+ nuevoIndice +"_"+ anteproyecto.getIdentificacionEstudiantePPB().getLoginUsuario().getUserNameLogin();
-            String rutaDestino = "";  
-            try{
-                rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
-            }  catch(IOException exception){
-                return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
-            }
-            if(nuevoIndice == 2){
-                anteproyecto.setRutaAnteproyectoPPBV2(rutaDestino);
+            if(nuevoIndice > 3){
+                return this.formateadorAnteproyecto.prepararRespuestaFallida("Excede el  numero de revisiones");
             }else{
-                anteproyecto.setRutaAnteproyectoPPBV3(rutaDestino);
+                String nombreArchivo = "Anteproyecto_Version_"+ nuevoIndice +"_"+ anteproyecto.getIdentificacionEstudiantePPB().getLoginUsuario().getUserNameLogin();
+                String rutaDestino = "";
+                try {
+                    rutaDestino = cargarArchivoRecibidos(file, nombreArchivo);
+                } catch (IOException exception) {
+                    return this.formateadorAnteproyecto.prepararRespuestaFallida("error al cargar el archivo");
+                }
+                if (nuevoIndice == 2) {
+                    anteproyecto.setRutaAnteproyectoPPBV2(rutaDestino);
+                } else {
+                    anteproyecto.setRutaAnteproyectoPPBV3(rutaDestino);
+                }
+
+                anteproyecto.setNVersion(nuevoIndice);
+                this.gatewayAnteproyecto.guardar(anteproyecto);
+                return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaModificarAnteproyecto(anteproyecto);
             }
             
-            anteproyecto.setNVersion(nuevoIndice);
-            this.gatewayAnteproyecto.guardar(anteproyecto);
-            return this.formateadorAnteproyecto.prepararRespuestaSatisfactoriaModificarAnteproyecto(anteproyecto);
         }
         return this.formateadorAnteproyecto.prepararRespuestaFallida("No existe el anteproyecto");
     }

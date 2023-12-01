@@ -3,6 +3,7 @@ package com.unicauca.proyecto1.adaptadoresDeInterface.gateWayGestionUsuarios;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class GestionarUsuarioGatewayImpl implements GestionarUsuarioGatewayInt {
 
     @Override
     public Usuario guardar(Usuario objUsuario) {
+        //TypeMap<UsuarioEntity, Usuario> mapaUsuario = this.usuarioModelMapper.emptyTypeMap(UsuarioEntity.class, Usuario.class);
         UsuarioEntity objUsuarioEntity = this.usuarioModelMapper.map(objUsuario, UsuarioEntity.class);
         UsuarioEntity objUsuarioEntityRegistrado = this.objUsuarioRepository.save(objUsuarioEntity);
         Usuario objUsuarioRespuesta = this.usuarioModelMapper.map(objUsuarioEntityRegistrado, Usuario.class);
