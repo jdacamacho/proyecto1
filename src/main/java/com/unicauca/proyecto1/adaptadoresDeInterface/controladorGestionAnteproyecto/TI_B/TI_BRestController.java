@@ -79,7 +79,7 @@ public class TI_BRestController {
         @RequestParam("conceptoRevision") String concepto,
         @RequestParam("observaciones") String observaciones,
         @RequestParam("fileTI_B") MultipartFile fileTI_B,
-        @RequestParam("fileAnteproyectoRevisado") MultipartFile fileAnteproyectoRevisado
+        @RequestParam(name="fileAnteproyectoRevisado", required=false) MultipartFile fileAnteproyectoRevisado
     ){
         RevisionEvaluadorTI_BDTOPeticion peticion = new RevisionEvaluadorTI_BDTOPeticion();
         peticion.setIdRevisionEvaluadorTIB(idRevision);
@@ -154,6 +154,9 @@ public class TI_BRestController {
             }else{
                 rutaCompleta = anteproyecto.getRutaAnteproyectoTIBV3();
             }
+
+            System.out.println("RUTAAAAAAAAAAAAA: \t" + rutaCompleta + "\n\n\n");
+            System.out.println("VERSION: " + version + "\n\n\n");
 
             Path path = Paths.get(rutaCompleta);
             Resource resource = new UrlResource(path.toUri());

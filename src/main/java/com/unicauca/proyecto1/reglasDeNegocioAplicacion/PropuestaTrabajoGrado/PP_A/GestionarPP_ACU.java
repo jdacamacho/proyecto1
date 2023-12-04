@@ -183,12 +183,16 @@ public class GestionarPP_ACU implements GestionarPP_ACUInt {
         }  catch(IOException exception){
             return this.objFormateadorResultados.prepararRespuestaFallida("Error al cargar el archivo");
         }
+
         propuesta.setRutaRespuestaPropuestaTrabajoGrado(rutaDestino);
+        propuesta.setEstadoPropuestaTrabajoGradoPPA(1);
         this.objPropuestaGateway.modificar(idPropuesta, propuesta); 
         String mensaje = "Se ha aprobado su propuesta de trabajo de grado en modalidad de practica profesional con id: " + propuesta.getIdPropuestaTrabajoGradoPPA() +
         " y titulo: " + propuesta.getTituloPropuestaTrabajoGrado() + ", ya puede consultar su formato aprobado";
+
         Notificacion notificacion = this.objFactoryNotificacion.crearNotificacion(comite,propuesta.getIdentificacionDirectorPPA(), mensaje, new Date());
         this.objNotificacionGateway.guardar(notificacion);
+
         return this.objFormateadorResultados.prepararRespuestaSatisfactoriaModificarPropuesta(propuesta);
     }else{
         return this.objFormateadorResultados.prepararRespuestaFallida("No existe la propuesta solicitada o el miembro del comite");

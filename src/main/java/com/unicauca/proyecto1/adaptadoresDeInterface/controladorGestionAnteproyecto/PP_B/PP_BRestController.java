@@ -32,7 +32,7 @@ import com.unicauca.proyecto1.reglasDeNegocioAplicacion.Anteproyecto.PP_B.Gestio
 
 
 @RestController
-@RequestMapping("/apiAnteproyectoPP_B")
+@RequestMapping("/api/AnteproyectoPP_B")
 public class PP_BRestController {
     private final GestionarAnteproyectoPP_BCUInt anteproyectoCU;
 
@@ -40,7 +40,7 @@ public class PP_BRestController {
         this.anteproyectoCU = anteproyectoCU;
     }
 
-    @PostMapping("/anteproyectos")
+    @PostMapping("/")
     public AnteproyectoPP_BDTORespuesta crearAnteproyecto(
         @RequestParam("file") MultipartFile file,
         @RequestParam("idAnteproyecto") int idAnteproyecto,
@@ -51,15 +51,14 @@ public class PP_BRestController {
         @RequestParam(name = "idCodirector",required = false) Integer idCodirector,
         @RequestParam(name = "titulo") String titulo
     ){
-        if(idCodirector == null){
-            idCodirector = -1;
-        }
+        if(idCodirector == null) idCodirector = -1;
+        
         AnteproyectoPP_BDTOPeticion peticion = new AnteproyectoPP_BDTOPeticion(idAnteproyecto,idPropuesta,idDirector,idEstudiante,idAsesor,idCodirector,titulo);
         
         return anteproyectoCU.crearAnteproyecto(peticion, file);
     }
 
-    @PatchMapping("/anteproyectos")
+    @PatchMapping("/")
     public AnteproyectoPP_BDTORespuesta asignarEvaluadores(
         @RequestParam("jefeDepartamento") int idJefe,
         @RequestParam("evaluador1") int idEvaluador1,
@@ -69,7 +68,7 @@ public class PP_BRestController {
         return this.anteproyectoCU.asignarEvaluador(idJefe,idEvaluador1, idEvaluador2, idAnteproyecto);
     }
 
-    @PutMapping("/anteproyectos")
+    @PutMapping("/")
     public AnteproyectoPP_BDTORespuesta revisionEvaluador(
         @RequestParam("idRevision") int idRevision,
         @RequestParam("idEvaluador") int idEvaluador,
@@ -88,7 +87,7 @@ public class PP_BRestController {
         return this.anteproyectoCU.realizarRevisionAnteproyecto(peticion,filePP_B,fileAnteproyectoRevisado);
     }
 
-    @GetMapping("/anteproyectos")
+    @GetMapping("/")
     public List<AnteproyectoPP_BDTORespuesta> listarAnteproyectos(){
         return this.anteproyectoCU.listarAnteproyectos();
     }
@@ -98,12 +97,12 @@ public class PP_BRestController {
         return this.anteproyectoCU.listarAnteproyectosEvaluadores(idEvaluador);
     }
 
-    @GetMapping("/anteproyectosDirector")
-    public List<AnteproyectoPP_BDTORespuesta> listarAnteproyectosDirector(@RequestParam("idDirector") int idDirector){
+    @GetMapping("/anteproyectosDirector/{idDirector}")
+    public List<AnteproyectoPP_BDTORespuesta> listarAnteproyectosDirector(@PathVariable int idDirector){
         return this.anteproyectoCU.listarAnteproyectosDirector(idDirector);
     }
 
-    @GetMapping("/anteproyectos/{idAnteproyecto}")
+    @GetMapping("/{idAnteproyecto}")
     public AnteproyectoPP_BDTORespuesta consultarAnteproyecto(@PathVariable String idAnteproyecto){
         return this.anteproyectoCU.consultarAnteproyecto(idAnteproyecto);
     }
